@@ -16,7 +16,6 @@ from homeassistant.const import (
     ATTR_TEMPERATURE,
     UnitOfVolume,
     REVOLUTIONS_PER_MINUTE,
-    EntityCategory,
     UnitOfTime,
 )
 from homeassistant.core import HomeAssistant
@@ -66,7 +65,6 @@ SENSOR_TYPES: tuple[VentaSensorEntityDescription, ...] = (
         native_unit_of_measurement=UnitOfVolume.MILLILITERS,
         icon="mdi:water-check",
         state_class=SensorStateClass.MEASUREMENT,
-        entity_category=EntityCategory.DIAGNOSTIC,
         value_func=lambda data: round(data.measure.get("WaterLevel") / 10),
     ),
     VentaSensorEntityDescription(
@@ -75,13 +73,11 @@ SENSOR_TYPES: tuple[VentaSensorEntityDescription, ...] = (
         native_unit_of_measurement=REVOLUTIONS_PER_MINUTE,
         icon="mdi:fast-forward",
         state_class=SensorStateClass.MEASUREMENT,
-        entity_category=EntityCategory.DIAGNOSTIC,
         value_func=lambda data: data.measure.get("FanRpm"),
     ),
     VentaSensorEntityDescription(
         key=ATTR_OPERATION_TIME,
         translation_key="operation_time",
-        entity_category=EntityCategory.DIAGNOSTIC,
         icon="mdi:power-settings",
         native_unit_of_measurement=UnitOfTime.MINUTES,
         value_func=lambda data: data.info.get("OperationT"),
@@ -89,7 +85,6 @@ SENSOR_TYPES: tuple[VentaSensorEntityDescription, ...] = (
     VentaSensorEntityDescription(
         key=ATTR_DISC_ION_TIME,
         translation_key="disc_ion_time",
-        entity_category=EntityCategory.DIAGNOSTIC,
         icon="mdi:power-settings",
         native_unit_of_measurement=UnitOfTime.MINUTES,
         value_func=lambda data: data.info.get("DiscIonT"),
@@ -97,7 +92,6 @@ SENSOR_TYPES: tuple[VentaSensorEntityDescription, ...] = (
     VentaSensorEntityDescription(
         key=ATTR_CLEANING_TIME,
         translation_key="cleaning_time",
-        entity_category=EntityCategory.DIAGNOSTIC,
         icon="mdi:power-settings",
         native_unit_of_measurement=UnitOfTime.MINUTES,
         value_func=lambda data: data.info.get("CleaningT"),
@@ -105,7 +99,6 @@ SENSOR_TYPES: tuple[VentaSensorEntityDescription, ...] = (
     VentaSensorEntityDescription(
         key=ATTR_SERVICE_TIME,
         translation_key="service_time",
-        entity_category=EntityCategory.DIAGNOSTIC,
         icon="mdi:power-settings",
         native_unit_of_measurement=UnitOfTime.MINUTES,
         value_func=lambda data: data.info.get("ServiceT"),
