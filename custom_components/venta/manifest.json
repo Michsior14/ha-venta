@@ -1,0 +1,16 @@
+{
+  "domain": "venta",
+  "name": "Venta",
+  "codeowners": ["@Michsior14"],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://github.com/Michsior14/ha-venta",
+  "issue_tracker": "https://github.com/Michsior14/ha-venta/issues",
+  "homekit": {},
+  "iot_class": "local_polling",
+  "requirements": [],
+  "ssdp": [],
+  "zeroconf": [],
+  "loggers": ["custom_components.venta"],
+  "version": "0.1.0"
+}

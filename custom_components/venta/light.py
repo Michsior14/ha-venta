@@ -1,0 +1,98 @@
+"""Light platform for Venta."""
+from __future__ import annotations
+
+import logging
+from dataclasses import dataclass
+from typing import Any
+
+from homeassistant.components import light
+from homeassistant.components.light import (
+    ColorMode,
+    LightEntity,
+    LightEntityDescription,
+)
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.core import HomeAssistant
+from homeassistant.util.color import rgb_hex_to_rgb_list, color_rgb_to_hex
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.helpers.update_coordinator import CoordinatorEntity
+
+from .const import DOMAIN
+from .venta import VentaDataUpdateCoordinator
+
+_LOGGER = logging.getLogger(__name__)
+
+
+@dataclass
+class VentaLightEntityDescription(LightEntityDescription):
+    """Describe Venta light entity."""
+
+
+LIGHT_ENTITY_DESCRIPTION = VentaLightEntityDescription(
+    key="light", translation_key="led_strip"
+)
+
+
+async def async_setup_entry(
+    hass: HomeAssistant,
+    config_entry: ConfigEntry,
+    async_add_entities: AddEntitiesCallback,
+) -> None:
+    """Set up the Venta light platform."""
+    coordinator: VentaDataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]
+    async_add_entities([VentaLight(coordinator, LIGHT_ENTITY_DESCRIPTION)])
+
+
+class VentaLight(CoordinatorEntity[VentaDataUpdateCoordinator], LightEntity):
+    """Venta light."""
+
+    _attr_has_entity_name = True
+    _attr_supported_color_modes = {ColorMode.RGB}
+    _attr_color_mode = ColorMode.RGB
+
+    def __init__(
+        self,
+        coordinator: VentaDataUpdateCoordinator,
+        description: VentaLightEntityDescription,
+    ) -> None:
+        """Initialize the Venta light."""
+        super().__init__(coordinator)
+        self.entity_description = description
+        self._device = coordinator.api.device
+        self._attr_device_info = coordinator.device_info
+        self._attr_unique_id = f"{self._device.mac}-{description.key}"
+        self._attr_brightness = 255
+
+    @property
+    def is_on(self) -> bool:
+        """Return if light is on."""
+        return self.coordinator.data.action.get("LEDStripActive")
+
+    @property
+    def rgb_color(self) -> tuple[int, int, int]:
+        """Return the rgb color value [int, int, int]."""
+        hex_string = self.coordinator.data.action.get("LEDStrip")
+        return rgb_hex_to_rgb_list(hex_string[1:])
+
+    async def async_turn_on(
+        self,
+        **kwargs: Any,
+    ) -> None:
+        """Turn light on."""
+        _LOGGER.debug("Turm on called with: %s", str(kwargs))
+        if (rgb_color := kwargs.get(light.ATTR_RGB_COLOR)) is not None:
+            await self._device.update(
+                {
+                    "Action": {
+                        "LEDStrip": f"#{color_rgb_to_hex(rgb_color[0], rgb_color[1], rgb_color[2])}"
+                    }
+                }
+            )
+        else:
+            await self._device.update({"Action": {"LEDStripActive": True}})
+        await self.coordinator.async_request_refresh()
+
+    async def async_turn_off(self, **kwargs: Any) -> None:
+        """Turn light off."""
+        await self._device.update({"Action": {"LEDStripActive": False}})
+        await self.coordinator.async_request_refresh()
