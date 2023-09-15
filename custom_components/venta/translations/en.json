@@ -47,6 +47,11 @@
         "name": "Warnings"
       }
     },
+    "binary_sensor": {
+      "needs_refill": {
+        "name": "Needs refill"
+      }
+    },
     "light": {
       "led_strip": {
         "name": "LED strip"
