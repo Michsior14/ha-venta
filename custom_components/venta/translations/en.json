@@ -1,58 +1,61 @@
 {
-    "config": {
-        "abort": {
-            "already_configured": "Device is already configured"
-        },
-        "error": {
-            "cannot_connect": "Failed to connect",
-            "unknown": "Unexpected error"
-        },
-        "step": {
-            "user": {
-                "data": {
-                    "host": "Host"
-                }
-            }
-        }
+  "config": {
+    "abort": {
+      "already_configured": "Device is already configured"
     },
-    "entity": {
-        "humidifier": {
-            "humidifier": {
-                "name": "Humidifier"
-            }
-        },
-        "sensor": {
-            "temperature": {
-                "name": "Temperature"
-            },
-            "water_level": {
-                "name": "Water level"
-            },
-            "fan_speed": {
-                "name": "Fan speed"
-            },
-            "operation_time": {
-                "name": "Operation time"
-            },
-            "disc_ion_time": {
-                "name": "Disc ionization time"
-            },
-            "cleaning_time": {
-                "name": "Cleaning time"
-            },
-            "service_time": {
-                "name": "Service time"
-            }
-        },
-        "light": {
-            "led_strip": {
-                "name": "LED strip"
-            }
-        },
-        "select": {
-            "led_strip_mode": {
-                "name": "LED strip mode"
-            }
+    "error": {
+      "cannot_connect": "Failed to connect",
+      "unknown": "Unexpected error"
+    },
+    "step": {
+      "user": {
+        "data": {
+          "host": "Host"
         }
+      }
     }
+  },
+  "entity": {
+    "humidifier": {
+      "humidifier": {
+        "name": "Humidifier"
+      }
+    },
+    "sensor": {
+      "temperature": {
+        "name": "Temperature"
+      },
+      "water_level": {
+        "name": "Water level"
+      },
+      "fan_speed": {
+        "name": "Fan speed"
+      },
+      "operation_time": {
+        "name": "Operation time"
+      },
+      "disc_ion_time": {
+        "name": "Disc ionization time"
+      },
+      "cleaning_time": {
+        "name": "Cleaning time"
+      },
+      "service_time": {
+        "name": "Service time"
+      },
+      "warnings": {
+        "name": "Warnings"
+      }
+    },
+    "light": {
+      "led_strip": {
+        "name": "LED strip"
+      }
+    },
+    "select": {
+      "led_strip_mode": {
+        "name": "LED strip mode"
+      }
+    }
+  }
 }
