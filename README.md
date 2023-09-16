@@ -4,7 +4,7 @@ A Home Assistant custom Integration for Venta devices with wifi module.
 
 The following Venta device are currently tested and supported:
 
-* LW74 Humidifier
+* LW73/LW74 Humidifier
 
 ## Features
 

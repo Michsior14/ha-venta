@@ -17,7 +17,7 @@ _LOGGER = logging.getLogger(__name__)
 
 UPDATE_INTERVAL = timedelta(seconds=10)
 
-DEVICE_TYPES = {106: "LW74"}
+DEVICE_TYPES = {106: "LW73/LW74"}
 
 
 @dataclass
