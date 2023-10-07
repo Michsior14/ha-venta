@@ -50,6 +50,9 @@
     "binary_sensor": {
       "needs_refill": {
         "name": "Needs refill"
+      },
+      "needs_service": {
+        "name": "Needs service"
       }
     },
     "light": {

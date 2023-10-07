@@ -18,6 +18,7 @@ from .venta import VentaData, VentaDataUpdateCoordinator
 
 
 ATTR_NEEDS_REFILL = "needs_refill"
+ATTR_NEEDS_SERVICE = "needs_service"
 
 
 @dataclass
@@ -44,6 +45,12 @@ BINARY_SENSOR_TYPES: tuple[VentaBinarySensorEntityDescription, ...] = (
             and data.measure.get("WaterLevel") < NO_WATER_THRESHOLD
         ),
     ),
+    VentaBinarySensorEntityDescription(
+        key=ATTR_NEEDS_SERVICE,
+        translation_key="needs_service",
+        icon="mdi:account-wrench",
+        value_func=(lambda data: data.info.get("Warnings") == 16),
+    ),
 )
 
 
@@ -54,6 +61,7 @@ async def async_setup_entry(
     coordinator: VentaDataUpdateCoordinator = hass.data[DOMAIN].get(entry.entry_id)
     sensors = [
         ATTR_NEEDS_REFILL,
+        ATTR_NEEDS_SERVICE,
     ]
     entities = [
         VentaBinarySensor(coordinator, description)
