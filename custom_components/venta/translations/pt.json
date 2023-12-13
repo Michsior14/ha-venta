@@ -1,0 +1,69 @@
+{
+  "config": {
+    "abort": {
+      "already_configured": "Equipamento já configurado"
+    },
+    "error": {
+      "cannot_connect": "Falha na ligação",
+      "unknown": "Erro desconhecido"
+    },
+    "step": {
+      "user": {
+        "data": {
+          "host": "Endereço"
+        }
+      }
+    }
+  },
+  "entity": {
+    "humidifier": {
+      "humidifier": {
+        "name": "Humidificador"
+      }
+    },
+    "sensor": {
+      "temperature": {
+        "name": "Temperatura"
+      },
+      "water_level": {
+        "name": "Nível de Água"
+      },
+      "fan_speed": {
+        "name": "Velocidade da ventoinha"
+      },
+      "operation_time": {
+        "name": "Tempo de funcionamento"
+      },
+      "disc_ion_time": {
+        "name": "Tempo do disco de ionização"
+      },
+      "cleaning_time": {
+        "name": "Tempo de limpeza"
+      },
+      "service_time": {
+        "name": "Tempo de serviço"
+      },
+      "warnings": {
+        "name": "Avisos"
+      }
+    },
+    "binary_sensor": {
+      "needs_refill": {
+        "name": "Precisa de recarregamento"
+      },
+      "needs_service": {
+        "name": "Precisa de manutenção"
+      }
+    },
+    "light": {
+      "led_strip": {
+        "name": "Fita Led"
+      }
+    },
+    "select": {
+      "led_strip_mode": {
+        "name": "Modo da fita de LED "
+      }
+    }
+  }
+}
