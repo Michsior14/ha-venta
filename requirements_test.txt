@@ -1,8 +1,8 @@
-black==23.9.1
-codespell==2.2.5
+codespell==2.2.6
 flake8==6.1.0
-mypy==1.5.1
+mypy==1.7.1
 pydocstyle==6.3.0
-pylint==2.17.5
+pylint==3.0.3
 pylint-strict-informational==0.1
-homeassistant==2023.9.2
+homeassistant==2023.12.2
+ruff==0.1.8

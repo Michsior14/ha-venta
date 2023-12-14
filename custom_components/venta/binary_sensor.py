@@ -14,7 +14,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import DOMAIN, NO_WATER_THRESHOLD
-from .venta import VentaData, VentaDataUpdateCoordinator
+from .venta import VentaData, VentaDataUpdateCoordinator, DeviceType
 
 
 ATTR_NEEDS_REFILL = "needs_refill"
@@ -35,23 +35,52 @@ class VentaBinarySensorEntityDescription(
     """Describes Venta binary sensor entity."""
 
 
-BINARY_SENSOR_TYPES: tuple[VentaBinarySensorEntityDescription, ...] = (
-    VentaBinarySensorEntityDescription(
-        key=ATTR_NEEDS_REFILL,
-        translation_key="needs_refill",
-        icon="mdi:water-alert",
-        value_func=(
-            lambda data: data.info.get("Warnings") != 0
-            and data.measure.get("WaterLevel") < NO_WATER_THRESHOLD
-        ),
-    ),
-    VentaBinarySensorEntityDescription(
-        key=ATTR_NEEDS_SERVICE,
-        translation_key="needs_service",
-        icon="mdi:account-wrench",
-        value_func=(lambda data: data.info.get("Warnings") == 16),
-    ),
-)
+def _supported_sensors(
+    device_type: DeviceType,
+) -> tuple[VentaBinarySensorEntityDescription, ...]:
+    """Return supported sensors for given device type."""
+    match device_type:
+        case DeviceType.LW73_LW74 | DeviceType.UNKNOWN:
+            return (
+                VentaBinarySensorEntityDescription(
+                    key=ATTR_NEEDS_REFILL,
+                    translation_key="needs_refill",
+                    icon="mdi:water-alert",
+                    value_func=(
+                        lambda data: data.info.get("Warnings") != 0
+                        and data.measure.get("WaterLevel") < NO_WATER_THRESHOLD
+                    ),
+                ),
+                VentaBinarySensorEntityDescription(
+                    key=ATTR_NEEDS_SERVICE,
+                    translation_key="needs_service",
+                    icon="mdi:account-wrench",
+                    value_func=(
+                        lambda data: 16 <= data.info.get("Warnings")
+                        and data.info.get("Warnings") <= 17
+                    ),
+                ),
+            )
+        case DeviceType.AH550_AH555:
+            return (
+                (
+                    VentaBinarySensorEntityDescription(
+                        key=ATTR_NEEDS_REFILL,
+                        translation_key="needs_refill",
+                        icon="mdi:water-alert",
+                        value_func=(lambda data: data.info.get("Warnings") == 1),
+                    ),
+                    VentaBinarySensorEntityDescription(
+                        key=ATTR_NEEDS_SERVICE,
+                        translation_key="needs_service",
+                        icon="mdi:account-wrench",
+                        value_func=(
+                            lambda data: data.info.get("ServiceT") is not None
+                            and data.info.get("ServiceT") >= data.info.get("ServiceMax")
+                        ),
+                    ),
+                ),
+            )
 
 
 async def async_setup_entry(
@@ -65,7 +94,7 @@ async def async_setup_entry(
     ]
     entities = [
         VentaBinarySensor(coordinator, description)
-        for description in BINARY_SENSOR_TYPES
+        for description in _supported_sensors(coordinator.api.device.device_type)
         if description.key in sensors
     ]
     async_add_entities(entities)

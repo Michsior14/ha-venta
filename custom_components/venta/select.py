@@ -78,8 +78,10 @@ async def async_setup_entry(
         VentaSelect(coordinator, description)
         for description in SENSOR_TYPES
         if description.key in sensors
+        and description.value_func(coordinator.data) is not None
     ]
-    async_add_entities(entities)
+    if len(entities) > 0:
+        async_add_entities(entities)
 
 
 class VentaSelect(CoordinatorEntity[VentaDataUpdateCoordinator], SelectEntity):

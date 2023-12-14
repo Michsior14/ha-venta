@@ -10,7 +10,11 @@
     "step": {
       "user": {
         "data": {
-          "host": "Endereço"
+          "host": "Endereço",
+          "api_version": "Versão da API",
+          "data_description": {
+            "api_version": "Combine com a propriedade `ProtocolV` disponível na página do dispositivo."
+          }
         }
       }
     }
@@ -42,6 +46,9 @@
       },
       "service_time": {
         "name": "Tempo de serviço"
+      },
+      "service_max_time": {
+        "name": "Tempo máximo de serviço"
       },
       "warnings": {
         "name": "Avisos"

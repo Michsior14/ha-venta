@@ -32,6 +32,7 @@ ATTR_OPERATION_TIME = "operation_time"
 ATTR_DISC_ION_TIME = "disc_ion_time"
 ATTR_CLEANING_TIME = "cleaning_time"
 ATTR_SERVICE_TIME = "service_time"
+ATTR_SERVICE_MAX_TIME = "service_max_time"
 ATTR_WARNINGS = "warnings"
 
 
@@ -110,6 +111,14 @@ SENSOR_TYPES: tuple[VentaSensorEntityDescription, ...] = (
         value_func=lambda data: data.info.get("ServiceT"),
     ),
     VentaSensorEntityDescription(
+        key=ATTR_SERVICE_MAX_TIME,
+        translation_key="service_max_time",
+        icon="mdi:power-settings",
+        native_unit_of_measurement=UnitOfTime.MINUTES,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        value_func=lambda data: data.info.get("ServiceMax"),
+    ),
+    VentaSensorEntityDescription(
         key=ATTR_WARNINGS,
         translation_key="warnings",
         icon="mdi:alert",
@@ -132,14 +141,17 @@ async def async_setup_entry(
         ATTR_DISC_ION_TIME,
         ATTR_CLEANING_TIME,
         ATTR_SERVICE_TIME,
+        ATTR_SERVICE_MAX_TIME,
         ATTR_WARNINGS,
     ]
     entities = [
         VentaSensor(coordinator, description)
         for description in SENSOR_TYPES
         if description.key in sensors
+        and description.value_func(coordinator.data) is not None
     ]
-    async_add_entities(entities)
+    if len(entities) > 0:
+        async_add_entities(entities)
 
 
 class VentaSensor(CoordinatorEntity[VentaDataUpdateCoordinator], SensorEntity):

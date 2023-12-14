@@ -3,7 +3,11 @@
     "step": {
       "user": {
         "data": {
-          "host": "[%key:common::config_flow::data::host%]"
+          "host": "[%key:common::config_flow::data::host%]",
+          "api_version": "API version"
+        },
+        "data_description": {
+          "api_version": "Match with `ProtocolV` property available at the device page."
         }
       }
     },

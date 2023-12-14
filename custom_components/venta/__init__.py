@@ -11,11 +11,11 @@ from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
-from homeassistant.const import CONF_HOST, CONF_MAC
+from homeassistant.const import CONF_HOST, CONF_MAC, CONF_API_VERSION
 
 from .const import DOMAIN, TIMEOUT
 
-from .venta import VentaApi, VentaDevice, VentaDataUpdateCoordinator
+from .venta import VentaApi, VentaDevice, VentaDataUpdateCoordinator, ApiVersion
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -36,7 +36,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     if entry.unique_id is None:
         hass.config_entries.async_update_entry(entry, unique_id=conf[CONF_MAC])
 
-    api = await venta_api_setup(hass, conf[CONF_HOST])
+    api = await venta_api_setup(hass, conf[CONF_HOST], conf[CONF_API_VERSION])
     if not api:
         return False
 
@@ -60,12 +60,12 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     return unload_ok
 
 
-async def venta_api_setup(hass: HomeAssistant, host):
+async def venta_api_setup(hass: HomeAssistant, host, api_version):
     """Create a Venta instance only once."""
     session = async_get_clientsession(hass)
     try:
         async with asyncio.timeout(TIMEOUT):
-            device = VentaDevice(host, session)
+            device = VentaDevice(host, api_version, session)
             await device.init()
     except asyncio.TimeoutError as err:
         _LOGGER.debug("Connection to %s timed out", host)
@@ -80,3 +80,17 @@ async def venta_api_setup(hass: HomeAssistant, host):
     api = VentaApi(device)
 
     return api
+
+
+async def async_migrate_entry(hass: HomeAssistant, entry: ConfigEntry):
+    """Migrate old entry."""
+    _LOGGER.debug("Migrating from version %s", entry.version)
+
+    if entry.version == 1:
+        new = {**entry.data, CONF_API_VERSION: ApiVersion.V2.value}
+        entry.version = 2
+        hass.config_entries.async_update_entry(entry, data=new)
+
+    _LOGGER.debug("Migration to version %s successful", entry.version)
+
+    return True
