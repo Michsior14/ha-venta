@@ -40,6 +40,7 @@ ATTR_WARNINGS = "warnings"
 class VentaSensorRequiredKeysMixin:
     """Mixin for required keys."""
 
+    exists_func: Callable[[VentaDataUpdateCoordinator], bool]
     value_func: Callable[[VentaData], int | None]
 
 
@@ -59,6 +60,8 @@ SENSOR_TYPES: tuple[VentaSensorEntityDescription, ...] = (
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+        exists_func=lambda coordinator: coordinator.data.measure.get("Temperature")
+        is not None,
         value_func=lambda data: data.measure.get("Temperature"),
     ),
     VentaSensorEntityDescription(
@@ -67,6 +70,8 @@ SENSOR_TYPES: tuple[VentaSensorEntityDescription, ...] = (
         icon="mdi:water",
         state_class=SensorStateClass.MEASUREMENT,
         entity_category=EntityCategory.DIAGNOSTIC,
+        exists_func=lambda coordinator: coordinator.data.measure.get("WaterLevel")
+        is not None,
         value_func=lambda data: data.measure.get("WaterLevel"),
     ),
     VentaSensorEntityDescription(
@@ -76,6 +81,8 @@ SENSOR_TYPES: tuple[VentaSensorEntityDescription, ...] = (
         icon="mdi:fast-forward",
         state_class=SensorStateClass.MEASUREMENT,
         entity_category=EntityCategory.DIAGNOSTIC,
+        exists_func=lambda coordinator: coordinator.data.measure.get("FanRpm")
+        is not None,
         value_func=lambda data: data.measure.get("FanRpm"),
     ),
     VentaSensorEntityDescription(
@@ -84,6 +91,8 @@ SENSOR_TYPES: tuple[VentaSensorEntityDescription, ...] = (
         icon="mdi:power-settings",
         native_unit_of_measurement=UnitOfTime.MINUTES,
         entity_category=EntityCategory.DIAGNOSTIC,
+        exists_func=lambda coordinator: coordinator.data.measure.get("OperationT")
+        is not None,
         value_func=lambda data: data.info.get("OperationT"),
     ),
     VentaSensorEntityDescription(
@@ -92,6 +101,8 @@ SENSOR_TYPES: tuple[VentaSensorEntityDescription, ...] = (
         icon="mdi:power-settings",
         native_unit_of_measurement=UnitOfTime.MINUTES,
         entity_category=EntityCategory.DIAGNOSTIC,
+        exists_func=lambda coordinator: coordinator.data.measure.get("DiscIonT")
+        is not None,
         value_func=lambda data: data.info.get("DiscIonT"),
     ),
     VentaSensorEntityDescription(
@@ -100,6 +111,8 @@ SENSOR_TYPES: tuple[VentaSensorEntityDescription, ...] = (
         icon="mdi:power-settings",
         native_unit_of_measurement=UnitOfTime.MINUTES,
         entity_category=EntityCategory.DIAGNOSTIC,
+        exists_func=lambda coordinator: coordinator.data.measure.get("CleaningT")
+        is not None,
         value_func=lambda data: data.info.get("CleaningT"),
     ),
     VentaSensorEntityDescription(
@@ -108,6 +121,8 @@ SENSOR_TYPES: tuple[VentaSensorEntityDescription, ...] = (
         icon="mdi:power-settings",
         native_unit_of_measurement=UnitOfTime.MINUTES,
         entity_category=EntityCategory.DIAGNOSTIC,
+        exists_func=lambda coordinator: coordinator.data.measure.get("ServiceT")
+        is not None,
         value_func=lambda data: data.info.get("ServiceT"),
     ),
     VentaSensorEntityDescription(
@@ -116,6 +131,8 @@ SENSOR_TYPES: tuple[VentaSensorEntityDescription, ...] = (
         icon="mdi:power-settings",
         native_unit_of_measurement=UnitOfTime.MINUTES,
         entity_category=EntityCategory.DIAGNOSTIC,
+        exists_func=lambda coordinator: coordinator.data.measure.get("ServiceMax")
+        is not None,
         value_func=lambda data: data.info.get("ServiceMax"),
     ),
     VentaSensorEntityDescription(
@@ -123,6 +140,8 @@ SENSOR_TYPES: tuple[VentaSensorEntityDescription, ...] = (
         translation_key="warnings",
         icon="mdi:alert",
         entity_category=EntityCategory.DIAGNOSTIC,
+        exists_func=lambda coordinator: coordinator.data.measure.get("Warnings")
+        is not None,
         value_func=lambda data: data.info.get("Warnings"),
     ),
 )
@@ -147,11 +166,9 @@ async def async_setup_entry(
     entities = [
         VentaSensor(coordinator, description)
         for description in SENSOR_TYPES
-        if description.key in sensors
-        and description.value_func(coordinator.data) is not None
+        if description.key in sensors and description.exists_func(coordinator)
     ]
-    if len(entities) > 0:
-        async_add_entities(entities)
+    async_add_entities(entities)
 
 
 class VentaSensor(CoordinatorEntity[VentaDataUpdateCoordinator], SensorEntity):

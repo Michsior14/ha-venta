@@ -1,0 +1,119 @@
+"""Support for Venta switch."""
+from __future__ import annotations
+
+from collections.abc import Callable
+from dataclasses import dataclass
+from typing import Any
+
+from homeassistant.components.switch import (
+    SwitchEntity,
+    SwitchEntityDescription,
+)
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import (
+    EntityCategory,
+)
+from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.helpers.update_coordinator import CoordinatorEntity
+
+from .const import DOMAIN
+from .venta import VentaData, VentaDataUpdateCoordinator, ApiVersion
+
+
+ATTR_SLEEP_MODE = "sleep_mode"
+
+
+@dataclass
+class VentaSwitchRequiredKeysMixin:
+    """Mixin for required keys."""
+
+    exists_func: Callable[[VentaDataUpdateCoordinator], bool]
+    value_func: Callable[[VentaData], str | None]
+    action_func: Callable[[VentaData, bool], dict | None]
+
+
+@dataclass
+class VentaSwitchEntityDescription(
+    SwitchEntityDescription, VentaSwitchRequiredKeysMixin
+):
+    """Describes Venta switch entity."""
+
+
+SENSOR_TYPES: tuple[VentaSwitchEntityDescription, ...] = (
+    VentaSwitchEntityDescription(
+        key=ATTR_SLEEP_MODE,
+        translation_key="sleep_mode",
+        entity_category=EntityCategory.CONFIG,
+        exists_func=lambda coordinator: coordinator.api.version == ApiVersion.V2,
+        value_func=lambda data: data.action.get("SleepMode"),
+        action_func=(
+            lambda data, is_on: {
+                "Power": data.action.get("Power"),
+                "SleepMode": True,
+                "Automatic": False,
+                "FanSpeed": data.action.get("FanSpeed"),
+                "Action": "control",
+            }
+            if is_on
+            else {
+                "Power": data.action.get("Power"),
+                "SleepMode": False,
+                "Automatic": data.action.get("Automatic"),
+                "FanSpeed": data.action.get("FanSpeed"),
+                "Action": "control",
+            }
+        ),
+    ),
+)
+
+
+async def async_setup_entry(
+    hass: HomeAssistant, entry: ConfigEntry, async_add_entities: AddEntitiesCallback
+) -> None:
+    """Set up Venta switch on config_entry."""
+    coordinator: VentaDataUpdateCoordinator = hass.data[DOMAIN].get(entry.entry_id)
+    sensors = [ATTR_SLEEP_MODE]
+    entities = [
+        VentaSwitch(coordinator, description)
+        for description in SENSOR_TYPES
+        if description.key in sensors and description.exists_func(coordinator)
+    ]
+    async_add_entities(entities)
+
+
+class VentaSwitch(CoordinatorEntity[VentaDataUpdateCoordinator], SwitchEntity):
+    """Representation of a switch."""
+
+    _attr_has_entity_name = True
+    entity_description: VentaSwitchEntityDescription
+
+    def __init__(
+        self,
+        coordinator: VentaDataUpdateCoordinator,
+        description: VentaSwitchEntityDescription,
+    ) -> None:
+        """Initialize the switch."""
+        super().__init__(coordinator)
+        self.entity_description = description
+        self._attr_device_info = coordinator.device_info
+        self._attr_unique_id = f"{coordinator.api.device.mac}-{description.key}"
+        self._attr_options = description.options
+        self._device = coordinator.api.device
+
+    @property
+    def is_on(self) -> str | None:
+        """Return if switch is on."""
+        return self.entity_description.value_func(self.coordinator.data)
+
+    async def async_turn_on(self, **kwargs: Any) -> None:
+        """Turn the switch on."""
+        await self._send_action(True)
+
+    async def async_turn_off(self, **kwargs: Any) -> None:
+        """Turn the switch off."""
+        await self._send_action(False)
+
+    async def _send_action(self, on: bool):
+        await self._device.update(self.entity_description.action_func(on))
+        await self.coordinator.async_request_refresh()

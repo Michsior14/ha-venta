@@ -71,6 +71,11 @@
       "led_strip_mode": {
         "name": "LED strip mode"
       }
+    },
+    "switch": {
+      "sleep_mode": {
+        "name": "Sleep mode"
+      }
     }
   }
 }

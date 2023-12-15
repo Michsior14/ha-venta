@@ -71,6 +71,11 @@
       "led_strip_mode": {
         "name": "Modo da fita de LED "
       }
+    },
+    "switch": {
+      "sleep_mode": {
+        "name": "Modo dormir"
+      }
     }
   }
 }
