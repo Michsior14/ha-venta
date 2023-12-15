@@ -200,8 +200,6 @@ class VentaV3HumidifierEntity(VentaBaseHumidifierEntity):
             {
                 "Power": state.get("Power"),
                 "Automatic": state.get("Automatic"),
-                "SleepMode": state.get("SleepMode"),
-                "FanSpeed": state.get("FanSpeed"),
                 "TargetHum": humidity,
                 "Action": "control",
             }
@@ -213,17 +211,15 @@ class VentaV3HumidifierEntity(VentaBaseHumidifierEntity):
 
         action = {
             "Power": True,
-            "Automatic": state.get("Automatic"),
-            "SleepMode": state.get("SleepMode"),
             "FanSpeed": state.get("FanSpeed"),
             "Action": "control",
         }
         if mode == MODE_AUTO:
             action.update({"Automatic": True})
         elif mode == MODE_SLEEP:
-            action.update({"SleepMode": True})
+            action.update({"SleepMode": True, "Automatic": False})
         else:
             level = int(mode[-1])
-            action.update({"FanSpeed": level})
+            action.update({"SleepMode": False, "Automatic": False, "FanSpeed": level})
 
         await self._send_action(action)
