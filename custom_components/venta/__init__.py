@@ -15,7 +15,7 @@ from homeassistant.const import CONF_HOST, CONF_MAC, CONF_API_VERSION
 
 from .const import DOMAIN, TIMEOUT
 
-from .venta import VentaApi, VentaDevice, VentaDataUpdateCoordinator, ApiVersion
+from .venta import VentaApi, VentaDevice, VentaDataUpdateCoordinator, VentaApiVersion
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -88,7 +88,7 @@ async def async_migrate_entry(hass: HomeAssistant, entry: ConfigEntry):
     _LOGGER.debug("Migrating from version %s", entry.version)
 
     if entry.version == 1:
-        new = {**entry.data, CONF_API_VERSION: ApiVersion.V2.value}
+        new = {**entry.data, CONF_API_VERSION: VentaApiVersion.V2.value}
         entry.version = 2
         hass.config_entries.async_update_entry(entry, data=new)
 

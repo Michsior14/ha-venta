@@ -14,7 +14,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import DOMAIN, NO_WATER_THRESHOLD
-from .venta import VentaData, VentaDataUpdateCoordinator, DeviceType
+from .venta import VentaData, VentaDataUpdateCoordinator, VentaDeviceType
 
 
 ATTR_NEEDS_REFILL = "needs_refill"
@@ -36,11 +36,11 @@ class VentaBinarySensorEntityDescription(
 
 
 def _supported_sensors(
-    device_type: DeviceType,
+    device_type: VentaDeviceType,
 ) -> tuple[VentaBinarySensorEntityDescription, ...]:
     """Return supported sensors for given device type."""
     match device_type:
-        case DeviceType.LW73_LW74 | DeviceType.UNKNOWN:
+        case VentaDeviceType.LW73_LW74 | VentaDeviceType.UNKNOWN:
             return (
                 VentaBinarySensorEntityDescription(
                     key=ATTR_NEEDS_REFILL,
@@ -61,7 +61,7 @@ def _supported_sensors(
                     ),
                 ),
             )
-        case DeviceType.AH550_AH555:
+        case VentaDeviceType.AH550_AH555:
             return (
                 VentaBinarySensorEntityDescription(
                     key=ATTR_NEEDS_REFILL,

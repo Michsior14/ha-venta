@@ -19,24 +19,24 @@ _LOGGER = logging.getLogger(__name__)
 UPDATE_INTERVAL = timedelta(seconds=10)
 
 
-class DeviceType(Enum):
-    """Device types."""
+class VentaDeviceType(Enum):
+    """Venta device types."""
 
     UNKNOWN = -1
     LW73_LW74 = 106
     AH550_AH555 = 500
 
 
-class ApiVersion(Enum):
-    """Api versions."""
+class VentaApiVersion(Enum):
+    """Veta api versions."""
 
     V2 = 2
     V3 = 3
 
 
 API_VERSION_ENDPOINTS = {
-    ApiVersion.V2: "datastructure",
-    ApiVersion.V3: "api/telemetry?request=set",
+    VentaApiVersion.V2: "datastructure",
+    VentaApiVersion.V3: "api/telemetry?request=set",
 }
 
 
@@ -56,9 +56,9 @@ class VentaDevice:
     def __init__(self, host, api_version, session=None) -> None:
         """Venta device constructor."""
         self.host = host
-        self.api_version = ApiVersion(api_version)
+        self.api_version = VentaApiVersion(api_version)
         self.mac = None
-        self.device_type = DeviceType.UNKNOWN
+        self.device_type = VentaDeviceType.UNKNOWN
         self._session = session
         self._endpoint = (
             f"http://{self.host}/{API_VERSION_ENDPOINTS.get(self.api_version)}"
@@ -69,9 +69,9 @@ class VentaDevice:
         data = await self.update()
         self.mac = data.header.get("MacAdress")
         try:
-            self.device_type = DeviceType(data.header.get("DeviceType"))
+            self.device_type = VentaDeviceType(data.header.get("DeviceType"))
         except ValueError:
-            self.device_type = DeviceType.UNKNOWN
+            self.device_type = VentaDeviceType.UNKNOWN
 
     async def update(self, json_action=None):
         """Update the Venta device."""

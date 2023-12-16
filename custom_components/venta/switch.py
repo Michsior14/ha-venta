@@ -18,7 +18,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import DOMAIN
-from .venta import VentaData, VentaDataUpdateCoordinator, ApiVersion
+from .venta import VentaData, VentaDataUpdateCoordinator, VentaDeviceType
 
 
 ATTR_SLEEP_MODE = "sleep_mode"
@@ -45,7 +45,8 @@ SENSOR_TYPES: tuple[VentaSwitchEntityDescription, ...] = (
         key=ATTR_SLEEP_MODE,
         translation_key="sleep_mode",
         entity_category=EntityCategory.CONFIG,
-        exists_func=lambda coordinator: coordinator.api.version == ApiVersion.V3,
+        exists_func=lambda coordinator: coordinator.api.device.device_type
+        == VentaDeviceType.AH550_AH555,
         value_func=lambda data: data.action.get("SleepMode"),
         action_func=(
             lambda data, is_on: {

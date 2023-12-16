@@ -14,7 +14,7 @@ from homeassistant.const import CONF_HOST, CONF_MAC, CONF_API_VERSION
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .const import DOMAIN, TIMEOUT
-from .venta import VentaDevice, ApiVersion
+from .venta import VentaDevice, VentaApiVersion
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -23,8 +23,8 @@ STEP_USER_DATA_SCHEMA = vol.Schema(
         vol.Required(CONF_HOST): str,
         vol.Required(
             CONF_API_VERSION,
-            default=ApiVersion.V2.value,
-        ): vol.In([entry.value for entry in list(ApiVersion)]),
+            default=VentaApiVersion.V2.value,
+        ): vol.In([entry.value for entry in list(VentaApiVersion)]),
     }
 )
 

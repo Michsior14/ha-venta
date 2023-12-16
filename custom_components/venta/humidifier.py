@@ -25,7 +25,7 @@ from .const import (
     MODE_LEVEL_3,
     MODE_LEVEL_4,
 )
-from .venta import VentaDataUpdateCoordinator, DeviceType, ApiVersion
+from .venta import VentaDataUpdateCoordinator, VentaDeviceType, VentaApiVersion
 
 AVAILABLE_MODES = [
     MODE_AUTO,
@@ -58,7 +58,7 @@ async def async_setup_entry(
     async_add_entities(
         [
             VentaV2HumidifierEntity(coordinator, HUMIDIFIER_ENTITY_DESCRIPTION)
-            if coordinator.api.version == ApiVersion.V2
+            if coordinator.api.version == VentaApiVersion.V2
             else VentaV3HumidifierEntity(coordinator, HUMIDIFIER_ENTITY_DESCRIPTION)
         ]
     )
@@ -158,7 +158,7 @@ class VentaV3HumidifierEntity(VentaBaseHumidifierEntity):
     ) -> None:
         """Initialize Venta V3 humidifier."""
         super().__init__(coordinator, description)
-        if coordinator.api.device.device_type == DeviceType.AH550_AH555:
+        if coordinator.api.device.device_type == VentaDeviceType.AH550_AH555:
             self._attr_available_modes = [
                 MODE_AUTO,
                 MODE_LEVEL_1,
