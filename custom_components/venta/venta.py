@@ -3,6 +3,7 @@ import logging
 from datetime import timedelta
 import asyncio
 from dataclasses import dataclass
+from enum import Enum
 
 from aiohttp import ClientConnectionError
 from aiohttp import ClientSession, ServerDisconnectedError
@@ -11,13 +12,32 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import CONNECTION_NETWORK_MAC, DeviceInfo
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
-from .const import UNKNOWN_DEVICE_TYPE, DOMAIN, TIMEOUT
+from .const import DOMAIN, TIMEOUT
 
 _LOGGER = logging.getLogger(__name__)
 
 UPDATE_INTERVAL = timedelta(seconds=10)
 
-DEVICE_TYPES = {106: "LW73/LW74"}
+
+class VentaDeviceType(Enum):
+    """Venta device types."""
+
+    UNKNOWN = -1
+    LW73_LW74 = 106
+    AH550_AH555 = 500
+
+
+class VentaApiVersion(Enum):
+    """Veta api versions."""
+
+    V2 = 2
+    V3 = 3
+
+
+API_VERSION_ENDPOINTS = {
+    VentaApiVersion.V2: "datastructure",
+    VentaApiVersion.V3: "api/telemetry?request=set",
+}
 
 
 @dataclass
@@ -33,20 +53,25 @@ class VentaData:
 class VentaDevice:
     """Representation of a Venta device."""
 
-    def __init__(self, host, session=None) -> None:
+    def __init__(self, host, api_version, session=None) -> None:
         """Venta device constructor."""
         self.host = host
+        self.api_version = VentaApiVersion(api_version)
         self.mac = None
-        self.device_type = None
+        self.device_type = VentaDeviceType.UNKNOWN
         self._session = session
+        self._endpoint = (
+            f"http://{self.host}/{API_VERSION_ENDPOINTS.get(self.api_version)}"
+        )
 
     async def init(self):
         """Initialize the Venta device."""
         data = await self.update()
         self.mac = data.header.get("MacAdress")
-        self.device_type = DEVICE_TYPES.get(
-            data.header.get("DeviceType"), UNKNOWN_DEVICE_TYPE
-        )
+        try:
+            self.device_type = VentaDeviceType(data.header.get("DeviceType"))
+        except ValueError:
+            self.device_type = VentaDeviceType.UNKNOWN
 
     async def update(self, json_action=None):
         """Update the Venta device."""
@@ -73,9 +98,7 @@ class VentaDevice:
     async def _run_get_data(self, json=None):
         """Make the http request."""
         _LOGGER.debug("Sending update request with data: %s", str(json))
-        async with self._session.post(
-            f"http://{self.host}/datastructure", json=json
-        ) as resp:
+        async with self._session.post(self._endpoint, json=json) as resp:
             return await resp.json(content_type="text/plain")
 
 
@@ -87,6 +110,7 @@ class VentaApi:
         self.device = device
         self.name = "Venta"
         self.host = device.host
+        self.version = device.api_version
 
     async def async_update(self, **kwargs) -> VentaData:
         """Pull the latest data from Venta."""
@@ -115,10 +139,11 @@ class VentaDataUpdateCoordinator(DataUpdateCoordinator[VentaData]):
     def device_info(self) -> DeviceInfo:
         """Return a device description for device registry."""
         device = self.api.device
+        model = device.device_type.name.replace("_", "/")
         return DeviceInfo(
             connections={(CONNECTION_NETWORK_MAC, device.mac)},
             manufacturer="Venta",
-            name=f"Venta {device.device_type}",
-            model=device.device_type,
+            name=f"Venta {model}",
+            model=model,
             sw_version=self.data.info.get("SWMain"),
         )

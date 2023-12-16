@@ -25,7 +25,7 @@ from .const import (
     MODE_LEVEL_3,
     MODE_LEVEL_4,
 )
-from .venta import VentaDataUpdateCoordinator
+from .venta import VentaDataUpdateCoordinator, VentaDeviceType, VentaApiVersion
 
 AVAILABLE_MODES = [
     MODE_AUTO,
@@ -56,14 +56,18 @@ async def async_setup_entry(
     coordinator: VentaDataUpdateCoordinator = hass.data[DOMAIN].get(entry.entry_id)
 
     async_add_entities(
-        [VentaHumidifierEntity(coordinator, HUMIDIFIER_ENTITY_DESCRIPTION)]
+        [
+            VentaV2HumidifierEntity(coordinator, HUMIDIFIER_ENTITY_DESCRIPTION)
+            if coordinator.api.version == VentaApiVersion.V2
+            else VentaV3HumidifierEntity(coordinator, HUMIDIFIER_ENTITY_DESCRIPTION)
+        ]
     )
 
 
-class VentaHumidifierEntity(
+class VentaBaseHumidifierEntity(
     CoordinatorEntity[VentaDataUpdateCoordinator], HumidifierEntity
 ):
-    """Venta humidifier Device."""
+    """Venta base humidifier device."""
 
     _attr_has_entity_name = True
     _attr_device_class = HumidifierDeviceClass.HUMIDIFIER
@@ -94,7 +98,7 @@ class VentaHumidifierEntity(
         data = self.coordinator.data
         if data.action.get("Automatic"):
             return MODE_AUTO
-        if data.action.get("SleepMode"):
+        if MODE_SLEEP in self._attr_available_modes and data.action.get("SleepMode"):
             return MODE_SLEEP
         level = data.action.get("FanSpeed", 1)
         return f"level {level}"
@@ -109,39 +113,117 @@ class VentaHumidifierEntity(
         """Return the current humidity."""
         return self.coordinator.data.measure.get("Humidity")
 
+    async def _send_action(self, json_action=None) -> None:
+        """Send action to device."""
+        await self._device.update(json_action)
+        await self.coordinator.async_request_refresh()
+
+
+class VentaV2HumidifierEntity(VentaBaseHumidifierEntity):
+    """Venta humidifier device for protocol version 2."""
+
     async def async_turn_on(self, **kwargs: Any) -> None:
         """Turn the device on."""
-        await self._device.update({"Action": {"Power": True}})
-        await self.coordinator.async_request_refresh()
+        await self._send_action({"Action": {"Power": True}})
 
     async def async_turn_off(self, **kwargs: Any) -> None:
         """Turn the device off."""
-        await self._device.update({"Action": {"Power": False}})
-        await self.coordinator.async_request_refresh()
+        await self._send_action({"Action": {"Power": False}})
 
     async def async_set_humidity(self, humidity: int) -> None:
         """Set new target humidity."""
-        await self._device.update({"Action": {"TargetHum": humidity}})
-        await self.coordinator.async_request_refresh()
+        await self._send_action({"Action": {"TargetHum": humidity}})
 
     async def async_set_mode(self, mode: str) -> None:
         """Set new target preset mode."""
+        action = {"Power": True}
         if mode == MODE_AUTO:
-            await self._device.update(
-                {"Action": {"Power": True, "SleepMode": False, "Automatic": True}}
-            )
+            action.update({"SleepMode": False, "Automatic": True})
         elif mode == MODE_SLEEP:
-            await self._device.update({"Action": {"Power": True, "SleepMode": True}})
+            action.update({"SleepMode": True})
         else:
             level = int(mode[-1])
-            await self._device.update(
+            action.update({"SleepMode": False, "Automatic": False, "FanSpeed": level})
+
+        await self._send_action({"Action": action})
+
+
+class VentaV3HumidifierEntity(VentaBaseHumidifierEntity):
+    """Venta humidifier device for protocol version 3."""
+
+    def __init__(
+        self,
+        coordinator: VentaDataUpdateCoordinator,
+        description: VentaHumidifierEntityDescription,
+    ) -> None:
+        """Initialize Venta V3 humidifier."""
+        super().__init__(coordinator, description)
+        if coordinator.api.device.device_type == VentaDeviceType.AH550_AH555:
+            self._attr_available_modes = [
+                MODE_AUTO,
+                MODE_LEVEL_1,
+                MODE_LEVEL_2,
+                MODE_LEVEL_3,
+            ]
+
+    async def async_turn_on(self, **kwargs: Any) -> None:
+        """Turn the device on."""
+        state = self.coordinator.data.action
+        action = {
+            "Power": True,
+            "Automatic": state.get("Automatic"),
+            "FanSpeed": state.get("FanSpeed"),
+            "Action": "control",
+        }
+        if not action.get("Automatic"):
+            action.update({"SleepMode": state.get("SleepMode")})
+        await self._send_action(action)
+
+    async def async_turn_off(self, **kwargs: Any) -> None:
+        """Turn the device off."""
+        state = self.coordinator.data.action
+        action = {
+            "Power": False,
+            "Automatic": state.get("Automatic"),
+            "FanSpeed": state.get("FanSpeed"),
+            "Action": "control",
+        }
+        if not action.get("Automatic"):
+            action.update({"SleepMode": state.get("SleepMode")})
+        await self._send_action(action)
+
+    async def async_set_humidity(self, humidity: int) -> None:
+        """Set new target humidity."""
+        state = self.coordinator.data.action
+        await self._send_action(
+            {
+                "Power": state.get("Power"),
+                "Automatic": state.get("Automatic"),
+                "TargetHum": humidity,
+                "Action": "control",
+            }
+        )
+
+    async def async_set_mode(self, mode: str) -> None:
+        """Set new target preset mode."""
+        state = self.coordinator.data.action
+
+        action = {
+            "Power": True,
+            "Action": "control",
+        }
+        if mode == MODE_AUTO:
+            action.update({"Automatic": True})
+        elif mode == MODE_SLEEP:
+            action.update({"SleepMode": True, "Automatic": False})
+        else:
+            level = int(mode[-1])
+            action.update(
                 {
-                    "Action": {
-                        "Power": True,
-                        "SleepMode": False,
-                        "Automatic": False,
-                        "FanSpeed": level,
-                    }
+                    "SleepMode": state.get("SleepMode"),
+                    "Automatic": False,
+                    "FanSpeed": level,
                 }
             )
-        await self.coordinator.async_request_refresh()
+
+        await self._send_action(action)

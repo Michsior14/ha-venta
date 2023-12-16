@@ -10,7 +10,11 @@
     "step": {
       "user": {
         "data": {
-          "host": "Host"
+          "host": "Host",
+          "api_version": "API version"
+        },
+        "data_description": {
+          "api_version": "Match with `ProtocolV` property available at the device page."
         }
       }
     }
@@ -43,6 +47,9 @@
       "service_time": {
         "name": "Service time"
       },
+      "service_max_time": {
+        "name": "Service max time"
+      },
       "warnings": {
         "name": "Warnings"
       }
@@ -63,6 +70,11 @@
     "select": {
       "led_strip_mode": {
         "name": "LED strip mode"
+      }
+    },
+    "switch": {
+      "sleep_mode": {
+        "name": "Sleep mode"
       }
     }
   }

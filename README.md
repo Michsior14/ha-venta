@@ -1,16 +1,20 @@
 # ha-venta
 
-A Home Assistant custom Integration for Venta devices with wifi module.
+A Home Assistant custom Integration for Venta devices (protocol: v2, v3) with wifi module.
 
 The following Venta device are currently tested and supported:
 
-* LW73/LW74 Humidifier
+- **Protocol v2:**
+  - LW73/LW74 Humidifier
+
+- **Protocol v3:**
+  - AH550/AH555/AH510/AH515 Humidifier
 
 ## Features
 
-* Humidifier control (fan speed, target humidity, and auto/sleep mode).
-* LED strip control (on/off, color, mode).
-* Diagnostic sensors (water level, temperature, cleaning time, etc.).
+- Humidifier control (fan speed, target humidity, and auto/sleep mode).
+- LED strip control (on/off, color, mode).
+- Diagnostic sensors (water level, temperature, cleaning time, etc.).
 
 ## Installation
 
@@ -20,12 +24,12 @@ For manual installation, copy the venta folder and all of its contents into your
 
 ## Usage
 
-Before the next steps make sure the device is configured using the Venta Home app and connected to the network.
+Before the next steps make sure the device is configured using the Venta Home app and connected to the network. Next note down it's IP address, then visit `http://<your-ip>` and find property `ProtocolV` - this will be yours API version to fill later on.
 
 ### Adding the Integration
 
 To start configuring the integration, just press the "+ADD INTEGRATION" button in the Settings - Integrations page, and select Venta from the drop-down menu.
-The configuration page will appear, requesting to input ip of the device.
+The configuration page will appear, requesting to input ip and API version of the device.
 
 ## Contributing
 

@@ -40,6 +40,8 @@ async def async_setup_entry(
 ) -> None:
     """Set up the Venta light platform."""
     coordinator: VentaDataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]
+    if coordinator.data.action.get("LEDStrip") is None:
+        return
     async_add_entities([VentaLight(coordinator, LIGHT_ENTITY_DESCRIPTION)])
 
 

@@ -37,8 +37,9 @@ LED_STRIP_MODES_VALUES = list(LED_STRIP_MODES.values())
 class VentaSelectRequiredKeysMixin:
     """Mixin for required keys."""
 
+    exists_func: Callable[[VentaDataUpdateCoordinator], bool]
     value_func: Callable[[VentaData], str | None]
-    action_fun: Callable[[str], dict | None]
+    action_func: Callable[[str], dict | None]
 
 
 @dataclass
@@ -53,8 +54,10 @@ SENSOR_TYPES: tuple[SelectEntityDescription, ...] = (
         key=ATTR_LED_STRIP_MODE,
         translation_key="led_strip_mode",
         entity_category=EntityCategory.CONFIG,
+        exists_func=lambda coordinator: coordinator.data.action.get("LEDStripMode")
+        is not None,
         value_func=lambda data: LED_STRIP_MODES.get(data.action.get("LEDStripMode")),
-        action_fun=(
+        action_func=(
             lambda option: {
                 "Action": {
                     "LEDStripMode": LED_STRIP_MODES_KEYS[
@@ -77,7 +80,7 @@ async def async_setup_entry(
     entities = [
         VentaSelect(coordinator, description)
         for description in SENSOR_TYPES
-        if description.key in sensors
+        if description.key in sensors and description.exists_func(coordinator)
     ]
     async_add_entities(entities)
 
@@ -108,6 +111,6 @@ class VentaSelect(CoordinatorEntity[VentaDataUpdateCoordinator], SelectEntity):
     async def async_select_option(self, option: str) -> None:
         """Change the selected option."""
         await self.coordinator.api.device.update(
-            self.entity_description.action_fun(option)
+            self.entity_description.action_func(option)
         )
         await self.coordinator.async_request_refresh()

@@ -5,8 +5,6 @@ DOMAIN = "venta"
 TIMEOUT = 10
 NO_WATER_THRESHOLD = 50000
 
-UNKNOWN_DEVICE_TYPE = "Unknown"
-
 MODE_SLEEP = "sleep"
 MODE_LEVEL_1 = "level 1"
 MODE_LEVEL_2 = "level 2"
