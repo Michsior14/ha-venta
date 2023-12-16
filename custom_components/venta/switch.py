@@ -98,7 +98,6 @@ class VentaSwitch(CoordinatorEntity[VentaDataUpdateCoordinator], SwitchEntity):
         self.entity_description = description
         self._attr_device_info = coordinator.device_info
         self._attr_unique_id = f"{coordinator.api.device.mac}-{description.key}"
-        self._attr_options = description.options
         self._device = coordinator.api.device
 
     @property

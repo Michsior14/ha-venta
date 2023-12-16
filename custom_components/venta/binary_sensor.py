@@ -63,21 +63,19 @@ def _supported_sensors(
             )
         case DeviceType.AH550_AH555:
             return (
-                (
-                    VentaBinarySensorEntityDescription(
-                        key=ATTR_NEEDS_REFILL,
-                        translation_key="needs_refill",
-                        icon="mdi:water-alert",
-                        value_func=(lambda data: data.info.get("Warnings") == 1),
-                    ),
-                    VentaBinarySensorEntityDescription(
-                        key=ATTR_NEEDS_SERVICE,
-                        translation_key="needs_service",
-                        icon="mdi:account-wrench",
-                        value_func=(
-                            lambda data: data.info.get("ServiceT") is not None
-                            and data.info.get("ServiceT") >= data.info.get("ServiceMax")
-                        ),
+                VentaBinarySensorEntityDescription(
+                    key=ATTR_NEEDS_REFILL,
+                    translation_key="needs_refill",
+                    icon="mdi:water-alert",
+                    value_func=(lambda data: data.info.get("Warnings") == 1),
+                ),
+                VentaBinarySensorEntityDescription(
+                    key=ATTR_NEEDS_SERVICE,
+                    translation_key="needs_service",
+                    icon="mdi:account-wrench",
+                    value_func=(
+                        lambda data: data.info.get("ServiceT") is not None
+                        and data.info.get("ServiceT") >= data.info.get("ServiceMax")
                     ),
                 ),
             )
