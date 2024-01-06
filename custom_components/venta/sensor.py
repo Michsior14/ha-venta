@@ -91,7 +91,7 @@ SENSOR_TYPES: tuple[VentaSensorEntityDescription, ...] = (
         icon="mdi:power-settings",
         native_unit_of_measurement=UnitOfTime.MINUTES,
         entity_category=EntityCategory.DIAGNOSTIC,
-        exists_func=lambda coordinator: coordinator.data.measure.get("OperationT")
+        exists_func=lambda coordinator: coordinator.data.info.get("OperationT")
         is not None,
         value_func=lambda data: data.info.get("OperationT"),
     ),
@@ -101,7 +101,7 @@ SENSOR_TYPES: tuple[VentaSensorEntityDescription, ...] = (
         icon="mdi:power-settings",
         native_unit_of_measurement=UnitOfTime.MINUTES,
         entity_category=EntityCategory.DIAGNOSTIC,
-        exists_func=lambda coordinator: coordinator.data.measure.get("DiscIonT")
+        exists_func=lambda coordinator: coordinator.data.info.get("DiscIonT")
         is not None,
         value_func=lambda data: data.info.get("DiscIonT"),
     ),
@@ -111,7 +111,7 @@ SENSOR_TYPES: tuple[VentaSensorEntityDescription, ...] = (
         icon="mdi:power-settings",
         native_unit_of_measurement=UnitOfTime.MINUTES,
         entity_category=EntityCategory.DIAGNOSTIC,
-        exists_func=lambda coordinator: coordinator.data.measure.get("CleaningT")
+        exists_func=lambda coordinator: coordinator.data.info.get("CleaningT")
         is not None,
         value_func=lambda data: data.info.get("CleaningT"),
     ),
@@ -121,7 +121,7 @@ SENSOR_TYPES: tuple[VentaSensorEntityDescription, ...] = (
         icon="mdi:power-settings",
         native_unit_of_measurement=UnitOfTime.MINUTES,
         entity_category=EntityCategory.DIAGNOSTIC,
-        exists_func=lambda coordinator: coordinator.data.measure.get("ServiceT")
+        exists_func=lambda coordinator: coordinator.data.info.get("ServiceT")
         is not None,
         value_func=lambda data: data.info.get("ServiceT"),
     ),
@@ -131,7 +131,7 @@ SENSOR_TYPES: tuple[VentaSensorEntityDescription, ...] = (
         icon="mdi:power-settings",
         native_unit_of_measurement=UnitOfTime.MINUTES,
         entity_category=EntityCategory.DIAGNOSTIC,
-        exists_func=lambda coordinator: coordinator.data.measure.get("ServiceMax")
+        exists_func=lambda coordinator: coordinator.data.info.get("ServiceMax")
         is not None,
         value_func=lambda data: data.info.get("ServiceMax"),
     ),
@@ -140,7 +140,7 @@ SENSOR_TYPES: tuple[VentaSensorEntityDescription, ...] = (
         translation_key="warnings",
         icon="mdi:alert",
         entity_category=EntityCategory.DIAGNOSTIC,
-        exists_func=lambda coordinator: coordinator.data.measure.get("Warnings")
+        exists_func=lambda coordinator: coordinator.data.info.get("Warnings")
         is not None,
         value_func=lambda data: data.info.get("Warnings"),
     ),
