@@ -5,16 +5,13 @@
     },
     "error": {
       "cannot_connect": "Falha na ligação",
+      "cannot_detect_api_version": "Não é possível determinar a versão da API",
       "unknown": "Erro desconhecido"
     },
     "step": {
       "user": {
         "data": {
-          "host": "Endereço",
-          "api_version": "Versão da API",
-          "data_description": {
-            "api_version": "Combine com a propriedade `ProtocolV` disponível na página do dispositivo."
-          }
+          "host": "Endereço"
         }
       }
     }

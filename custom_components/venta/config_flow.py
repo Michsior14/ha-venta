@@ -14,25 +14,17 @@ from homeassistant.const import CONF_HOST, CONF_MAC, CONF_API_VERSION
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .const import DOMAIN, TIMEOUT
-from .venta import VentaDevice, VentaApiVersion
+from .venta import VentaDevice, VentaApiVersionError
 
 _LOGGER = logging.getLogger(__name__)
 
-STEP_USER_DATA_SCHEMA = vol.Schema(
-    {
-        vol.Required(CONF_HOST): str,
-        vol.Required(
-            CONF_API_VERSION,
-            default=VentaApiVersion.V2.value,
-        ): vol.In([entry.value for entry in list(VentaApiVersion)]),
-    }
-)
+STEP_USER_DATA_SCHEMA = vol.Schema({vol.Required(CONF_HOST): str})
 
 
 class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Handle a config flow for Venta."""
 
-    VERSION = 2
+    VERSION = 3
 
     async def async_step_user(
         self, user_input: dict[str, Any] | None = None
@@ -42,15 +34,16 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         if user_input is not None:
             try:
                 host = user_input[CONF_HOST]
-                api_version = user_input[CONF_API_VERSION]
                 async with asyncio.timeout(TIMEOUT):
-                    device = VentaDevice(
-                        host, api_version, async_get_clientsession(self.hass)
-                    )
+                    device = VentaDevice(host, None, async_get_clientsession(self.hass))
+                    await device.detect_api_version()
                     await device.init()
             except (asyncio.TimeoutError, ClientError):
                 _LOGGER.debug("Connection to %s timed out", host)
                 errors["base"] = "cannot_connect"
+            except VentaApiVersionError:
+                _LOGGER.debug("Cannot detect the api version")
+                errors["base"] = "cannot_detect_api_version"
             except Exception:  # pylint: disable=broad-except
                 _LOGGER.exception("Unexpected exception")
                 errors["base"] = "unknown"

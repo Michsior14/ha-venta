@@ -91,6 +91,9 @@ async def async_migrate_entry(hass: HomeAssistant, entry: ConfigEntry):
         new = {**entry.data, CONF_API_VERSION: VentaApiVersion.V2.value}
         entry.version = 2
         hass.config_entries.async_update_entry(entry, data=new)
+    if entry.version == 2:
+        entry.version = 3
+        hass.config_entries.async_update_entry(entry)
 
     _LOGGER.debug("Migration to version %s successful", entry.version)
 
