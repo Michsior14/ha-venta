@@ -1,13 +1,17 @@
 {
   "domain": "venta",
   "name": "Venta",
-  "codeowners": ["@Michsior14"],
+  "codeowners": [
+    "@Michsior14"
+  ],
   "config_flow": true,
   "dependencies": [],
   "documentation": "https://github.com/Michsior14/ha-venta",
   "iot_class": "local_polling",
   "issue_tracker": "https://github.com/Michsior14/ha-venta/issues",
-  "loggers": ["custom_components.venta"],
+  "loggers": [
+    "custom_components.venta"
+  ],
   "requirements": [],
-  "version": "0.3.0"
+  "version": "0.4.0"
 }
