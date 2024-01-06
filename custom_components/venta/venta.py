@@ -57,7 +57,7 @@ class VentaData:
 class VentaDevice:
     """Representation of a Venta device."""
 
-    def __init__(self, host, api_version=None, session=None) -> None:
+    def __init__(self, host, api_version, session=None) -> None:
         """Venta device constructor."""
         self.host = host
         self.mac = None
