@@ -5,16 +5,13 @@
     },
     "error": {
       "cannot_connect": "Failed to connect",
+      "cannot_detect_api_version": "Cannot determine API version",
       "unknown": "Unexpected error"
     },
     "step": {
       "user": {
         "data": {
-          "host": "Host",
-          "api_version": "API version"
-        },
-        "data_description": {
-          "api_version": "Match with `ProtocolV` property available at the device page."
+          "host": "Host"
         }
       }
     }

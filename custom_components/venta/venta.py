@@ -19,6 +19,10 @@ _LOGGER = logging.getLogger(__name__)
 UPDATE_INTERVAL = timedelta(seconds=10)
 
 
+class VentaApiVersionError(Exception):
+    """Can't detect the api version."""
+
+
 class VentaDeviceType(Enum):
     """Venta device types."""
 
@@ -56,13 +60,21 @@ class VentaDevice:
     def __init__(self, host, api_version, session=None) -> None:
         """Venta device constructor."""
         self.host = host
-        self.api_version = VentaApiVersion(api_version)
         self.mac = None
         self.device_type = VentaDeviceType.UNKNOWN
         self._session = session
-        self._endpoint = (
-            f"http://{self.host}/{API_VERSION_ENDPOINTS.get(self.api_version)}"
-        )
+        if api_version is not None:
+            self._set_api_version(api_version)
+
+    async def detect_api_version(self):
+        """Detect the api version version."""
+        for api_version in reversed(list(VentaApiVersion)):
+            self._set_api_version(api_version)
+            data = await self._get_data(None, retries=1)
+            _LOGGER.debug("Detecting api version: %s", str(data))
+            if data is not None and data.get("Header") is not None:
+                return
+        raise VentaApiVersionError()
 
     async def init(self):
         """Initialize the Venta device."""
@@ -81,6 +93,13 @@ class VentaDevice:
             action=data.get("Action", {}),
             info=data.get("Info", {}),
             measure=data.get("Measure", {}),
+        )
+
+    def _set_api_version(self, api_version):
+        """Set the api version."""
+        self.api_version = VentaApiVersion(api_version)
+        self._endpoint = (
+            f"http://{self.host}/{API_VERSION_ENDPOINTS.get(self.api_version)}"
         )
 
     async def _get_data(self, json_action=None, retries=3):

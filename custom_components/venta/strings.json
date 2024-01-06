@@ -1,22 +1,78 @@
 {
   "config": {
+    "abort": {
+      "already_configured": "Device is already configured"
+    },
+    "error": {
+      "cannot_connect": "Failed to connect",
+      "cannot_detect_api_version": "Cannot determine API version",
+      "unknown": "Unexpected error"
+    },
     "step": {
       "user": {
         "data": {
-          "host": "[%key:common::config_flow::data::host%]",
-          "api_version": "API version"
-        },
-        "data_description": {
-          "api_version": "Match with `ProtocolV` property available at the device page."
+          "host": "Host"
         }
       }
+    }
+  },
+  "entity": {
+    "humidifier": {
+      "humidifier": {
+        "name": "Humidifier"
+      }
     },
-    "error": {
-      "cannot_connect": "[%key:common::config_flow::error::cannot_connect%]",
-      "unknown": "[%key:common::config_flow::error::unknown%]"
+    "sensor": {
+      "temperature": {
+        "name": "Temperature"
+      },
+      "water_level": {
+        "name": "Water level"
+      },
+      "fan_speed": {
+        "name": "Fan speed"
+      },
+      "operation_time": {
+        "name": "Operation time"
+      },
+      "disc_ion_time": {
+        "name": "Disc ionization time"
+      },
+      "cleaning_time": {
+        "name": "Cleaning time"
+      },
+      "service_time": {
+        "name": "Service time"
+      },
+      "service_max_time": {
+        "name": "Service max time"
+      },
+      "warnings": {
+        "name": "Warnings"
+      }
     },
-    "abort": {
-      "already_configured": "[%key:common::config_flow::abort::already_configured_device%]"
+    "binary_sensor": {
+      "needs_refill": {
+        "name": "Needs refill"
+      },
+      "needs_service": {
+        "name": "Needs service"
+      }
+    },
+    "light": {
+      "led_strip": {
+        "name": "LED strip"
+      }
+    },
+    "select": {
+      "led_strip_mode": {
+        "name": "LED strip mode"
+      }
+    },
+    "switch": {
+      "sleep_mode": {
+        "name": "Sleep mode"
+      }
     }
   }
 }

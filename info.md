@@ -24,12 +24,12 @@ For manual installation, copy the venta folder and all of its contents into your
 
 ## Usage
 
-Before the next steps make sure the device is configured using the Venta Home app and connected to the network. Next note down it's IP address, then visit `http://<your-ip>` and find property `ProtocolV` - this will be yours API version to fill later on.
+Before the next steps make sure the device is configured using the Venta Home app and connected to the network. Note down it's IP address.
 
 ### Adding the Integration
 
 To start configuring the integration, just press the "+ADD INTEGRATION" button in the Settings - Integrations page, and select Venta from the drop-down menu.
-The configuration page will appear, requesting to input ip and API version of the device.
+The configuration page will appear, requesting to input ip of the device.
 
 ## Contributing
 
