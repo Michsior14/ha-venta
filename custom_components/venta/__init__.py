@@ -16,6 +16,7 @@ from homeassistant.const import CONF_HOST, CONF_MAC, CONF_API_VERSION
 from .const import DOMAIN, TIMEOUT
 
 from .venta import VentaApi, VentaDevice, VentaDataUpdateCoordinator, VentaApiVersion
+from .config_flow import ConfigVersion
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -61,7 +62,9 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     return unload_ok
 
 
-async def venta_api_setup(hass: HomeAssistant, host, api_version):
+async def venta_api_setup(
+    hass: HomeAssistant, host: str, api_version: int
+) -> VentaApi | None:
     """Create a Venta instance only once."""
     session = async_get_clientsession(hass)
     try:
@@ -83,16 +86,16 @@ async def venta_api_setup(hass: HomeAssistant, host, api_version):
     return api
 
 
-async def async_migrate_entry(hass: HomeAssistant, entry: ConfigEntry):
+async def async_migrate_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Migrate old entry."""
     _LOGGER.debug("Migrating from version %s", entry.version)
 
-    if entry.version == 1:
+    if entry.version == ConfigVersion.V1:
         new = {**entry.data, CONF_API_VERSION: VentaApiVersion.V2.value}
-        entry.version = 2
+        entry.version = ConfigVersion.V2
         hass.config_entries.async_update_entry(entry, data=new)
-    if entry.version == 2:
-        entry.version = 3
+    if entry.version == ConfigVersion.V2:
+        entry.version = ConfigVersion.V3
         hass.config_entries.async_update_entry(entry)
 
     _LOGGER.debug("Migration to version %s successful", entry.version)

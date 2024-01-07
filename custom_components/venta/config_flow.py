@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import logging
 from typing import Any
+from enum import IntEnum
 
 import asyncio
 import voluptuous as vol
@@ -14,17 +15,25 @@ from homeassistant.const import CONF_HOST, CONF_MAC, CONF_API_VERSION
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .const import DOMAIN, TIMEOUT
-from .venta import VentaDevice, VentaApiVersionError
+from .venta import VentaApiVersion, VentaDevice, VentaApiVersionError
 
 _LOGGER = logging.getLogger(__name__)
 
 STEP_USER_DATA_SCHEMA = vol.Schema({vol.Required(CONF_HOST): str})
 
 
+class ConfigVersion(IntEnum):
+    """Config version."""
+
+    V1 = 1
+    V2 = 2
+    V3 = 3
+
+
 class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Handle a config flow for Venta."""
 
-    VERSION = 3
+    VERSION = ConfigVersion.V3
 
     async def async_step_user(
         self, user_input: dict[str, Any] | None = None
@@ -32,8 +41,8 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         """Handle the initial step."""
         errors: dict[str, str] = {}
         if user_input is not None:
+            host = user_input[CONF_HOST]
             try:
-                host = user_input[CONF_HOST]
                 async with asyncio.timeout(TIMEOUT):
                     device = VentaDevice(host, None, async_get_clientsession(self.hass))
                     await device.detect_api_version()
@@ -56,7 +65,9 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             step_id="user", data_schema=STEP_USER_DATA_SCHEMA, errors=errors
         )
 
-    async def _create_entry(self, host, api_version, mac):
+    async def _create_entry(
+        self, host: str, api_version: VentaApiVersion, mac: str
+    ) -> FlowResult:
         """Register new entry."""
         if not self.unique_id:
             await self.async_set_unique_id(mac)

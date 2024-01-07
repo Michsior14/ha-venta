@@ -4,7 +4,6 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
-
 from homeassistant.components.humidifier import (
     HumidifierDeviceClass,
     HumidifierEntity,
@@ -113,7 +112,7 @@ class VentaBaseHumidifierEntity(
         """Return the current humidity."""
         return self.coordinator.data.measure.get("Humidity")
 
-    async def _send_action(self, json_action=None) -> None:
+    async def _send_action(self, json_action: dict[str, Any] | None = None) -> None:
         """Send action to device."""
         await self._device.update(json_action)
         await self.coordinator.async_request_refresh()
@@ -122,11 +121,11 @@ class VentaBaseHumidifierEntity(
 class VentaV2HumidifierEntity(VentaBaseHumidifierEntity):
     """Venta humidifier device for protocol version 2."""
 
-    async def async_turn_on(self, **kwargs: Any) -> None:
+    async def async_turn_on(self, **kwargs: dict[str, Any]) -> None:
         """Turn the device on."""
         await self._send_action({"Action": {"Power": True}})
 
-    async def async_turn_off(self, **kwargs: Any) -> None:
+    async def async_turn_off(self, **kwargs: dict[str, Any]) -> None:
         """Turn the device off."""
         await self._send_action({"Action": {"Power": False}})
 
@@ -166,7 +165,7 @@ class VentaV3HumidifierEntity(VentaBaseHumidifierEntity):
                 MODE_LEVEL_3,
             ]
 
-    async def async_turn_on(self, **kwargs: Any) -> None:
+    async def async_turn_on(self, **kwargs: dict[str, Any]) -> None:
         """Turn the device on."""
         state = self.coordinator.data.action
         action = {
@@ -179,7 +178,7 @@ class VentaV3HumidifierEntity(VentaBaseHumidifierEntity):
             action.update({"SleepMode": state.get("SleepMode")})
         await self._send_action(action)
 
-    async def async_turn_off(self, **kwargs: Any) -> None:
+    async def async_turn_off(self, **kwargs: dict[str, Any]) -> None:
         """Turn the device off."""
         state = self.coordinator.data.action
         action = {

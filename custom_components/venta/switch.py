@@ -106,15 +106,15 @@ class VentaSwitch(CoordinatorEntity[VentaDataUpdateCoordinator], SwitchEntity):
         """Return if switch is on."""
         return self.entity_description.value_func(self.coordinator.data)
 
-    async def async_turn_on(self, **kwargs: Any) -> None:
+    async def async_turn_on(self, **kwargs: dict[str, Any]) -> None:
         """Turn the switch on."""
         await self._send_action(True)
 
-    async def async_turn_off(self, **kwargs: Any) -> None:
+    async def async_turn_off(self, **kwargs: dict[str, Any]) -> None:
         """Turn the switch off."""
         await self._send_action(False)
 
-    async def _send_action(self, on: bool):
+    async def _send_action(self, on: bool) -> None:
         await self._device.update(
             self.entity_description.action_func(self.coordinator.data, on)
         )

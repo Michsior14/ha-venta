@@ -4,6 +4,7 @@ from datetime import timedelta
 import asyncio
 from dataclasses import dataclass
 from enum import Enum
+from typing import Any
 
 from aiohttp import ClientConnectionError
 from aiohttp import ClientSession, ServerDisconnectedError
@@ -48,16 +49,23 @@ API_VERSION_ENDPOINTS = {
 class VentaData:
     """Class for holding the Venta data."""
 
-    header: dict[str, str | int]
-    action: dict[str, str | int]
-    info: dict[str, str | int]
-    measure: dict[str, str | int]
+    header: dict[str, str | int | bool]
+    action: dict[str, str | int | bool]
+    info: dict[str, str | int | bool]
+    measure: dict[str, str | int | bool]
 
 
 class VentaDevice:
     """Representation of a Venta device."""
 
-    def __init__(self, host, api_version, session=None) -> None:
+    host: str
+    mac: str | None
+    device_type: VentaDeviceType
+    api_version: VentaApiVersion
+
+    def __init__(
+        self, host: str, api_version: int | None, session: ClientSession | None = None
+    ) -> None:
         """Venta device constructor."""
         self.host = host
         self.mac = None
@@ -66,7 +74,7 @@ class VentaDevice:
         if api_version is not None:
             self._set_api_version(api_version)
 
-    async def detect_api_version(self):
+    async def detect_api_version(self) -> None:
         """Detect the api version version."""
         for api_version in reversed(list(VentaApiVersion)):
             self._set_api_version(api_version)
@@ -76,7 +84,7 @@ class VentaDevice:
                 return
         raise VentaApiVersionError()
 
-    async def init(self):
+    async def init(self) -> None:
         """Initialize the Venta device."""
         data = await self.update()
         self.mac = data.header.get("MacAdress")
@@ -85,7 +93,7 @@ class VentaDevice:
         except ValueError:
             self.device_type = VentaDeviceType.UNKNOWN
 
-    async def update(self, json_action=None):
+    async def update(self, json_action: dict[str, Any] | None = None) -> VentaData:
         """Update the Venta device."""
         data = await self._get_data(json_action)
         return VentaData(
@@ -95,14 +103,16 @@ class VentaDevice:
             measure=data.get("Measure", {}),
         )
 
-    def _set_api_version(self, api_version):
+    def _set_api_version(self, api_version: VentaApiVersion | int) -> None:
         """Set the api version."""
         self.api_version = VentaApiVersion(api_version)
         self._endpoint = (
             f"http://{self.host}/{API_VERSION_ENDPOINTS.get(self.api_version)}"
         )
 
-    async def _get_data(self, json_action=None, retries=3):
+    async def _get_data(
+        self, json_action: dict[str, Any] | None = None, retries: int = 3
+    ) -> dict[str, Any]:
         """Update resources."""
         try:
             if self._session and not self._session.closed:
@@ -114,7 +124,7 @@ class VentaDevice:
                 raise error
             return await self._get_data(json_action, retries=retries - 1)
 
-    async def _run_get_data(self, json=None):
+    async def _run_get_data(self, json: dict[str, Any] | None = None) -> dict[str, Any]:
         """Make the http request."""
         _LOGGER.debug("Sending update request with data: %s", str(json))
         async with self._session.post(self._endpoint, json=json) as resp:
@@ -124,6 +134,11 @@ class VentaDevice:
 class VentaApi:
     """Keep the Venta instance in one place and centralize the update."""
 
+    device: VentaDevice
+    name: str
+    host: str
+    version: VentaApiVersion
+
     def __init__(self, device: VentaDevice) -> None:
         """Initialize the Venta Handle."""
         self.device = device
@@ -131,13 +146,15 @@ class VentaApi:
         self.host = device.host
         self.version = device.api_version
 
-    async def async_update(self, **kwargs) -> VentaData:
+    async def async_update(self) -> VentaData:
         """Pull the latest data from Venta."""
         return await self.device.update()
 
 
 class VentaDataUpdateCoordinator(DataUpdateCoordinator[VentaData]):
     """Define an object to hold Venta data."""
+
+    api: VentaApi
 
     def __init__(self, hass: HomeAssistant, api: VentaApi) -> None:
         """Initialize data coordinator."""

@@ -78,7 +78,7 @@ class VentaLight(CoordinatorEntity[VentaDataUpdateCoordinator], LightEntity):
 
     async def async_turn_on(
         self,
-        **kwargs: Any,
+        **kwargs: dict[str, Any],
     ) -> None:
         """Turn light on."""
         _LOGGER.debug("Turm on called with: %s", str(kwargs))
@@ -94,7 +94,7 @@ class VentaLight(CoordinatorEntity[VentaDataUpdateCoordinator], LightEntity):
             await self._device.update({"Action": {"LEDStripActive": True}})
         await self.coordinator.async_request_refresh()
 
-    async def async_turn_off(self, **kwargs: Any) -> None:
+    async def async_turn_off(self, **kwargs: dict[str, Any]) -> None:
         """Turn light off."""
         await self._device.update({"Action": {"LEDStripActive": False}})
         await self.coordinator.async_request_refresh()

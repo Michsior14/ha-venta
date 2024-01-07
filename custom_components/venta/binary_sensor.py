@@ -41,6 +41,7 @@ def _supported_sensors(
     """Return supported sensors for given device type."""
     match device_type:
         case VentaDeviceType.LW73_LW74 | VentaDeviceType.UNKNOWN:
+            service_warnings = [16, 17]
             return (
                 VentaBinarySensorEntityDescription(
                     key=ATTR_NEEDS_REFILL,
@@ -56,8 +57,7 @@ def _supported_sensors(
                     translation_key="needs_service",
                     icon="mdi:account-wrench",
                     value_func=(
-                        lambda data: 16 <= data.info.get("Warnings")
-                        and data.info.get("Warnings") <= 17
+                        lambda data: data.info.get("Warnings") in service_warnings
                     ),
                 ),
             )
