@@ -54,13 +54,15 @@ async def async_setup_entry(
     """Set up Venta humidifier from config entry."""
     coordinator: VentaDataUpdateCoordinator = hass.data[DOMAIN].get(entry.entry_id)
 
-    async_add_entities(
-        [
-            VentaV2HumidifierEntity(coordinator, HUMIDIFIER_ENTITY_DESCRIPTION)
-            if coordinator.api.version == VentaApiVersion.V2
-            else VentaV3HumidifierEntity(coordinator, HUMIDIFIER_ENTITY_DESCRIPTION)
-        ]
-    )
+    entity: VentaBaseHumidifierEntity
+    if coordinator.api.version == VentaApiVersion.V0:
+        entity = VentaV0HumidifierEntity(coordinator, HUMIDIFIER_ENTITY_DESCRIPTION)
+    elif coordinator.api.version == VentaApiVersion.V2:
+        entity = VentaV2HumidifierEntity(coordinator, HUMIDIFIER_ENTITY_DESCRIPTION)
+    else:
+        entity = VentaV3HumidifierEntity(coordinator, HUMIDIFIER_ENTITY_DESCRIPTION)
+
+    async_add_entities([entity])
 
 
 class VentaBaseHumidifierEntity(
@@ -112,26 +114,17 @@ class VentaBaseHumidifierEntity(
         """Return the current humidity."""
         return self.coordinator.data.measure.get("Humidity")
 
-    async def _send_action(self, json_action: dict[str, Any] | None = None) -> None:
-        """Send action to device."""
-        await self._device.update(json_action)
-        await self.coordinator.async_request_refresh()
-
-
-class VentaV2HumidifierEntity(VentaBaseHumidifierEntity):
-    """Venta humidifier device for protocol version 2."""
-
     async def async_turn_on(self, **kwargs: dict[str, Any]) -> None:
         """Turn the device on."""
-        await self._send_action({"Action": {"Power": True}})
+        await self._send_action({"Power": True})
 
     async def async_turn_off(self, **kwargs: dict[str, Any]) -> None:
         """Turn the device off."""
-        await self._send_action({"Action": {"Power": False}})
+        await self._send_action({"Power": False})
 
     async def async_set_humidity(self, humidity: int) -> None:
         """Set new target humidity."""
-        await self._send_action({"Action": {"TargetHum": humidity}})
+        await self._send_action({"TargetHum": humidity})
 
     async def async_set_mode(self, mode: str) -> None:
         """Set new target preset mode."""
@@ -144,7 +137,26 @@ class VentaV2HumidifierEntity(VentaBaseHumidifierEntity):
             level = int(mode[-1])
             action.update({"SleepMode": False, "Automatic": False, "FanSpeed": level})
 
-        await self._send_action({"Action": action})
+        await self._send_action(action)
+
+    def _map_to_action(self, data: dict[str, Any]) -> dict[str, Any]:
+        """Map data to protocol based json action."""
+        return {
+            "Action": data,
+        }
+
+    async def _send_action(self, data: dict[str, Any]) -> None:
+        """Send action to device."""
+        await self._device.update(self._map_to_action(data))
+        await self.coordinator.async_request_refresh()
+
+
+class VentaV0HumidifierEntity(VentaBaseHumidifierEntity):
+    """Venta humidifier device for protocol version 0."""
+
+
+class VentaV2HumidifierEntity(VentaBaseHumidifierEntity):
+    """Venta humidifier device for protocol version 2."""
 
 
 class VentaV3HumidifierEntity(VentaBaseHumidifierEntity):
@@ -165,6 +177,12 @@ class VentaV3HumidifierEntity(VentaBaseHumidifierEntity):
                 MODE_LEVEL_3,
             ]
 
+    def _map_to_action(self, data: dict[str, Any]) -> dict[str, Any]:
+        return {
+            **data,
+            "Action": "control",
+        }
+
     async def async_turn_on(self, **kwargs: dict[str, Any]) -> None:
         """Turn the device on."""
         state = self.coordinator.data.action
@@ -172,7 +190,6 @@ class VentaV3HumidifierEntity(VentaBaseHumidifierEntity):
             "Power": True,
             "Automatic": state.get("Automatic"),
             "FanSpeed": state.get("FanSpeed"),
-            "Action": "control",
         }
         if not action.get("Automatic"):
             action.update({"SleepMode": state.get("SleepMode")})
@@ -185,7 +202,6 @@ class VentaV3HumidifierEntity(VentaBaseHumidifierEntity):
             "Power": False,
             "Automatic": state.get("Automatic"),
             "FanSpeed": state.get("FanSpeed"),
-            "Action": "control",
         }
         if not action.get("Automatic"):
             action.update({"SleepMode": state.get("SleepMode")})
@@ -199,7 +215,6 @@ class VentaV3HumidifierEntity(VentaBaseHumidifierEntity):
                 "Power": state.get("Power"),
                 "Automatic": state.get("Automatic"),
                 "TargetHum": humidity,
-                "Action": "control",
             }
         )
 
@@ -209,7 +224,6 @@ class VentaV3HumidifierEntity(VentaBaseHumidifierEntity):
 
         action = {
             "Power": True,
-            "Action": "control",
         }
         if mode == MODE_AUTO:
             action.update({"Automatic": True})
