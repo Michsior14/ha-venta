@@ -1,4 +1,11 @@
-## 0.4.0 (2024-01-06)
+## [0.4.1](https://github.com/Michsior14/ha-venta/compare/v0.4.0...v0.4.1) (2024-01-16)
+
+
+### Bug Fixes
+
+* **AH5xx:** respect automatic mode in sleep mode ([#9](https://github.com/Michsior14/ha-venta/issues/9)) ([219016b](https://github.com/Michsior14/ha-venta/commit/219016b65d3fba2fa3abe8f2b1dcae51145b093c))
+
+## [0.4.0](https://github.com/Michsior14/ha-venta/compare/1fce0fb08effb8ce2897b7078464153412d8fe09...v0.4.0) (2024-01-06)
 
 
 ### Features
