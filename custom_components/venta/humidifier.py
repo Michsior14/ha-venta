@@ -55,9 +55,7 @@ async def async_setup_entry(
     coordinator: VentaDataUpdateCoordinator = hass.data[DOMAIN].get(entry.entry_id)
 
     entity: VentaBaseHumidifierEntity
-    if coordinator.api.version == VentaApiVersion.V0:
-        entity = VentaV0HumidifierEntity(coordinator, HUMIDIFIER_ENTITY_DESCRIPTION)
-    elif coordinator.api.version == VentaApiVersion.V2:
+    if coordinator.api.version == VentaApiVersion.V2:
         entity = VentaV2HumidifierEntity(coordinator, HUMIDIFIER_ENTITY_DESCRIPTION)
     else:
         entity = VentaV3HumidifierEntity(coordinator, HUMIDIFIER_ENTITY_DESCRIPTION)
@@ -151,10 +149,6 @@ class VentaBaseHumidifierEntity(
         await self.coordinator.async_request_refresh()
 
 
-class VentaV0HumidifierEntity(VentaBaseHumidifierEntity):
-    """Venta humidifier device for protocol version 0."""
-
-
 class VentaV2HumidifierEntity(VentaBaseHumidifierEntity):
     """Venta humidifier device for protocol version 2."""
 
@@ -228,7 +222,7 @@ class VentaV3HumidifierEntity(VentaBaseHumidifierEntity):
         if mode == MODE_AUTO:
             action.update({"Automatic": True})
         elif mode == MODE_SLEEP:
-            action.update({"SleepMode": True, "Automatic": False})
+            action = {"SleepMode": True}
         else:
             level = int(mode[-1])
             action.update(

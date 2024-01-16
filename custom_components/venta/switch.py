@@ -50,10 +50,7 @@ SENSOR_TYPES: tuple[VentaSwitchEntityDescription, ...] = (
         value_func=lambda data: data.action.get("SleepMode"),
         action_func=(
             lambda data, is_on: {
-                "Power": data.action.get("Power"),
                 "SleepMode": True,
-                "Automatic": False,
-                "FanSpeed": data.action.get("FanSpeed"),
                 "Action": "control",
             }
             if is_on
