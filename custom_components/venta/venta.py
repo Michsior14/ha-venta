@@ -39,9 +39,17 @@ class VentaApiVersion(Enum):
     V3 = 3
 
 
-API_VERSION_ENDPOINTS = {
-    VentaApiVersion.V2: "datastructure",
-    VentaApiVersion.V3: "api/telemetry?request=set",
+@dataclass
+class VentaApiEndpointDefinition:
+    """Venta api endpoint definition."""
+
+    endpoint: str
+    port: int = 80
+
+
+API_VERSION_ENDPOINTS: dict[VentaApiVersion, VentaApiEndpointDefinition] = {
+    VentaApiVersion.V2: VentaApiEndpointDefinition("datastructure"),
+    VentaApiVersion.V3: VentaApiEndpointDefinition("api/telemetry?request=set"),
 }
 
 
@@ -106,9 +114,8 @@ class VentaDevice:
     def _set_api_version(self, api_version: VentaApiVersion | int) -> None:
         """Set the api version."""
         self.api_version = VentaApiVersion(api_version)
-        self._endpoint = (
-            f"http://{self.host}/{API_VERSION_ENDPOINTS.get(self.api_version)}"
-        )
+        definition = API_VERSION_ENDPOINTS.get(self.api_version)
+        self._endpoint = f"http://{self.host}:{definition.port}/{definition.endpoint}"
 
     async def _get_data(
         self, json_action: dict[str, Any] | None = None, retries: int = 3
