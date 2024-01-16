@@ -8,7 +8,7 @@ The following Venta device are currently tested and supported:
   - LW73/LW74 Humidifier
 
 - **Protocol v3:**
-  - AH550/AH555/AH510/AH515 Humidifier
+  - AH510/AH515/AH530/AH550/AH555 Humidifier
 
 ## Features
 
