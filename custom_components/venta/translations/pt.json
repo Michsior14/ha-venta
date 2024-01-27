@@ -1,88 +1,88 @@
 {
-  "config": {
-    "abort": {
-      "already_configured": "Equipamento já configurado"
-    },
-    "error": {
-      "cannot_connect": "Falha na ligação",
-      "cannot_detect_api_version": "Não é possível determinar a versão da API",
-      "unknown": "Erro desconhecido"
-    },
-    "step": {
-      "user": {
-        "data": {
-          "host": "Endereço",
-          "scan_interval": "Intervalo de atualização (segundos)"
+    "config": {
+        "abort": {
+            "already_configured": "Equipamento já configurado"
+        },
+        "error": {
+            "cannot_connect": "Falha na ligação",
+            "cannot_detect_api_version": "Não é possível determinar a versão da API",
+            "unknown": "Erro desconhecido"
+        },
+        "step": {
+            "user": {
+                "data": {
+                    "host": "Endereço",
+                    "scan_interval": "Intervalo de atualização (segundos)"
+                }
+            }
         }
-      }
-    }
-  },
-  "options": {
-    "step": {
-      "init": {
-        "data": {
-          "scan_interval": "Intervalo de atualização (segundos)"
+    },
+    "options": {
+        "step": {
+            "init": {
+                "data": {
+                    "scan_interval": "Intervalo de atualização (segundos)"
+                }
+            }
         }
-      }
+    },
+    "entity": {
+        "humidifier": {
+            "humidifier": {
+                "name": "Humidificador"
+            }
+        },
+        "sensor": {
+            "temperature": {
+                "name": "Temperatura"
+            },
+            "water_level": {
+                "name": "Nível de Água"
+            },
+            "fan_speed": {
+                "name": "Velocidade da ventoinha"
+            },
+            "operation_time": {
+                "name": "Tempo de funcionamento"
+            },
+            "disc_ion_time": {
+                "name": "Tempo do disco de ionização"
+            },
+            "cleaning_time": {
+                "name": "Tempo de limpeza"
+            },
+            "service_time": {
+                "name": "Tempo de serviço"
+            },
+            "service_max_time": {
+                "name": "Tempo máximo de serviço"
+            },
+            "warnings": {
+                "name": "Avisos"
+            }
+        },
+        "binary_sensor": {
+            "needs_refill": {
+                "name": "Necessita de recarga"
+            },
+            "needs_service": {
+                "name": "Necessita de serviço"
+            }
+        },
+        "light": {
+            "led_strip": {
+                "name": "Fita Led"
+            }
+        },
+        "select": {
+            "led_strip_mode": {
+                "name": "Modo de fita LED"
+            }
+        },
+        "switch": {
+            "sleep_mode": {
+                "name": "Modo dormir"
+            }
+        }
     }
-  },
-  "entity": {
-    "humidifier": {
-      "humidifier": {
-        "name": "Humidificador"
-      }
-    },
-    "sensor": {
-      "temperature": {
-        "name": "Temperatura"
-      },
-      "water_level": {
-        "name": "Nível de Água"
-      },
-      "fan_speed": {
-        "name": "Velocidade da ventoinha"
-      },
-      "operation_time": {
-        "name": "Tempo de funcionamento"
-      },
-      "disc_ion_time": {
-        "name": "Tempo do disco de ionização"
-      },
-      "cleaning_time": {
-        "name": "Tempo de limpeza"
-      },
-      "service_time": {
-        "name": "Tempo de serviço"
-      },
-      "service_max_time": {
-        "name": "Tempo máximo de serviço"
-      },
-      "warnings": {
-        "name": "Avisos"
-      }
-    },
-    "binary_sensor": {
-      "needs_refill": {
-        "name": "Precisa de recarregamento"
-      },
-      "needs_service": {
-        "name": "Precisa de manutenção"
-      }
-    },
-    "light": {
-      "led_strip": {
-        "name": "Fita Led"
-      }
-    },
-    "select": {
-      "led_strip_mode": {
-        "name": "Modo da fita de LED "
-      }
-    },
-    "switch": {
-      "sleep_mode": {
-        "name": "Modo dormir"
-      }
-    }
-  }
 }

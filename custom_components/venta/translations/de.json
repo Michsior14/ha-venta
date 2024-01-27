@@ -1,18 +1,18 @@
 {
     "config": {
         "abort": {
-            "already_configured": "Device is already configured"
+            "already_configured": "Das Gerät ist bereits konfiguriert"
         },
         "error": {
-            "cannot_connect": "Failed to connect",
-            "cannot_detect_api_version": "Cannot determine API version",
-            "unknown": "Unexpected error"
+            "cannot_connect": "Verbindung fehlgeschlagen",
+            "cannot_detect_api_version": "Kann API-Version nicht bestimmen",
+            "unknown": "Unerwarteter Fehler"
         },
         "step": {
             "user": {
                 "data": {
-                    "host": "Host",
-                    "scan_interval": "Update interval (seconds)"
+                    "host": "Gastgeber",
+                    "scan_interval": "Aktualisierungsintervall (Sekunden)"
                 }
             }
         }
@@ -21,7 +21,7 @@
         "step": {
             "init": {
                 "data": {
-                    "scan_interval": "Update interval (seconds)"
+                    "scan_interval": "Aktualisierungsintervall (Sekunden)"
                 }
             }
         }
@@ -29,59 +29,59 @@
     "entity": {
         "humidifier": {
             "humidifier": {
-                "name": "Humidifier"
+                "name": "Luftbefeuchter"
             }
         },
         "sensor": {
             "temperature": {
-                "name": "Temperature"
+                "name": "Temperatur"
             },
             "water_level": {
-                "name": "Water level"
+                "name": "Wasserstand"
             },
             "fan_speed": {
-                "name": "Fan speed"
+                "name": "Lüftergeschwindigkeit"
             },
             "operation_time": {
-                "name": "Operation time"
+                "name": "Betriebszeit"
             },
             "disc_ion_time": {
-                "name": "Disc ionization time"
+                "name": "Scheibenionisationszeit"
             },
             "cleaning_time": {
-                "name": "Cleaning time"
+                "name": "Reinigungszeit"
             },
             "service_time": {
-                "name": "Service time"
+                "name": "Servicezeit"
             },
             "service_max_time": {
-                "name": "Service max time"
+                "name": "Maximale Servicezeit"
             },
             "warnings": {
-                "name": "Warnings"
+                "name": "Warnungen"
             }
         },
         "binary_sensor": {
             "needs_refill": {
-                "name": "Needs refill"
+                "name": "Braucht Nachfüllung"
             },
             "needs_service": {
-                "name": "Needs service"
+                "name": "Benötigt Service"
             }
         },
         "light": {
             "led_strip": {
-                "name": "LED strip"
+                "name": "LED-Streifen"
             }
         },
         "select": {
             "led_strip_mode": {
-                "name": "LED strip mode"
+                "name": "LED-Streifenmodus"
             }
         },
         "switch": {
             "sleep_mode": {
-                "name": "Sleep mode"
+                "name": "Schlafmodus"
             }
         }
     }

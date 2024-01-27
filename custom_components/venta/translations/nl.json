@@ -1,18 +1,18 @@
 {
     "config": {
         "abort": {
-            "already_configured": "Device is already configured"
+            "already_configured": "Apparaat is al geconfigureerd"
         },
         "error": {
-            "cannot_connect": "Failed to connect",
-            "cannot_detect_api_version": "Cannot determine API version",
-            "unknown": "Unexpected error"
+            "cannot_connect": "Kon niet verbinden",
+            "cannot_detect_api_version": "Kan de API-versie niet bepalen",
+            "unknown": "Onverwachte fout"
         },
         "step": {
             "user": {
                 "data": {
-                    "host": "Host",
-                    "scan_interval": "Update interval (seconds)"
+                    "host": "Gastheer",
+                    "scan_interval": "Update-interval (seconden)"
                 }
             }
         }
@@ -21,7 +21,7 @@
         "step": {
             "init": {
                 "data": {
-                    "scan_interval": "Update interval (seconds)"
+                    "scan_interval": "Update-interval (seconden)"
                 }
             }
         }
@@ -29,59 +29,59 @@
     "entity": {
         "humidifier": {
             "humidifier": {
-                "name": "Humidifier"
+                "name": "Bevochtiger"
             }
         },
         "sensor": {
             "temperature": {
-                "name": "Temperature"
+                "name": "Temperatuur"
             },
             "water_level": {
-                "name": "Water level"
+                "name": "Waterstand"
             },
             "fan_speed": {
-                "name": "Fan speed"
+                "name": "Ventilatorsnelheid"
             },
             "operation_time": {
-                "name": "Operation time"
+                "name": "Bedrijfstijd"
             },
             "disc_ion_time": {
-                "name": "Disc ionization time"
+                "name": "Schijfionisatietijd"
             },
             "cleaning_time": {
-                "name": "Cleaning time"
+                "name": "Schoonmaaktijd"
             },
             "service_time": {
-                "name": "Service time"
+                "name": "Servicetijd"
             },
             "service_max_time": {
-                "name": "Service max time"
+                "name": "Service max. tijd"
             },
             "warnings": {
-                "name": "Warnings"
+                "name": "Waarschuwingen"
             }
         },
         "binary_sensor": {
             "needs_refill": {
-                "name": "Needs refill"
+                "name": "Moet worden bijgevuld"
             },
             "needs_service": {
-                "name": "Needs service"
+                "name": "Service nodig"
             }
         },
         "light": {
             "led_strip": {
-                "name": "LED strip"
+                "name": "LED-strip"
             }
         },
         "select": {
             "led_strip_mode": {
-                "name": "LED strip mode"
+                "name": "LED-stripmodus"
             }
         },
         "switch": {
             "sleep_mode": {
-                "name": "Sleep mode"
+                "name": "Slaapstand"
             }
         }
     }
