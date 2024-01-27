@@ -1,3 +1,11 @@
+## [0.5.0](https://github.com/Michsior14/ha-venta/compare/v0.4.1...v0.5.0) (2024-01-27)
+
+
+### Features
+
+* add custom device update interval ([#11](https://github.com/Michsior14/ha-venta/issues/11)) ([05999b2](https://github.com/Michsior14/ha-venta/commit/05999b20a57a7c0b38fb0fb122c686067e1ccd9c))
+* support new languages ([#12](https://github.com/Michsior14/ha-venta/issues/12)) ([4b7b9a2](https://github.com/Michsior14/ha-venta/commit/4b7b9a2c065635925ec64ff7012ec2f4ad4a07d1))
+
 ## [0.4.1](https://github.com/Michsior14/ha-venta/compare/v0.4.0...v0.4.1) (2024-01-16)
 
 
