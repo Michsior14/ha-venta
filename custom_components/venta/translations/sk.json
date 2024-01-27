@@ -1,18 +1,18 @@
 {
     "config": {
         "abort": {
-            "already_configured": "Device is already configured"
+            "already_configured": "Zariadenie je už nakonfigurované"
         },
         "error": {
-            "cannot_connect": "Failed to connect",
-            "cannot_detect_api_version": "Cannot determine API version",
-            "unknown": "Unexpected error"
+            "cannot_connect": "Nepodarilo sa pripojiť",
+            "cannot_detect_api_version": "Nie je možné určiť verziu API",
+            "unknown": "Neočakávaná chyba"
         },
         "step": {
             "user": {
                 "data": {
-                    "host": "Host",
-                    "scan_interval": "Update interval (seconds)"
+                    "host": "Hostiteľ",
+                    "scan_interval": "Interval aktualizácie (sekundy)"
                 }
             }
         }
@@ -21,7 +21,7 @@
         "step": {
             "init": {
                 "data": {
-                    "scan_interval": "Update interval (seconds)"
+                    "scan_interval": "Interval aktualizácie (sekundy)"
                 }
             }
         }
@@ -29,59 +29,59 @@
     "entity": {
         "humidifier": {
             "humidifier": {
-                "name": "Humidifier"
+                "name": "Zvlhčovač"
             }
         },
         "sensor": {
             "temperature": {
-                "name": "Temperature"
+                "name": "Teplota"
             },
             "water_level": {
-                "name": "Water level"
+                "name": "Hladina vody"
             },
             "fan_speed": {
-                "name": "Fan speed"
+                "name": "Rýchlosť ventilátora"
             },
             "operation_time": {
-                "name": "Operation time"
+                "name": "Doba prevádzky"
             },
             "disc_ion_time": {
-                "name": "Disc ionization time"
+                "name": "Čas ionizácie disku"
             },
             "cleaning_time": {
-                "name": "Cleaning time"
+                "name": "Čas upratovania"
             },
             "service_time": {
-                "name": "Service time"
+                "name": "Čas služby"
             },
             "service_max_time": {
-                "name": "Service max time"
+                "name": "Maximálny čas služby"
             },
             "warnings": {
-                "name": "Warnings"
+                "name": "Varovania"
             }
         },
         "binary_sensor": {
             "needs_refill": {
-                "name": "Needs refill"
+                "name": "Potrebuje doplniť"
             },
             "needs_service": {
-                "name": "Needs service"
+                "name": "Potrebuje servis"
             }
         },
         "light": {
             "led_strip": {
-                "name": "LED strip"
+                "name": "LED pásik"
             }
         },
         "select": {
             "led_strip_mode": {
-                "name": "LED strip mode"
+                "name": "Režim LED pásu"
             }
         },
         "switch": {
             "sleep_mode": {
-                "name": "Sleep mode"
+                "name": "Spánkový režim"
             }
         }
     }

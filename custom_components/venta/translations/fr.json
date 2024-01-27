@@ -1,18 +1,18 @@
 {
     "config": {
         "abort": {
-            "already_configured": "Device is already configured"
+            "already_configured": "L'appareil est déjà configuré"
         },
         "error": {
-            "cannot_connect": "Failed to connect",
-            "cannot_detect_api_version": "Cannot determine API version",
-            "unknown": "Unexpected error"
+            "cannot_connect": "Échec de la connexion",
+            "cannot_detect_api_version": "Impossible de déterminer la version de l'API",
+            "unknown": "Erreur inattendue"
         },
         "step": {
             "user": {
                 "data": {
-                    "host": "Host",
-                    "scan_interval": "Update interval (seconds)"
+                    "host": "Hôte",
+                    "scan_interval": "Intervalle de mise à jour (secondes)"
                 }
             }
         }
@@ -21,7 +21,7 @@
         "step": {
             "init": {
                 "data": {
-                    "scan_interval": "Update interval (seconds)"
+                    "scan_interval": "Intervalle de mise à jour (secondes)"
                 }
             }
         }
@@ -29,59 +29,59 @@
     "entity": {
         "humidifier": {
             "humidifier": {
-                "name": "Humidifier"
+                "name": "Humidificateur"
             }
         },
         "sensor": {
             "temperature": {
-                "name": "Temperature"
+                "name": "Température"
             },
             "water_level": {
-                "name": "Water level"
+                "name": "Niveau d'eau"
             },
             "fan_speed": {
-                "name": "Fan speed"
+                "name": "Vitesse du ventilateur"
             },
             "operation_time": {
-                "name": "Operation time"
+                "name": "Temps d'opération"
             },
             "disc_ion_time": {
-                "name": "Disc ionization time"
+                "name": "Temps d'ionisation du disque"
             },
             "cleaning_time": {
-                "name": "Cleaning time"
+                "name": "Heure de nettoyage"
             },
             "service_time": {
-                "name": "Service time"
+                "name": "Temps de service"
             },
             "service_max_time": {
-                "name": "Service max time"
+                "name": "Temps max du service"
             },
             "warnings": {
-                "name": "Warnings"
+                "name": "Avertissements"
             }
         },
         "binary_sensor": {
             "needs_refill": {
-                "name": "Needs refill"
+                "name": "Nécessite une recharge"
             },
             "needs_service": {
-                "name": "Needs service"
+                "name": "Nécessite un service"
             }
         },
         "light": {
             "led_strip": {
-                "name": "LED strip"
+                "name": "bande LED"
             }
         },
         "select": {
             "led_strip_mode": {
-                "name": "LED strip mode"
+                "name": "Mode bande LED"
             }
         },
         "switch": {
             "sleep_mode": {
-                "name": "Sleep mode"
+                "name": "Mode sommeil"
             }
         }
     }

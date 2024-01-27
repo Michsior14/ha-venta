@@ -1,0 +1,88 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "Пристрій уже налаштовано"
+        },
+        "error": {
+            "cannot_connect": "Не вдалося підключитися",
+            "cannot_detect_api_version": "Неможливо визначити версію API",
+            "unknown": "Неочікувана помилка"
+        },
+        "step": {
+            "user": {
+                "data": {
+                    "host": "Хост",
+                    "scan_interval": "Інтервал оновлення (секунди)"
+                }
+            }
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "data": {
+                    "scan_interval": "Інтервал оновлення (секунди)"
+                }
+            }
+        }
+    },
+    "entity": {
+        "humidifier": {
+            "humidifier": {
+                "name": "Зволожувач повітря"
+            }
+        },
+        "sensor": {
+            "temperature": {
+                "name": "Температура"
+            },
+            "water_level": {
+                "name": "Рівень води"
+            },
+            "fan_speed": {
+                "name": "Швидкість вентилятора"
+            },
+            "operation_time": {
+                "name": "Час роботи"
+            },
+            "disc_ion_time": {
+                "name": "Час іонізації диска"
+            },
+            "cleaning_time": {
+                "name": "Час прибирання"
+            },
+            "service_time": {
+                "name": "Час обслуговування"
+            },
+            "service_max_time": {
+                "name": "Максимальний час обслуговування"
+            },
+            "warnings": {
+                "name": "Попередження"
+            }
+        },
+        "binary_sensor": {
+            "needs_refill": {
+                "name": "Потребує поповнення"
+            },
+            "needs_service": {
+                "name": "Потребує обслуговування"
+            }
+        },
+        "light": {
+            "led_strip": {
+                "name": "Світлодіодна стрічка"
+            }
+        },
+        "select": {
+            "led_strip_mode": {
+                "name": "Режим світлодіодної стрічки"
+            }
+        },
+        "switch": {
+            "sleep_mode": {
+                "name": "Сплячий режим"
+            }
+        }
+    }
+}

@@ -1,18 +1,18 @@
 {
     "config": {
         "abort": {
-            "already_configured": "Device is already configured"
+            "already_configured": "Enheten är redan konfigurerad"
         },
         "error": {
-            "cannot_connect": "Failed to connect",
-            "cannot_detect_api_version": "Cannot determine API version",
-            "unknown": "Unexpected error"
+            "cannot_connect": "Det gick inte att ansluta",
+            "cannot_detect_api_version": "Kan inte bestämma API-version",
+            "unknown": "Oväntat fel"
         },
         "step": {
             "user": {
                 "data": {
-                    "host": "Host",
-                    "scan_interval": "Update interval (seconds)"
+                    "host": "Värd",
+                    "scan_interval": "Uppdateringsintervall (sekunder)"
                 }
             }
         }
@@ -21,7 +21,7 @@
         "step": {
             "init": {
                 "data": {
-                    "scan_interval": "Update interval (seconds)"
+                    "scan_interval": "Uppdateringsintervall (sekunder)"
                 }
             }
         }
@@ -29,59 +29,59 @@
     "entity": {
         "humidifier": {
             "humidifier": {
-                "name": "Humidifier"
+                "name": "Luftfuktare"
             }
         },
         "sensor": {
             "temperature": {
-                "name": "Temperature"
+                "name": "Temperatur"
             },
             "water_level": {
-                "name": "Water level"
+                "name": "Vattennivå"
             },
             "fan_speed": {
-                "name": "Fan speed"
+                "name": "Fläkthastighet"
             },
             "operation_time": {
-                "name": "Operation time"
+                "name": "Drifttid"
             },
             "disc_ion_time": {
-                "name": "Disc ionization time"
+                "name": "Diskjoniseringstid"
             },
             "cleaning_time": {
-                "name": "Cleaning time"
+                "name": "Städdags"
             },
             "service_time": {
-                "name": "Service time"
+                "name": "Tid för service"
             },
             "service_max_time": {
-                "name": "Service max time"
+                "name": "Service max tid"
             },
             "warnings": {
-                "name": "Warnings"
+                "name": "Varningar"
             }
         },
         "binary_sensor": {
             "needs_refill": {
-                "name": "Needs refill"
+                "name": "Behöver fyllas på"
             },
             "needs_service": {
-                "name": "Needs service"
+                "name": "Behöver service"
             }
         },
         "light": {
             "led_strip": {
-                "name": "LED strip"
+                "name": "LED-remsa"
             }
         },
         "select": {
             "led_strip_mode": {
-                "name": "LED strip mode"
+                "name": "Läge för LED-remsa"
             }
         },
         "switch": {
             "sleep_mode": {
-                "name": "Sleep mode"
+                "name": "Viloläge"
             }
         }
     }
