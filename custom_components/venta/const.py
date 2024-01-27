@@ -1,8 +1,9 @@
 """Constants for the Venta integration."""
 
+
 DOMAIN = "venta"
 
-TIMEOUT = 10
+DEFAULT_SCAN_INTERVAL = 10
 NO_WATER_THRESHOLD = 50000
 
 MODE_SLEEP = "sleep"

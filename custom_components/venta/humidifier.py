@@ -55,7 +55,7 @@ async def async_setup_entry(
     coordinator: VentaDataUpdateCoordinator = hass.data[DOMAIN].get(entry.entry_id)
 
     entity: VentaBaseHumidifierEntity
-    if coordinator.api.version == VentaApiVersion.V2:
+    if coordinator.api.device.api_version == VentaApiVersion.V2:
         entity = VentaV2HumidifierEntity(coordinator, HUMIDIFIER_ENTITY_DESCRIPTION)
     else:
         entity = VentaV3HumidifierEntity(coordinator, HUMIDIFIER_ENTITY_DESCRIPTION)
