@@ -15,6 +15,7 @@
           "scan_interval": "Update interval (seconds)"
         }
       }
+    }
   },
   "options": {
     "step": {
