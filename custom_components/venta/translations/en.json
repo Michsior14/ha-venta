@@ -11,7 +11,17 @@
     "step": {
       "user": {
         "data": {
-          "host": "Host"
+          "host": "Host",
+          "scan_interval": "Update interval (seconds)"
+        }
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "scan_interval": "Update interval (seconds)"
         }
       }
     }

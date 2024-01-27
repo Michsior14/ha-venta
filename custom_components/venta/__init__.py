@@ -3,24 +3,26 @@ from __future__ import annotations
 
 import asyncio
 import logging
+from datetime import timedelta
 
 from aiohttp import ClientConnectionError
-
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.exceptions import ConfigEntryNotReady
-from homeassistant.const import Platform
+from homeassistant.const import (
+    CONF_API_VERSION,
+    CONF_HOST,
+    CONF_MAC,
+    CONF_SCAN_INTERVAL,
+    Platform,
+)
 from homeassistant.core import HomeAssistant
+from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
-from homeassistant.const import CONF_HOST, CONF_MAC, CONF_API_VERSION
 
-from .const import DOMAIN, TIMEOUT
-
-from .venta import VentaApi, VentaDevice, VentaDataUpdateCoordinator, VentaApiVersion
 from .config_flow import ConfigVersion
+from .const import DOMAIN, DEFAULT_SCAN_INTERVAL
+from .venta import VentaApi, VentaApiVersion, VentaDataUpdateCoordinator, VentaDevice
 
 _LOGGER = logging.getLogger(__name__)
-
-SYNC_INTERVAL = 15
 
 PLATFORMS: list[Platform] = [
     Platform.HUMIDIFIER,
@@ -38,7 +40,12 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     if entry.unique_id is None:
         hass.config_entries.async_update_entry(entry, unique_id=conf[CONF_MAC])
 
-    api = await venta_api_setup(hass, conf[CONF_HOST], conf[CONF_API_VERSION])
+    api = await venta_api_setup(
+        hass,
+        conf[CONF_HOST],
+        timedelta(seconds=conf.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL)),
+        conf[CONF_API_VERSION],
+    )
     if not api:
         return False
 
@@ -50,6 +57,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     hass.data[DOMAIN][entry.entry_id] = coordinator
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+
+    entry.async_on_unload(entry.add_update_listener(async_update_options))
 
     return True
 
@@ -63,13 +72,13 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
 
 async def venta_api_setup(
-    hass: HomeAssistant, host: str, api_version: int
+    hass: HomeAssistant, host: str, update_interval: timedelta, api_version: int
 ) -> VentaApi | None:
     """Create a Venta instance only once."""
     session = async_get_clientsession(hass)
     try:
-        async with asyncio.timeout(TIMEOUT):
-            device = VentaDevice(host, api_version, session)
+        async with asyncio.timeout(10):
+            device = VentaDevice(host, update_interval, api_version, session)
             await device.init()
     except asyncio.TimeoutError as err:
         _LOGGER.debug("Connection to %s timed out", host)
@@ -101,3 +110,8 @@ async def async_migrate_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     _LOGGER.debug("Migration to version %s successful", entry.version)
 
     return True
+
+
+async def async_update_options(hass: HomeAssistant, entry: ConfigEntry) -> None:
+    """Update options."""
+    await hass.config_entries.async_reload(entry.entry_id)

@@ -13,11 +13,9 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import CONNECTION_NETWORK_MAC, DeviceInfo
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
-from .const import DOMAIN, TIMEOUT
+from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
-
-UPDATE_INTERVAL = timedelta(seconds=10)
 
 
 class VentaApiVersionError(Exception):
@@ -70,12 +68,18 @@ class VentaDevice:
     mac: str | None
     device_type: VentaDeviceType
     api_version: VentaApiVersion
+    update_interval: timedelta
 
     def __init__(
-        self, host: str, api_version: int | None, session: ClientSession | None = None
+        self,
+        host: str,
+        update_interval: timedelta,
+        api_version: int | None,
+        session: ClientSession | None = None,
     ) -> None:
         """Venta device constructor."""
         self.host = host
+        self.update_interval = update_interval
         self.mac = None
         self.device_type = VentaDeviceType.UNKNOWN
         self._session = session
@@ -143,15 +147,11 @@ class VentaApi:
 
     device: VentaDevice
     name: str
-    host: str
-    version: VentaApiVersion
 
     def __init__(self, device: VentaDevice) -> None:
         """Initialize the Venta Handle."""
         self.device = device
         self.name = "Venta"
-        self.host = device.host
-        self.version = device.api_version
 
     async def async_update(self) -> VentaData:
         """Pull the latest data from Venta."""
@@ -167,11 +167,13 @@ class VentaDataUpdateCoordinator(DataUpdateCoordinator[VentaData]):
         """Initialize data coordinator."""
         self.api = api
 
-        super().__init__(hass, _LOGGER, name=DOMAIN, update_interval=UPDATE_INTERVAL)
+        super().__init__(
+            hass, _LOGGER, name=DOMAIN, update_interval=api.device.update_interval
+        )
 
     async def _async_update_data(self) -> VentaData:
         """Update data via library."""
-        async with asyncio.timeout(TIMEOUT):
+        async with asyncio.timeout(30):
             try:
                 return await self.api.async_update()
             except ClientConnectionError as error:

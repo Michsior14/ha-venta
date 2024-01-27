@@ -1,25 +1,39 @@
 """Config flow for Venta integration."""
 from __future__ import annotations
 
-import logging
-from typing import Any
-from enum import IntEnum
-
 import asyncio
-import voluptuous as vol
+import logging
+from datetime import timedelta
+from enum import IntEnum
+from typing import Any
 
+import homeassistant.helpers.config_validation as cv
+import voluptuous as vol
 from aiohttp import ClientError
 from homeassistant import config_entries
+from homeassistant.const import (
+    CONF_API_VERSION,
+    CONF_HOST,
+    CONF_MAC,
+    CONF_SCAN_INTERVAL,
+)
 from homeassistant.data_entry_flow import FlowResult
-from homeassistant.const import CONF_HOST, CONF_MAC, CONF_API_VERSION
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
-from .const import DOMAIN, TIMEOUT
-from .venta import VentaApiVersion, VentaDevice, VentaApiVersionError
+from .const import DEFAULT_SCAN_INTERVAL, DOMAIN
+from .venta import VentaApiVersion, VentaApiVersionError, VentaDevice
 
 _LOGGER = logging.getLogger(__name__)
 
-STEP_USER_DATA_SCHEMA = vol.Schema({vol.Required(CONF_HOST): str})
+
+STEP_USER_DATA_SCHEMA = vol.Schema(
+    {
+        vol.Required(CONF_HOST): str,
+        vol.Optional(CONF_SCAN_INTERVAL, default=DEFAULT_SCAN_INTERVAL): vol.All(
+            cv.positive_int, vol.Range(min=1)
+        ),
+    }
+)
 
 
 class ConfigVersion(IntEnum):
@@ -35,6 +49,13 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     VERSION = ConfigVersion.V3
 
+    @staticmethod
+    def async_get_options_flow(
+        config_entry: config_entries.ConfigEntry,
+    ) -> config_entries.OptionsFlow:
+        """Create the options flow."""
+        return OptionsFlowHandler(config_entry)
+
     async def async_step_user(
         self, user_input: dict[str, Any] | None = None
     ) -> FlowResult:
@@ -42,9 +63,14 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         errors: dict[str, str] = {}
         if user_input is not None:
             host = user_input[CONF_HOST]
+            update_interval = timedelta(
+                seconds=user_input.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL)
+            )
             try:
-                async with asyncio.timeout(TIMEOUT):
-                    device = VentaDevice(host, None, async_get_clientsession(self.hass))
+                async with asyncio.timeout(10):
+                    device = VentaDevice(
+                        host, update_interval, None, async_get_clientsession(self.hass)
+                    )
                     await device.detect_api_version()
                     await device.init()
             except (asyncio.TimeoutError, ClientError):
@@ -58,7 +84,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 errors["base"] = "unknown"
             else:
                 return await self._create_entry(
-                    device.host, device.api_version, device.mac
+                    device.host, device.update_interval, device.api_version, device.mac
                 )
 
         return self.async_show_form(
@@ -66,7 +92,11 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         )
 
     async def _create_entry(
-        self, host: str, api_version: VentaApiVersion, mac: str
+        self,
+        host: str,
+        update_interval: timedelta,
+        api_version: VentaApiVersion,
+        mac: str,
     ) -> FlowResult:
         """Register new entry."""
         if not self.unique_id:
@@ -75,5 +105,41 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
         return self.async_create_entry(
             title=host,
-            data={CONF_HOST: host, CONF_API_VERSION: api_version, CONF_MAC: mac},
+            data={
+                CONF_HOST: host,
+                CONF_API_VERSION: api_version,
+                CONF_MAC: mac,
+                CONF_SCAN_INTERVAL: update_interval.seconds,
+            },
+        )
+
+
+class OptionsFlowHandler(config_entries.OptionsFlow):
+    """Handle a options flow for Venta."""
+
+    def __init__(self, config_entry: config_entries.ConfigEntry) -> None:
+        """Initialize options flow."""
+        self.config_entry = config_entry
+
+    async def async_step_init(
+        self, user_input: dict[str, Any] | None = None
+    ) -> FlowResult:
+        """Manage the options."""
+        data = self.config_entry.data
+        if user_input is not None:
+            self.hass.config_entries.async_update_entry(
+                self.config_entry, data={**data, **user_input}
+            )
+            return self.async_create_entry(title="", data={})
+
+        return self.async_show_form(
+            step_id="init",
+            data_schema=vol.Schema(
+                {
+                    vol.Optional(
+                        CONF_SCAN_INTERVAL,
+                        default=data.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL),
+                    ): vol.All(cv.positive_int, vol.Range(min=1)),
+                }
+            ),
         )
