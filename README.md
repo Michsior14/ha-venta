@@ -31,6 +31,10 @@ Before the next steps make sure the device is configured using the Venta Home ap
 To start configuring the integration, just press the "+ADD INTEGRATION" button in the Settings - Integrations page, and select Venta from the drop-down menu.
 The configuration page will appear, requesting to input ip of the device.
 
+## Translations
+
+Translations are managed via [Lokalise](https://app.lokalise.com/public/2728010065b52d190d6247.58782749/).
+
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
