@@ -1,19 +1,18 @@
 """Venta data and api classes."""
-import logging
-from datetime import timedelta
+
 import asyncio
+import logging
 from dataclasses import dataclass
+from datetime import timedelta
 from enum import Enum
-from typing import Any
 
-from aiohttp import ClientConnectionError
-from aiohttp import ClientSession, ServerDisconnectedError
-
+from aiohttp import ClientConnectionError, ClientSession
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import CONNECTION_NETWORK_MAC, DeviceInfo
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .const import DOMAIN
+from .venta_strategy import VentaHttpStrategy, VentaTcpHeader, VentaTcpStrategy
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -33,6 +32,7 @@ class VentaDeviceType(Enum):
 class VentaApiVersion(Enum):
     """Veta api versions."""
 
+    V0 = 0
     V2 = 2
     V3 = 3
 
@@ -41,13 +41,17 @@ class VentaApiVersion(Enum):
 class VentaApiEndpointDefinition:
     """Venta api endpoint definition."""
 
-    endpoint: str
+    status: str
+    action: str
     port: int = 80
 
 
 API_VERSION_ENDPOINTS: dict[VentaApiVersion, VentaApiEndpointDefinition] = {
-    VentaApiVersion.V2: VentaApiEndpointDefinition("datastructure"),
-    VentaApiVersion.V3: VentaApiEndpointDefinition("api/telemetry?request=set"),
+    VentaApiVersion.V0: VentaApiEndpointDefinition("Complete", "Action", 48000),
+    VentaApiVersion.V2: VentaApiEndpointDefinition("datastructure", "datastructure"),
+    VentaApiVersion.V3: VentaApiEndpointDefinition(
+        "api/telemetry", "api/telemetry?request=set"
+    ),
 }
 
 
@@ -69,6 +73,7 @@ class VentaDevice:
     device_type: VentaDeviceType
     api_version: VentaApiVersion
     update_interval: timedelta
+    endpoint_definition: VentaApiEndpointDefinition
 
     def __init__(
         self,
@@ -84,13 +89,13 @@ class VentaDevice:
         self.device_type = VentaDeviceType.UNKNOWN
         self._session = session
         if api_version is not None:
-            self._set_api_version(api_version)
+            self._set_api_defaults(api_version)
 
     async def detect_api_version(self) -> None:
         """Detect the api version version."""
         for api_version in reversed(list(VentaApiVersion)):
-            self._set_api_version(api_version)
-            data = await self._get_data(None, retries=1)
+            self._set_api_defaults(api_version)
+            data = await self._strategy.get_status(self.endpoint_definition.status)
             _LOGGER.debug("Detecting api version: %s", str(data))
             if data is not None and data.get("Header") is not None:
                 return
@@ -98,48 +103,48 @@ class VentaDevice:
 
     async def init(self) -> None:
         """Initialize the Venta device."""
-        data = await self.update()
+        data = await self.status()
         self.mac = data.header.get("MacAdress")
         try:
             self.device_type = VentaDeviceType(data.header.get("DeviceType"))
         except ValueError:
             self.device_type = VentaDeviceType.UNKNOWN
 
-    async def update(self, json_action: dict[str, Any] | None = None) -> VentaData:
+    async def status(self) -> VentaData:
         """Update the Venta device."""
-        data = await self._get_data(json_action)
+        return self._map_data(
+            await self._strategy.get_status(self.endpoint_definition.status)
+        )
+
+    async def action(self, action: dict[str, str | int | bool]) -> VentaData:
+        """Send action to the Venta device."""
+        return self._map_data(
+            await self._strategy.send_action(self.endpoint_definition.action, action)
+        )
+
+    def _set_api_defaults(self, api_version: VentaApiVersion | int) -> None:
+        """Set the api version."""
+        self.api_version = VentaApiVersion(api_version)
+        self.endpoint_definition = API_VERSION_ENDPOINTS[self.api_version]
+
+        if self.api_version == VentaApiVersion.V0:
+            self._strategy = VentaTcpStrategy(
+                self.host,
+                VentaTcpHeader(self.mac, self.device_type.value),
+            )
+        else:
+            self._strategy = VentaHttpStrategy(self.host, self._session)
+
+    async def _map_data(
+        self, data: dict[str, str | int | bool]
+    ) -> dict[str, str | int | bool] | None:
+        """Map data from the response."""
         return VentaData(
             header=data.get("Header", {}),
             action=data.get("Action", {}),
             info=data.get("Info", {}),
             measure=data.get("Measure", {}),
         )
-
-    def _set_api_version(self, api_version: VentaApiVersion | int) -> None:
-        """Set the api version."""
-        self.api_version = VentaApiVersion(api_version)
-        definition = API_VERSION_ENDPOINTS.get(self.api_version)
-        self._endpoint = f"http://{self.host}:{definition.port}/{definition.endpoint}"
-
-    async def _get_data(
-        self, json_action: dict[str, Any] | None = None, retries: int = 3
-    ) -> dict[str, Any]:
-        """Update resources."""
-        try:
-            if self._session and not self._session.closed:
-                return await self._run_get_data(json_action)
-            async with ClientSession() as self._session:
-                return await self._run_get_data(json_action)
-        except ServerDisconnectedError as error:
-            if retries == 0:
-                raise error
-            return await self._get_data(json_action, retries=retries - 1)
-
-    async def _run_get_data(self, json: dict[str, Any] | None = None) -> dict[str, Any]:
-        """Make the http request."""
-        _LOGGER.debug("Sending update request with data: %s", str(json))
-        async with self._session.post(self._endpoint, json=json) as resp:
-            return await resp.json(content_type="text/plain")
 
 
 class VentaApi:
@@ -155,7 +160,7 @@ class VentaApi:
 
     async def async_update(self) -> VentaData:
         """Pull the latest data from Venta."""
-        return await self.device.update()
+        return await self.device.status()
 
 
 class VentaDataUpdateCoordinator(DataUpdateCoordinator[VentaData]):

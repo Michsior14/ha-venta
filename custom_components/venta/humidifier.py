@@ -1,4 +1,5 @@
 """Support for Venta humidifiers."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -55,6 +56,8 @@ async def async_setup_entry(
     coordinator: VentaDataUpdateCoordinator = hass.data[DOMAIN].get(entry.entry_id)
 
     entity: VentaBaseHumidifierEntity
+    if coordinator.api.device.api_version == VentaApiVersion.V0:
+        entity = VentaV0HumidifierEntity(coordinator, HUMIDIFIER_ENTITY_DESCRIPTION)
     if coordinator.api.device.api_version == VentaApiVersion.V2:
         entity = VentaV2HumidifierEntity(coordinator, HUMIDIFIER_ENTITY_DESCRIPTION)
     else:
@@ -145,8 +148,12 @@ class VentaBaseHumidifierEntity(
 
     async def _send_action(self, data: dict[str, Any]) -> None:
         """Send action to device."""
-        await self._device.update(self._map_to_action(data))
+        await self._device.action(self._map_to_action(data))
         await self.coordinator.async_request_refresh()
+
+
+class VentaV0HumidifierEntity(VentaBaseHumidifierEntity):
+    """Venta humidifier device for protocol version 0."""
 
 
 class VentaV2HumidifierEntity(VentaBaseHumidifierEntity):

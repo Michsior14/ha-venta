@@ -1,4 +1,5 @@
 """Support for Venta switch."""
+
 from __future__ import annotations
 
 from collections.abc import Callable
@@ -49,18 +50,20 @@ SENSOR_TYPES: tuple[VentaSwitchEntityDescription, ...] = (
         == VentaDeviceType.AH550_AH555,
         value_func=lambda data: data.action.get("SleepMode"),
         action_func=(
-            lambda data, is_on: {
-                "SleepMode": True,
-                "Action": "control",
-            }
-            if is_on
-            else {
-                "Power": data.action.get("Power"),
-                "SleepMode": False,
-                "Automatic": data.action.get("Automatic"),
-                "FanSpeed": data.action.get("FanSpeed"),
-                "Action": "control",
-            }
+            lambda data, is_on: (
+                {
+                    "SleepMode": True,
+                    "Action": "control",
+                }
+                if is_on
+                else {
+                    "Power": data.action.get("Power"),
+                    "SleepMode": False,
+                    "Automatic": data.action.get("Automatic"),
+                    "FanSpeed": data.action.get("FanSpeed"),
+                    "Action": "control",
+                }
+            )
         ),
     ),
 )
@@ -112,7 +115,7 @@ class VentaSwitch(CoordinatorEntity[VentaDataUpdateCoordinator], SwitchEntity):
         await self._send_action(False)
 
     async def _send_action(self, on: bool) -> None:
-        await self._device.update(
+        await self._device.action(
             self.entity_description.action_func(self.coordinator.data, on)
         )
         await self.coordinator.async_request_refresh()

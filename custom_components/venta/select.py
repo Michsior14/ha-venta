@@ -1,4 +1,5 @@
 """Support for Venta select."""
+
 from __future__ import annotations
 
 from collections.abc import Callable
@@ -110,7 +111,7 @@ class VentaSelect(CoordinatorEntity[VentaDataUpdateCoordinator], SelectEntity):
 
     async def async_select_option(self, option: str) -> None:
         """Change the selected option."""
-        await self.coordinator.api.device.update(
+        await self.coordinator.api.device.status(
             self.entity_description.action_func(option)
         )
         await self.coordinator.async_request_refresh()
