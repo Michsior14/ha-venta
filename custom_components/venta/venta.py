@@ -123,7 +123,7 @@ class VentaDevice:
         )
 
     def _set_api_defaults(self, api_version: VentaApiVersion | int) -> None:
-        """Set the api version."""
+        """Set the api version defaults."""
         self.api_version = VentaApiVersion(api_version)
         self.endpoint_definition = API_VERSION_ENDPOINTS[self.api_version]
 
@@ -138,7 +138,7 @@ class VentaDevice:
     async def _map_data(
         self, data: dict[str, str | int | bool]
     ) -> dict[str, str | int | bool] | None:
-        """Map data from the response."""
+        """Map device response to data."""
         return VentaData(
             header=data.get("Header", {}),
             action=data.get("Action", {}),

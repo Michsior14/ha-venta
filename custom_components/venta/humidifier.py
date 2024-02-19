@@ -155,6 +155,17 @@ class VentaBaseHumidifierEntity(
 class VentaV0HumidifierEntity(VentaBaseHumidifierEntity):
     """Venta humidifier device for protocol version 0."""
 
+    async def async_set_mode(self, mode: str) -> None:
+        """Set new target preset mode."""
+        action = {}
+        if mode == MODE_AUTO:
+            action = {"Automatic": True}
+        elif mode == MODE_SLEEP:
+            action = {"SleepMode": True}
+        else:
+            action = {"FanSpeed": int(mode[-1])}
+        await self._send_action(action)
+
 
 class VentaV2HumidifierEntity(VentaBaseHumidifierEntity):
     """Venta humidifier device for protocol version 2."""
