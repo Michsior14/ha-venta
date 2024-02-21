@@ -12,7 +12,12 @@ from homeassistant.helpers.device_registry import CONNECTION_NETWORK_MAC, Device
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .const import DOMAIN
-from .venta_strategy import VentaHttpStrategy, VentaTcpHeader, VentaTcpStrategy
+from .venta_strategy import (
+    VentaHttpStrategy,
+    VentaTcpHeader,
+    VentaTcpStrategy,
+    VentaApiHostDefinition,
+)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -99,6 +104,7 @@ class VentaDevice:
             _LOGGER.debug("Detecting api version: %s", str(data))
             if data is not None and data.get("Header") is not None:
                 return
+            await asyncio.sleep(5.0)
         raise VentaApiVersionError()
 
     async def init(self) -> None:
@@ -112,13 +118,13 @@ class VentaDevice:
 
     async def status(self) -> VentaData:
         """Update the Venta device."""
-        return self._map_data(
+        return await self._map_data(
             await self._strategy.get_status(self.endpoint_definition.status)
         )
 
     async def action(self, action: dict[str, str | int | bool]) -> VentaData:
         """Send action to the Venta device."""
-        return self._map_data(
+        return await self._map_data(
             await self._strategy.send_action(self.endpoint_definition.action, action)
         )
 
@@ -127,13 +133,17 @@ class VentaDevice:
         self.api_version = VentaApiVersion(api_version)
         self.endpoint_definition = API_VERSION_ENDPOINTS[self.api_version]
 
+        host_definition = VentaApiHostDefinition(
+            self.host, self.endpoint_definition.port
+        )
+
         if self.api_version == VentaApiVersion.V0:
             self._strategy = VentaTcpStrategy(
-                self.host,
+                host_definition,
                 VentaTcpHeader(self.mac, self.device_type.value),
             )
         else:
-            self._strategy = VentaHttpStrategy(self.host, self._session)
+            self._strategy = VentaHttpStrategy(host_definition, self._session)
 
     async def _map_data(
         self, data: dict[str, str | int | bool]
@@ -178,12 +188,15 @@ class VentaDataUpdateCoordinator(DataUpdateCoordinator[VentaData]):
 
     async def _async_update_data(self) -> VentaData:
         """Update data via library."""
-        async with asyncio.timeout(30):
-            try:
+        _LOGGER.debug("Polling Venta device: %s", self.api.device.host)
+        try:
+            async with asyncio.timeout(30):
                 return await self.api.async_update()
-            except ClientConnectionError as error:
-                _LOGGER.warning("Connection failed for %s", self.api.device.host)
-                raise UpdateFailed(error) from error
+        except ClientConnectionError as error:
+            _LOGGER.warning(
+                "Connection failed for %s", self.api.device.host, exc_info=error
+            )
+            raise UpdateFailed(error) from error
 
     @property
     def device_info(self) -> DeviceInfo:

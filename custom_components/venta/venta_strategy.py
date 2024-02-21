@@ -6,7 +6,7 @@ import socket
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Any
-from json import loads, dumps
+from json import loads, dumps, JSONDecodeError
 
 from aiohttp import ClientSession
 
@@ -18,7 +18,7 @@ class VentaApiHostDefinition:
     """Venta api endpoint definition."""
 
     host: str
-    port: int = 80
+    port: int
     timeout: int = 30
 
 
@@ -40,11 +40,13 @@ class VentaHttpStrategy(VentaProtocolStrategy):
     """Venta HTTP strategy."""
 
     def __init__(
-        self, host: VentaApiHostDefinition, session: ClientSession | None = None
+        self,
+        host_definition: VentaApiHostDefinition,
+        session: ClientSession | None = None,
     ) -> None:
         """Venta HTTP strategy constructor."""
-        self._host = host
-        self._url = f"http://{host.host}:{host.port}"
+        self._host_definition = host_definition
+        self._url = f"http://{host_definition.host}:{host_definition.port}"
         self._session = session
 
     async def get_status(self, endpoint: str) -> dict[str, Any]:
@@ -91,12 +93,12 @@ class VentaTcpStrategy(VentaProtocolStrategy):
 
     def __init__(
         self,
-        host: VentaApiHostDefinition,
+        host_definition: VentaApiHostDefinition,
         header: VentaTcpHeader,
         buffer_size: int = 2**16,
     ) -> None:
         """Venta TCP strategy constructor."""
-        self._host = host
+        self._host_definition = host_definition
         self._header = header
         self._buffer_size = buffer_size
 
@@ -132,42 +134,61 @@ class VentaTcpStrategy(VentaProtocolStrategy):
     async def _send_request(self, message: str) -> dict[str, Any]:
         """Request data from the Venta device using TCP protocol."""
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-            sock.settimeout(self._host.timeout)
+            sock.settimeout(self._host_definition.timeout)
             try:
-                sock.connect((self._host.host, self._host.port))
+                sock.connect((self._host_definition.host, self._host_definition.port))
             except OSError as err:
                 _LOGGER.error(
                     "Unable to connect to %s on port %s: %s",
-                    self._host.host,
-                    self._host.port,
+                    self._host_definition.host,
+                    self._host_definition.port,
                     err,
                 )
                 return
 
             try:
-                sock.sendall(message.encode())
+                sock.send(message.encode())
             except OSError as err:
                 _LOGGER.error(
                     "Unable to send payload %r to %s on port %s: %s",
                     message,
-                    self._host.host,
-                    self._host.port,
+                    self._host_definition.host,
+                    self._host_definition.port,
                     err,
                 )
                 return
 
-            readable, _, _ = select.select([sock], [], [], self._host.timeout)
+            readable, _, _ = select.select(
+                [sock], [], [], self._host_definition.timeout
+            )
             if not readable:
                 _LOGGER.warning(
                     (
                         "Timeout (%s second(s)) waiting for a response after "
                         "sending %r to %s on port %s"
                     ),
-                    self._host.timeout,
+                    self._host_definition.timeout,
                     message,
-                    self._host.host,
-                    self._host.port,
+                    self._host_definition.host,
+                    self._host_definition.port,
                 )
                 return
 
-            return loads(sock.recv(self._buffer_size).decode())
+            try:
+                return loads(sock.recv(self._buffer_size).decode())
+            except OSError as err:
+                _LOGGER.error(
+                    "Unable to receive payload from %s on port %s: %s",
+                    self._host_definition.host,
+                    self._host_definition.port,
+                    err,
+                )
+                return
+            except (JSONDecodeError, TypeError) as err:
+                _LOGGER.error(
+                    "Unable to parse payload from %s on port %s: %s",
+                    self._host_definition.host,
+                    self._host_definition.port,
+                    err,
+                )
+                return

@@ -1,8 +1,8 @@
 """Constants for the Venta integration."""
 
-
 DOMAIN = "venta"
 
+AUTO_API_VERSION = "auto"
 DEFAULT_SCAN_INTERVAL = 10
 NO_WATER_THRESHOLD = 50000
 
