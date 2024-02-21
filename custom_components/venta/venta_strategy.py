@@ -147,7 +147,7 @@ class VentaTcpStrategy(VentaProtocolStrategy):
                 return
 
             try:
-                sock.send(message.encode())
+                sock.sendall(message.encode())
             except OSError as err:
                 _LOGGER.error(
                     "Unable to send payload %r to %s on port %s: %s",
