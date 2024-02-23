@@ -1,3 +1,10 @@
+## [0.5.1-beta.0](https://github.com/Michsior14/ha-venta/compare/v0.5.0...v0.5.1-beta.0) (2024-02-23)
+
+
+### Features
+
+* support raw socket based devices ([#13](https://github.com/Michsior14/ha-venta/issues/13)) ([2c28774](https://github.com/Michsior14/ha-venta/commit/2c28774f09247b01b8bed68f226b429674992e9f)), closes [#5](https://github.com/Michsior14/ha-venta/issues/5)
+
 ## [0.5.0](https://github.com/Michsior14/ha-venta/compare/v0.4.1...v0.5.0) (2024-01-27)
 
 
