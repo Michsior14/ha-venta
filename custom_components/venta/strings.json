@@ -12,6 +12,7 @@
       "user": {
         "data": {
           "host": "Host",
+          "api_version": "API version (keep auto if unsure)",
           "scan_interval": "Update interval (seconds)"
         }
       }
@@ -23,6 +24,16 @@
         "data": {
           "scan_interval": "Update interval (seconds)"
         }
+      }
+    }
+  },
+  "selector": {
+    "api_version": {
+      "options": {
+        "auto": "Auto discovery",
+        "0": "v0",
+        "2": "V2",
+        "3": "v3"
       }
     }
   },

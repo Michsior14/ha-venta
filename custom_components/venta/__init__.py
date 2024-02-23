@@ -1,4 +1,5 @@
 """The Venta integration."""
+
 from __future__ import annotations
 
 import asyncio
@@ -81,13 +82,13 @@ async def venta_api_setup(
             device = VentaDevice(host, update_interval, api_version, session)
             await device.init()
     except asyncio.TimeoutError as err:
-        _LOGGER.debug("Connection to %s timed out", host)
+        _LOGGER.debug("Connection to %s timed out", host, exc_info=err)
         raise ConfigEntryNotReady from err
     except ClientConnectionError as err:
-        _LOGGER.debug("ClientConnectionError to %s", host)
+        _LOGGER.debug("ClientConnectionError to %s", host, exc_info=err)
         raise ConfigEntryNotReady from err
-    except Exception:  # pylint: disable=broad-except
-        _LOGGER.error("Unexpected error creating device %s", host)
+    except Exception as err:  # pylint: disable=broad-except
+        _LOGGER.error("Unexpected error creating device %s", host, exc_info=err)
         return None
 
     api = VentaApi(device)

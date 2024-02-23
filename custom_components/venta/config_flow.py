@@ -1,4 +1,5 @@
 """Config flow for Venta integration."""
+
 from __future__ import annotations
 
 import asyncio
@@ -19,8 +20,9 @@ from homeassistant.const import (
 )
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
+from homeassistant.helpers import selector
 
-from .const import DEFAULT_SCAN_INTERVAL, DOMAIN
+from .const import AUTO_API_VERSION, DEFAULT_SCAN_INTERVAL, DOMAIN
 from .venta import VentaApiVersion, VentaApiVersionError, VentaDevice
 
 _LOGGER = logging.getLogger(__name__)
@@ -29,6 +31,18 @@ _LOGGER = logging.getLogger(__name__)
 STEP_USER_DATA_SCHEMA = vol.Schema(
     {
         vol.Required(CONF_HOST): str,
+        vol.Required(
+            CONF_API_VERSION, default=AUTO_API_VERSION
+        ): selector.SelectSelector(
+            selector.SelectSelectorConfig(
+                options=[
+                    AUTO_API_VERSION,
+                    *[str(entry.value) for entry in list(VentaApiVersion)],
+                ],
+                translation_key="api_version",
+                mode=selector.SelectSelectorMode.DROPDOWN,
+            ),
+        ),
         vol.Optional(CONF_SCAN_INTERVAL, default=DEFAULT_SCAN_INTERVAL): vol.All(
             cv.positive_int, vol.Range(min=1)
         ),
@@ -68,10 +82,19 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             )
             try:
                 async with asyncio.timeout(10):
-                    device = VentaDevice(
-                        host, update_interval, None, async_get_clientsession(self.hass)
+                    api_version = (
+                        int(user_input[CONF_API_VERSION])
+                        if user_input[CONF_API_VERSION] != AUTO_API_VERSION
+                        else None
                     )
-                    await device.detect_api_version()
+                    device = VentaDevice(
+                        host,
+                        update_interval,
+                        api_version,
+                        async_get_clientsession(self.hass),
+                    )
+                    if api_version is None:
+                        await device.detect_api_version()
                     await device.init()
             except (asyncio.TimeoutError, ClientError):
                 _LOGGER.debug("Connection to %s timed out", host)
