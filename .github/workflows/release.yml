@@ -2,6 +2,13 @@ name: release
 
 on:
   workflow_dispatch:
+    inputs:
+      pre-release:
+        description: |
+          Marks the release as pre-release. Default false.
+        type: boolean
+        default: false
+        required: false
 
 permissions:
   contents: write
@@ -23,8 +30,11 @@ jobs:
           git-message: "release: {version}"
           version-file: "./custom_components/venta/manifest.json"
           skip-git-pull: "true"
+          pre-release: "${{ github.event.inputs.pre-release }}"
+          pre-release-identifier: "beta"
       - uses: ncipollo/release-action@v1
         if: ${{ steps.changelog.outputs.skipped == 'false' }}
         with:
           tag: ${{ steps.changelog.outputs.tag }}
           body: ${{ steps.changelog.outputs.clean_changelog }}
+          prerelease: "${{ github.event.inputs.pre-release }}"
