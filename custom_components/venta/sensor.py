@@ -1,4 +1,5 @@
 """Support for Venta sensors."""
+
 from __future__ import annotations
 
 from collections.abc import Callable
@@ -12,28 +13,42 @@ from homeassistant.components.sensor import (
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
-    UnitOfTemperature,
     ATTR_TEMPERATURE,
+    CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+    CONCENTRATION_PARTS_PER_BILLION,
+    CONCENTRATION_PARTS_PER_MILLION,
     REVOLUTIONS_PER_MINUTE,
-    UnitOfTime,
     EntityCategory,
+    UnitOfTemperature,
+    UnitOfTime,
 )
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import DOMAIN
+from .const import (
+    DOMAIN,
+    ATTR_CO2,
+    ATTR_PARTICLES_0_3,
+    ATTR_PARTICLES_0_5,
+    ATTR_PARTICLES_2_5,
+    ATTR_PARTICLES_5_0,
+    ATTR_PARTICLES_10,
+    ATTR_PM_1_0,
+    ATTR_PM_2_5,
+    ATTR_PM_10,
+    ATTR_WATER_LEVEL,
+    ATTR_FAN_SPEED,
+    ATTR_OPERATION_TIME,
+    ATTR_DISC_ION_TIME,
+    ATTR_CLEANING_TIME,
+    ATTR_SERVICE_TIME,
+    ATTR_SERVICE_MAX_TIME,
+    ATTR_WARNINGS,
+    ATTR_VOC,
+    ATTR_HCHO,
+)
 from .venta import VentaData, VentaDataUpdateCoordinator
-
-
-ATTR_WATER_LEVEL = "water_level"
-ATTR_FAN_SPEED = "fan_speed"
-ATTR_OPERATION_TIME = "operation_time"
-ATTR_DISC_ION_TIME = "disc_ion_time"
-ATTR_CLEANING_TIME = "cleaning_time"
-ATTR_SERVICE_TIME = "service_time"
-ATTR_SERVICE_MAX_TIME = "service_max_time"
-ATTR_WARNINGS = "warnings"
 
 
 @dataclass
@@ -144,6 +159,109 @@ SENSOR_TYPES: tuple[VentaSensorEntityDescription, ...] = (
         is not None,
         value_func=lambda data: data.info.get("Warnings"),
     ),
+    VentaSensorEntityDescription(
+        key=ATTR_PARTICLES_0_3,
+        translation_key="particles_0_3",
+        state_class=SensorStateClass.MEASUREMENT,
+        exists_func=lambda coordinator: coordinator.data.measure.get("Particles0u3")
+        is not None,
+        value_func=lambda data: data.measure.get("Particles0u3"),
+    ),
+    VentaSensorEntityDescription(
+        key=ATTR_PARTICLES_0_5,
+        translation_key="particles_0_5",
+        state_class=SensorStateClass.MEASUREMENT,
+        exists_func=lambda coordinator: coordinator.data.measure.get("Particles0u5")
+        is not None,
+        value_func=lambda data: data.measure.get("Particles0u5"),
+    ),
+    VentaSensorEntityDescription(
+        key=ATTR_PARTICLES_2_5,
+        translation_key="particles_2_5",
+        state_class=SensorStateClass.MEASUREMENT,
+        exists_func=lambda coordinator: coordinator.data.measure.get("Particles2u5")
+        is not None,
+        value_func=lambda data: data.measure.get("Particles2u5"),
+    ),
+    VentaSensorEntityDescription(
+        key=ATTR_PARTICLES_5_0,
+        translation_key="particles_5_0",
+        state_class=SensorStateClass.MEASUREMENT,
+        exists_func=lambda coordinator: coordinator.data.measure.get("Particles5u0")
+        is not None,
+        value_func=lambda data: data.measure.get("Particles5u0"),
+    ),
+    VentaSensorEntityDescription(
+        key=ATTR_PARTICLES_10,
+        translation_key="particles_10",
+        state_class=SensorStateClass.MEASUREMENT,
+        exists_func=lambda coordinator: coordinator.data.measure.get("Particles10u")
+        is not None,
+        value_func=lambda data: data.measure.get("Particles10u"),
+    ),
+    VentaSensorEntityDescription(
+        key=ATTR_PM_1_0,
+        translation_key="pm_1_0",
+        device_class=SensorDeviceClass.PM1,
+        native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+        state_class=SensorStateClass.MEASUREMENT,
+        exists_func=lambda coordinator: coordinator.data.measure.get("PmCalc1u0")
+        is not None
+        or coordinator.data.measure.get("Pm1u0") is not None,
+        value_func=lambda data: data.measure.get("PmCalc1u0")
+        or data.measure.get("Pm1u0"),
+    ),
+    VentaSensorEntityDescription(
+        key=ATTR_PM_2_5,
+        translation_key="pm_2_5",
+        device_class=SensorDeviceClass.PM25,
+        native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+        state_class=SensorStateClass.MEASUREMENT,
+        exists_func=lambda coordinator: coordinator.data.measure.get("PmCalc2u5")
+        is not None
+        or coordinator.data.measure.get("Pm2u5") is not None,
+        value_func=lambda data: data.measure.get("PmCalc2u5")
+        or data.measure.get("Pm2u5"),
+    ),
+    VentaSensorEntityDescription(
+        key=ATTR_PM_10,
+        translation_key="pm_10",
+        device_class=SensorDeviceClass.PM10,
+        native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+        state_class=SensorStateClass.MEASUREMENT,
+        exists_func=lambda coordinator: coordinator.data.measure.get("PmCalc10u")
+        is not None
+        or coordinator.data.measure.get("Pm10u") is not None,
+        value_func=lambda data: data.measure.get("PmCalc10u")
+        or data.measure.get("Pm10u"),
+    ),
+    VentaSensorEntityDescription(
+        key=ATTR_CO2,
+        translation_key="co2",
+        device_class=SensorDeviceClass.CO2,
+        native_unit_of_measurement=CONCENTRATION_PARTS_PER_MILLION,
+        state_class=SensorStateClass.MEASUREMENT,
+        exists_func=lambda coordinator: coordinator.data.measure.get("Co2") is not None,
+        value_func=lambda data: data.measure.get("Co2"),
+    ),
+    VentaSensorEntityDescription(
+        key=ATTR_VOC,
+        translation_key="voc",
+        device_class=SensorDeviceClass.VOLATILE_ORGANIC_COMPOUNDS_PARTS,
+        native_unit_of_measurement=CONCENTRATION_PARTS_PER_BILLION,
+        state_class=SensorStateClass.MEASUREMENT,
+        exists_func=lambda coordinator: coordinator.data.measure.get("Voc") is not None,
+        value_func=lambda data: data.measure.get("Voc"),
+    ),
+    VentaSensorEntityDescription(
+        key=ATTR_HCHO,
+        translation_key="hcho",
+        native_unit_of_measurement=CONCENTRATION_PARTS_PER_BILLION,
+        state_class=SensorStateClass.MEASUREMENT,
+        exists_func=lambda coordinator: coordinator.data.measure.get("Hcho")
+        is not None,
+        value_func=lambda data: data.measure.get("Hcho"),
+    ),
 )
 
 
@@ -152,21 +270,10 @@ async def async_setup_entry(
 ) -> None:
     """Set up Venta sensors on config_entry."""
     coordinator: VentaDataUpdateCoordinator = hass.data[DOMAIN].get(entry.entry_id)
-    sensors = [
-        ATTR_TEMPERATURE,
-        ATTR_WATER_LEVEL,
-        ATTR_FAN_SPEED,
-        ATTR_OPERATION_TIME,
-        ATTR_DISC_ION_TIME,
-        ATTR_CLEANING_TIME,
-        ATTR_SERVICE_TIME,
-        ATTR_SERVICE_MAX_TIME,
-        ATTR_WARNINGS,
-    ]
     entities = [
         VentaSensor(coordinator, description)
         for description in SENSOR_TYPES
-        if description.key in sensors and description.exists_func(coordinator)
+        if description.exists_func(coordinator)
     ]
     async_add_entities(entities)
 

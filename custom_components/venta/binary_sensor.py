@@ -1,4 +1,5 @@
 """Support for Venta binary sensors."""
+
 from __future__ import annotations
 
 from collections.abc import Callable
@@ -13,12 +14,8 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import DOMAIN, NO_WATER_THRESHOLD
+from .const import DOMAIN, NO_WATER_THRESHOLD, ATTR_NEEDS_REFILL, ATTR_NEEDS_SERVICE
 from .venta import VentaData, VentaDataUpdateCoordinator, VentaDeviceType
-
-
-ATTR_NEEDS_REFILL = "needs_refill"
-ATTR_NEEDS_SERVICE = "needs_service"
 
 
 @dataclass
@@ -86,14 +83,10 @@ async def async_setup_entry(
 ) -> None:
     """Set up Venta binary sensors on config_entry."""
     coordinator: VentaDataUpdateCoordinator = hass.data[DOMAIN].get(entry.entry_id)
-    sensors = [
-        ATTR_NEEDS_REFILL,
-        ATTR_NEEDS_SERVICE,
-    ]
     entities = [
         VentaBinarySensor(coordinator, description)
         for description in _supported_sensors(coordinator.api.device.device_type)
-        if description.key in sensors
+        if description.key
     ]
     async_add_entities(entities)
 

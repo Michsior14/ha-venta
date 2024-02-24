@@ -18,11 +18,8 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import DOMAIN
+from .const import ATTR_SLEEP_MODE, DOMAIN
 from .venta import VentaData, VentaDataUpdateCoordinator, VentaDeviceType
-
-
-ATTR_SLEEP_MODE = "sleep_mode"
 
 
 @dataclass
@@ -74,11 +71,10 @@ async def async_setup_entry(
 ) -> None:
     """Set up Venta switch on config_entry."""
     coordinator: VentaDataUpdateCoordinator = hass.data[DOMAIN].get(entry.entry_id)
-    sensors = [ATTR_SLEEP_MODE]
     entities = [
         VentaSwitch(coordinator, description)
         for description in SENSOR_TYPES
-        if description.key in sensors and description.exists_func(coordinator)
+        if description.exists_func(coordinator)
     ]
     async_add_entities(entities)
 
