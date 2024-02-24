@@ -81,7 +81,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 seconds=user_input.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL)
             )
             try:
-                async with asyncio.timeout(10):
+                async with asyncio.timeout(20):
                     api_version = (
                         int(user_input[CONF_API_VERSION])
                         if user_input[CONF_API_VERSION] != AUTO_API_VERSION
@@ -93,9 +93,10 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                         api_version,
                         async_get_clientsession(self.hass),
                     )
-                    if api_version is None:
+                    api_version_not_known = api_version is None
+                    if api_version_not_known:
                         await device.detect_api_version()
-                    await device.init()
+                    await device.init(endpoint_known=api_version_not_known)
             except (asyncio.TimeoutError, ClientError):
                 _LOGGER.debug("Connection to %s timed out", host)
                 errors["base"] = "cannot_connect"
