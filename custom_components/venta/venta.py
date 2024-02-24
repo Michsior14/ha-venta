@@ -13,10 +13,10 @@ from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, Upda
 
 from .const import DOMAIN
 from .venta_strategy import (
+    VentaApiHostDefinition,
     VentaHttpStrategy,
     VentaTcpHeader,
     VentaTcpStrategy,
-    VentaApiHostDefinition,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -33,6 +33,7 @@ class VentaDeviceType(Enum):
     LW60 = 2
     AH902 = 12
     LW73_LW74 = 106
+    AS150 = 150
     AH550_AH555 = 500
 
 

@@ -17,11 +17,8 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import DOMAIN
+from .const import DOMAIN, ATTR_LED_STRIP_MODE
 from .venta import VentaData, VentaDataUpdateCoordinator
-
-
-ATTR_LED_STRIP_MODE = "led_strip_mode"
 
 
 LED_STRIP_MODES = {

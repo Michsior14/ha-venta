@@ -5,8 +5,8 @@ import select
 import socket
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
+from json import JSONDecodeError, dumps, loads
 from typing import Any
-from json import loads, dumps, JSONDecodeError
 
 from aiohttp import ClientSession
 

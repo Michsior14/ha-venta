@@ -6,11 +6,11 @@ from dataclasses import dataclass
 from typing import Any
 
 from homeassistant.components.humidifier import (
+    MODE_AUTO,
     HumidifierDeviceClass,
     HumidifierEntity,
     HumidifierEntityDescription,
     HumidifierEntityFeature,
-    MODE_AUTO,
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
@@ -19,13 +19,13 @@ from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import (
     DOMAIN,
-    MODE_SLEEP,
     MODE_LEVEL_1,
     MODE_LEVEL_2,
     MODE_LEVEL_3,
     MODE_LEVEL_4,
+    MODE_SLEEP,
 )
-from .venta import VentaDataUpdateCoordinator, VentaDeviceType, VentaApiVersion
+from .venta import VentaApiVersion, VentaDataUpdateCoordinator, VentaDeviceType
 
 AVAILABLE_MODES = [
     MODE_AUTO,
@@ -54,6 +54,9 @@ async def async_setup_entry(
 ) -> None:
     """Set up Venta humidifier from config entry."""
     coordinator: VentaDataUpdateCoordinator = hass.data[DOMAIN].get(entry.entry_id)
+
+    if coordinator.data.action.get("TargetHum") is None:
+        return
 
     entity: VentaBaseHumidifierEntity
     if coordinator.api.device.api_version == VentaApiVersion.V0:

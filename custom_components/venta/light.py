@@ -14,9 +14,9 @@ from homeassistant.components.light import (
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
-from homeassistant.util.color import rgb_hex_to_rgb_list, color_rgb_to_hex
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
+from homeassistant.util.color import color_rgb_to_hex, rgb_hex_to_rgb_list
 
 from .const import DOMAIN
 from .venta import VentaDataUpdateCoordinator

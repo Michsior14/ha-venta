@@ -12,7 +12,8 @@
             "user": {
                 "data": {
                     "host": "Хост",
-                    "scan_interval": "Інтервал оновлення (секунди)"
+                    "scan_interval": "Інтервал оновлення (секунди)",
+                    "api_version": "API version (keep auto if unsure)"
                 }
             }
         }
@@ -59,6 +60,42 @@
             },
             "warnings": {
                 "name": "Попередження"
+            },
+            "particles_0_3": {
+                "name": "Particles count (0.3u)"
+            },
+            "particles_0_5": {
+                "name": "Particles count (0.5u)"
+            },
+            "particles_1_0": {
+                "name": "Particles count (1.0u)"
+            },
+            "particles_2_5": {
+                "name": "Particles count (2.5u)"
+            },
+            "particles_5_0": {
+                "name": "Particles count (5u)"
+            },
+            "particles_10": {
+                "name": "Particles count (10u)"
+            },
+            "pm_1_0": {
+                "name": "PM1.0"
+            },
+            "pm_2_5": {
+                "name": "PM2.5"
+            },
+            "pm_10": {
+                "name": "PM10"
+            },
+            "co2": {
+                "name": "CO2"
+            },
+            "voc": {
+                "name": "VOCs"
+            },
+            "hcoh": {
+                "name": "Formaldehyde"
             }
         },
         "binary_sensor": {
@@ -82,6 +119,16 @@
         "switch": {
             "sleep_mode": {
                 "name": "Сплячий режим"
+            }
+        }
+    },
+    "selector": {
+        "api_version": {
+            "options": {
+                "auto": "Auto discovery",
+                "0": "v0",
+                "2": "V2",
+                "3": "v3"
             }
         }
     }

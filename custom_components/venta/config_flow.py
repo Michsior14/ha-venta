@@ -19,8 +19,8 @@ from homeassistant.const import (
     CONF_SCAN_INTERVAL,
 )
 from homeassistant.data_entry_flow import FlowResult
-from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers import selector
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .const import AUTO_API_VERSION, DEFAULT_SCAN_INTERVAL, DOMAIN
 from .venta import VentaApiVersion, VentaApiVersionError, VentaDevice
