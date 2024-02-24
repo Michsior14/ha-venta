@@ -15,7 +15,7 @@ _LOGGER = logging.getLogger(__name__)
 
 @dataclass
 class VentaApiHostDefinition:
-    """Venta api endpoint definition."""
+    """Venta api host definition."""
 
     host: str
     port: int
@@ -26,12 +26,12 @@ class VentaProtocolStrategy(ABC):
     """Abstract class for Venta API strategy."""
 
     @abstractmethod
-    async def get_status(self, endpoint: str) -> dict[str, Any]:
+    async def get_status(self, method: str, url: str) -> dict[str, Any]:
         """Request status of the Venta device using proper protocol."""
 
     @abstractmethod
     async def send_action(
-        self, endpoint: str, json: dict[str, Any] | None = None
+        self, method: str, url: str, json: dict[str, Any] | None = None
     ) -> dict[str, Any]:
         """Send action to the Venta device using proper protocol."""
 
@@ -49,28 +49,26 @@ class VentaHttpStrategy(VentaProtocolStrategy):
         self._url = f"http://{host_definition.host}:{host_definition.port}"
         self._session = session
 
-    async def get_status(self, endpoint: str) -> dict[str, Any]:
+    async def get_status(self, method: str, url: str) -> dict[str, Any]:
         """Request status of the Venta device using HTTP protocol."""
-        return await self._send_request(endpoint)
+        return await self._send_request(method, url)
 
     async def send_action(
-        self, endpoint: str, json: dict[str, Any] | None = None
+        self, method: str, url: str, json: dict[str, Any] | None = None
     ) -> dict[str, Any]:
         """Send action to the Venta device using HTTP protocol."""
-        return await self._send_request(endpoint, json)
+        return await self._send_request(method, url, json)
 
     async def _send_request(
-        self, endpoint: str, json_action: dict[str, Any] | None = None
+        self, method: str, url: str, json_action: dict[str, Any] | None = None
     ) -> dict[str, Any]:
         """Send request to Venta device using HTTP protocol."""
 
         async def _send() -> dict[str, Any]:
             """Make the http request."""
-            _LOGGER.debug(
-                "Sending request to %s with data: %s", endpoint, str(json_action)
-            )
-            async with self._session.post(
-                f"{self._url}/{endpoint}", json=json_action
+            _LOGGER.debug("Sending request to %s with data: %s", url, str(json_action))
+            async with self._session.request(
+                method, f"{self._url}/{url}", json=json_action
             ) as resp:
                 return await resp.json(content_type="text/plain")
 
@@ -102,20 +100,20 @@ class VentaTcpStrategy(VentaProtocolStrategy):
         self._header = header
         self._buffer_size = buffer_size
 
-    async def get_status(self, endpoint: str) -> dict[str, Any]:
+    async def get_status(self, method: str, url: str) -> dict[str, Any]:
         """Request status of the Venta device using TCP protocol."""
-        message = self._build_message("GET", endpoint)
+        message = self._build_message(method, url)
         return await self._send_request(message)
 
     async def send_action(
-        self, endpoint: str, json: dict[str, Any] | None = None
+        self, method: str, url: str, json: dict[str, Any] | None = None
     ) -> dict[str, Any]:
         """Send action to the Venta device using TCP protocol."""
-        message = self._build_message("POST", endpoint, json)
+        message = self._build_message(method, url, json)
         return await self._send_request(message)
 
     def _build_message(
-        self, method: str, endpoint: str, action: dict[str, Any] | None = None
+        self, method: str, url: str, action: dict[str, Any] | None = None
     ) -> str:
         """Build the message to send to the Venta device."""
         body = dumps(
@@ -129,7 +127,7 @@ class VentaTcpStrategy(VentaProtocolStrategy):
                 **(action if action else {}),
             }
         )
-        return f"{method} /{endpoint}\nContent-Length: {len(body)}\n\n{body}\n\n"
+        return f"{method} /{url}\nContent-Length: {len(body)}\n\n{body}\n\n"
 
     async def _send_request(self, message: str) -> dict[str, Any]:
         """Request data from the Venta device using TCP protocol."""

@@ -49,17 +49,40 @@ class VentaApiVersion(Enum):
 class VentaApiEndpointDefinition:
     """Venta api endpoint definition."""
 
-    status: str
-    action: str
+    method: str
+    url: str
+
+
+@dataclass
+class VentaApiDefinition:
+    """Venta api definition."""
+
+    status: VentaApiEndpointDefinition
+    action: VentaApiEndpointDefinition | None
     port: int = 80
 
 
-API_VERSION_ENDPOINTS: dict[VentaApiVersion, VentaApiEndpointDefinition] = {
-    VentaApiVersion.V0: VentaApiEndpointDefinition("Complete", "Action", 48000),
-    VentaApiVersion.V2: VentaApiEndpointDefinition("datastructure", "datastructure"),
-    VentaApiVersion.V3: VentaApiEndpointDefinition(
-        "api/telemetry", "api/telemetry?request=set"
-    ),
+API_VERSION_ENDPOINTS: dict[VentaApiVersion, list[VentaApiDefinition]] = {
+    VentaApiVersion.V0: [
+        VentaApiDefinition(
+            VentaApiEndpointDefinition("GET", "Complete"),
+            VentaApiEndpointDefinition("POST", "Action"),
+            48000,
+        )
+    ],
+    VentaApiVersion.V2: [
+        VentaApiDefinition(
+            VentaApiEndpointDefinition("POST", "datastructure"),
+            VentaApiEndpointDefinition("POST", "datastructure"),
+        )
+    ],
+    VentaApiVersion.V3: [
+        VentaApiDefinition(
+            VentaApiEndpointDefinition("POST", "api/telemetry"),
+            VentaApiEndpointDefinition("POST", "api/telemetry?request=set"),
+        ),
+        VentaApiDefinition(VentaApiEndpointDefinition("GET", "sensordata.json"), None),
+    ],
 }
 
 
@@ -81,7 +104,7 @@ class VentaDevice:
     device_type: VentaDeviceType
     api_version: VentaApiVersion
     update_interval: timedelta
-    endpoint_definition: VentaApiEndpointDefinition
+    api_definition: VentaApiDefinition
 
     def __init__(
         self,
@@ -96,22 +119,24 @@ class VentaDevice:
         self.mac = None
         self.device_type = VentaDeviceType.UNKNOWN
         self._session = session
+        self._endpoint_definition = None
+        self._strategy = None
         if api_version is not None:
-            self._set_api_defaults(api_version)
+            self.api_version = VentaApiVersion(api_version)
 
     async def detect_api_version(self) -> None:
         """Detect the api version version."""
         for api_version in reversed(list(VentaApiVersion)):
-            self._set_api_defaults(api_version)
-            data = await self._strategy.get_status(self.endpoint_definition.status)
-            _LOGGER.debug("Detecting api version: %s", str(data))
-            if data is not None and data.get("Header") is not None:
+            self.api_version = api_version
+            if await self._detect_endpoint_definition():
                 return
-            await asyncio.sleep(5.0)
         raise VentaApiVersionError()
 
-    async def init(self) -> None:
+    async def init(self, endpoint_known: bool = False) -> None:
         """Initialize the Venta device."""
+        if not endpoint_known:
+            await self._detect_endpoint_definition()
+
         data = await self.status()
         self.mac = data.header.get("MacAdress")
         try:
@@ -122,24 +147,46 @@ class VentaDevice:
     async def status(self) -> VentaData:
         """Update the Venta device."""
         return await self._map_data(
-            await self._strategy.get_status(self.endpoint_definition.status)
+            await self._strategy.get_status(
+                self.api_definition.status.method, self.api_definition.status.url
+            )
         )
 
     async def action(self, action: dict[str, str | int | bool]) -> VentaData:
         """Send action to the Venta device."""
+        if self.api_definition.action is None:
+            raise ValueError("Action is not supported for this device.")
+
         return await self._map_data(
-            await self._strategy.send_action(self.endpoint_definition.action, action)
+            await self._strategy.send_action(
+                self.api_definition.action.method,
+                self.api_definition.action.url,
+                action,
+            )
         )
 
-    def _set_api_defaults(self, api_version: VentaApiVersion | int) -> None:
+    async def _detect_endpoint_definition(self) -> bool:
+        """Detect the endpoint definition."""
+        for api_definition in API_VERSION_ENDPOINTS[self.api_version]:
+            self._set_api_definition(api_definition)
+            try:
+                status = self.api_definition.status
+                data = await self._strategy.get_status(
+                    status.method,
+                    status.url,
+                )
+                if data is not None and data.get("Header") is not None:
+                    return True
+                await asyncio.sleep(0.5)
+            except ClientConnectionError:
+                pass
+        return False
+
+    def _set_api_definition(self, api_definition: VentaApiDefinition) -> None:
         """Set the api version defaults."""
-        self.api_version = VentaApiVersion(api_version)
-        self.endpoint_definition = API_VERSION_ENDPOINTS[self.api_version]
+        self.api_definition = api_definition
 
-        host_definition = VentaApiHostDefinition(
-            self.host, self.endpoint_definition.port
-        )
-
+        host_definition = VentaApiHostDefinition(self.host, self.api_definition.port)
         if self.api_version == VentaApiVersion.V0:
             self._strategy = VentaTcpStrategy(
                 host_definition,
