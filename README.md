@@ -1,14 +1,18 @@
 # ha-venta
 
-A Home Assistant custom Integration for Venta devices (protocol: v2, v3) with wifi module.
+A Home Assistant custom Integration for Venta devices (protocol: v0, v2, v3) with wifi module.
 
 The following Venta device are currently tested and supported:
 
+- **Protocol v0:**
+  - LW60/AH902 Humidifier
+  
 - **Protocol v2:**
   - LW73/LW74 Humidifier
 
 - **Protocol v3:**
   - AH510/AH515/AH530/AH550/AH555 Humidifier
+  - AirSense 150 Pro
 
 ## Features
 
