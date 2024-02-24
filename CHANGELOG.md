@@ -1,3 +1,10 @@
+## [0.5.1-beta.1](https://github.com/Michsior14/ha-venta/compare/v0.5.1-beta.0...v0.5.1-beta.1) (2024-02-24)
+
+
+### Features
+
+* add support for AS150 ([#15](https://github.com/Michsior14/ha-venta/issues/15)) ([3765366](https://github.com/Michsior14/ha-venta/commit/37653666c4045c211e9caaffa8b1bf025d4b0fa2)), closes [#8](https://github.com/Michsior14/ha-venta/issues/8)
+
 ## [0.5.1-beta.0](https://github.com/Michsior14/ha-venta/compare/v0.5.0...v0.5.1-beta.0) (2024-02-23)
 
 
