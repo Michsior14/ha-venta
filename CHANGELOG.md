@@ -1,3 +1,5 @@
+## [0.6.0](https://github.com/Michsior14/ha-venta/compare/v0.5.1-beta.8...v0.6.0) (2024-02-25)
+
 ## [0.5.1-beta.8](https://github.com/Michsior14/ha-venta/compare/v0.5.1-beta.7...v0.5.1-beta.8) (2024-02-25)
 
 
@@ -27,11 +29,4 @@
 
 * errors during binary sensors setup for new devices ([3310299](https://github.com/Michsior14/ha-venta/commit/3310299d8940ff6b718becad106a9427d4192c07))
 * make api definition part of config ([3de4eb3](https://github.com/Michsior14/ha-venta/commit/3de4eb3fd5bb5f7f56b445f7fa85c400f2b40c5f))
-
-## [0.5.1-beta.4](https://github.com/Michsior14/ha-venta/compare/v0.5.1-beta.3...v0.5.1-beta.4) (2024-02-25)
-
-
-### Bug Fixes
-
-* parse all responses as json ([ff5e88d](https://github.com/Michsior14/ha-venta/commit/ff5e88d4769ca19ab65da0f7174b57640024dd48))
 
