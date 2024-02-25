@@ -70,7 +70,7 @@ class VentaHttpStrategy(VentaProtocolStrategy):
             async with self._session.request(
                 method, f"{self._url}/{url}", json=json_action
             ) as resp:
-                return await resp.json(content_type="text/plain")
+                return await resp.json(content_type=None)
 
         if self._session and not self._session.closed:
             return await _send()
