@@ -75,6 +75,7 @@ SENSOR_TYPES: list[VentaSensorEntityDescription] = (
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+        suggested_display_precision=1,
         exists_func=lambda coordinator: coordinator.data.measure.get("Temperature")
         is not None,
         value_func=lambda data: data.measure.get("Temperature"),
