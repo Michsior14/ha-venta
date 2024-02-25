@@ -1,3 +1,11 @@
+## [0.5.1-beta.5](https://github.com/Michsior14/ha-venta/compare/v0.5.1-beta.4...v0.5.1-beta.5) (2024-02-25)
+
+
+### Bug Fixes
+
+* errors during binary sensors setup for new devices ([3310299](https://github.com/Michsior14/ha-venta/commit/3310299d8940ff6b718becad106a9427d4192c07))
+* make api definition part of config ([3de4eb3](https://github.com/Michsior14/ha-venta/commit/3de4eb3fd5bb5f7f56b445f7fa85c400f2b40c5f))
+
 ## [0.5.1-beta.4](https://github.com/Michsior14/ha-venta/compare/v0.5.1-beta.3...v0.5.1-beta.4) (2024-02-25)
 
 
@@ -25,11 +33,4 @@
 ### Features
 
 * add support for AS150 ([#15](https://github.com/Michsior14/ha-venta/issues/15)) ([3765366](https://github.com/Michsior14/ha-venta/commit/37653666c4045c211e9caaffa8b1bf025d4b0fa2)), closes [#8](https://github.com/Michsior14/ha-venta/issues/8)
-
-## [0.5.1-beta.0](https://github.com/Michsior14/ha-venta/compare/v0.5.0...v0.5.1-beta.0) (2024-02-23)
-
-
-### Features
-
-* support raw socket based devices ([#13](https://github.com/Michsior14/ha-venta/issues/13)) ([2c28774](https://github.com/Michsior14/ha-venta/commit/2c28774f09247b01b8bed68f226b429674992e9f)), closes [#5](https://github.com/Michsior14/ha-venta/issues/5)
 
