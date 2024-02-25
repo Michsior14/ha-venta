@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from datetime import timedelta
 from enum import Enum
 
-from aiohttp import ClientConnectionError, ClientSession
+from aiohttp import ClientConnectionError, ClientError, ClientSession
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import CONNECTION_NETWORK_MAC, DeviceInfo
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
@@ -171,14 +171,15 @@ class VentaDevice:
             self._set_api_definition(api_definition)
             try:
                 status = self.api_definition.status
-                data = await self._strategy.get_status(
-                    status.method,
-                    status.url,
-                )
-                if data is not None and data.get("Header") is not None:
-                    return True
+                async with asyncio.timeout(5):
+                    data = await self._strategy.get_status(
+                        status.method,
+                        status.url,
+                    )
+                    if data is not None and data.get("Header") is not None:
+                        return True
                 await asyncio.sleep(0.5)
-            except ClientConnectionError:
+            except (asyncio.TimeoutError, ClientError):
                 pass
         return False
 

@@ -81,7 +81,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 seconds=user_input.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL)
             )
             try:
-                async with asyncio.timeout(20):
+                async with asyncio.timeout(30):
                     api_version = (
                         int(user_input[CONF_API_VERSION])
                         if user_input[CONF_API_VERSION] != AUTO_API_VERSION

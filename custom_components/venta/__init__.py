@@ -78,7 +78,7 @@ async def venta_api_setup(
     """Create a Venta instance only once."""
     session = async_get_clientsession(hass)
     try:
-        async with asyncio.timeout(20):
+        async with asyncio.timeout(30):
             device = VentaDevice(host, update_interval, api_version, session)
             await device.init()
     except asyncio.TimeoutError as err:
