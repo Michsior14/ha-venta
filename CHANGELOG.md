@@ -1,3 +1,10 @@
+## [0.5.1-beta.3](https://github.com/Michsior14/ha-venta/compare/v0.5.1-beta.2...v0.5.1-beta.3) (2024-02-25)
+
+
+### Bug Fixes
+
+* handle timeout on endpoint definition ([ffe0553](https://github.com/Michsior14/ha-venta/commit/ffe055344b9afa5fba22dadfe8554a53db127a49))
+
 ## [0.5.1-beta.2](https://github.com/Michsior14/ha-venta/compare/v0.5.1-beta.1...v0.5.1-beta.2) (2024-02-24)
 
 
@@ -26,11 +33,4 @@
 
 * add custom device update interval ([#11](https://github.com/Michsior14/ha-venta/issues/11)) ([05999b2](https://github.com/Michsior14/ha-venta/commit/05999b20a57a7c0b38fb0fb122c686067e1ccd9c))
 * support new languages ([#12](https://github.com/Michsior14/ha-venta/issues/12)) ([4b7b9a2](https://github.com/Michsior14/ha-venta/commit/4b7b9a2c065635925ec64ff7012ec2f4ad4a07d1))
-
-## [0.4.1](https://github.com/Michsior14/ha-venta/compare/v0.4.0...v0.4.1) (2024-01-16)
-
-
-### Bug Fixes
-
-* **AH5xx:** respect automatic mode in sleep mode ([#9](https://github.com/Michsior14/ha-venta/issues/9)) ([219016b](https://github.com/Michsior14/ha-venta/commit/219016b65d3fba2fa3abe8f2b1dcae51145b093c))
 
