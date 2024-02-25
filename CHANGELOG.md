@@ -1,3 +1,10 @@
+## [0.5.1-beta.6](https://github.com/Michsior14/ha-venta/compare/v0.5.1-beta.5...v0.5.1-beta.6) (2024-02-25)
+
+
+### Bug Fixes
+
+* properly initialize select entities ([48ae9ef](https://github.com/Michsior14/ha-venta/commit/48ae9ef5fb3a75a213797e550bc794ac3e0085e9))
+
 ## [0.5.1-beta.5](https://github.com/Michsior14/ha-venta/compare/v0.5.1-beta.4...v0.5.1-beta.5) (2024-02-25)
 
 
@@ -26,11 +33,4 @@
 ### Bug Fixes
 
 * allow multiple endpoints for versions ([#17](https://github.com/Michsior14/ha-venta/issues/17)) ([2446ff7](https://github.com/Michsior14/ha-venta/commit/2446ff76f1d5afbd3708e479614813820614a017)), closes [#8](https://github.com/Michsior14/ha-venta/issues/8)
-
-## [0.5.1-beta.1](https://github.com/Michsior14/ha-venta/compare/v0.5.1-beta.0...v0.5.1-beta.1) (2024-02-24)
-
-
-### Features
-
-* add support for AS150 ([#15](https://github.com/Michsior14/ha-venta/issues/15)) ([3765366](https://github.com/Michsior14/ha-venta/commit/37653666c4045c211e9caaffa8b1bf025d4b0fa2)), closes [#8](https://github.com/Michsior14/ha-venta/issues/8)
 
