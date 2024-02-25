@@ -88,7 +88,6 @@ async def async_setup_entry(
     entities = [
         VentaBinarySensor(coordinator, description)
         for description in _supported_sensors(coordinator.api.device.device_type)
-        if description.key
     ]
     async_add_entities(entities)
 

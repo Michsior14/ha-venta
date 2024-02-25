@@ -46,7 +46,7 @@ class VentaSelectEntityDescription(
     """Describes Venta select entity."""
 
 
-SENSOR_TYPES: tuple[SelectEntityDescription, ...] = (
+SENSOR_TYPES: list[VentaSelectEntityDescription] = (
     VentaSelectEntityDescription(
         key=ATTR_LED_STRIP_MODE,
         translation_key="led_strip_mode",
@@ -76,7 +76,7 @@ async def async_setup_entry(
     entities = [
         VentaSelect(coordinator, description)
         for description in SENSOR_TYPES
-        if description.key in description.exists_func(coordinator)
+        if description.exists_func(coordinator)
     ]
     async_add_entities(entities)
 

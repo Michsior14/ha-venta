@@ -38,7 +38,7 @@ class VentaSwitchEntityDescription(
     """Describes Venta switch entity."""
 
 
-SENSOR_TYPES: tuple[VentaSwitchEntityDescription, ...] = (
+SENSOR_TYPES: list[VentaSwitchEntityDescription] = (
     VentaSwitchEntityDescription(
         key=ATTR_SLEEP_MODE,
         translation_key="sleep_mode",

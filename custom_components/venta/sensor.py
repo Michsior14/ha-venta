@@ -68,7 +68,7 @@ class VentaSensorEntityDescription(
     suggested_display_precision = 0
 
 
-SENSOR_TYPES: tuple[VentaSensorEntityDescription, ...] = (
+SENSOR_TYPES: list[VentaSensorEntityDescription] = (
     VentaSensorEntityDescription(
         key=ATTR_TEMPERATURE,
         translation_key="temperature",
