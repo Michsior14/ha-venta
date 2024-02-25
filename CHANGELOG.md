@@ -1,3 +1,10 @@
+## [0.5.1-beta.7](https://github.com/Michsior14/ha-venta/compare/v0.5.1-beta.6...v0.5.1-beta.7) (2024-02-25)
+
+
+### Bug Fixes
+
+* fallback to device id for mac address retrieval ([0f19adb](https://github.com/Michsior14/ha-venta/commit/0f19adbf6c6b31b3945edccbe95d6f70130fcc9b))
+
 ## [0.5.1-beta.6](https://github.com/Michsior14/ha-venta/compare/v0.5.1-beta.5...v0.5.1-beta.6) (2024-02-25)
 
 
@@ -26,11 +33,4 @@
 ### Bug Fixes
 
 * handle timeout on endpoint definition ([ffe0553](https://github.com/Michsior14/ha-venta/commit/ffe055344b9afa5fba22dadfe8554a53db127a49))
-
-## [0.5.1-beta.2](https://github.com/Michsior14/ha-venta/compare/v0.5.1-beta.1...v0.5.1-beta.2) (2024-02-24)
-
-
-### Bug Fixes
-
-* allow multiple endpoints for versions ([#17](https://github.com/Michsior14/ha-venta/issues/17)) ([2446ff7](https://github.com/Michsior14/ha-venta/commit/2446ff76f1d5afbd3708e479614813820614a017)), closes [#8](https://github.com/Michsior14/ha-venta/issues/8)
 
