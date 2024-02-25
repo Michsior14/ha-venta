@@ -14,7 +14,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import DOMAIN, NO_WATER_THRESHOLD, ATTR_NEEDS_REFILL, ATTR_NEEDS_SERVICE
+from .const import ATTR_NEEDS_REFILL, ATTR_NEEDS_SERVICE, DOMAIN, NO_WATER_THRESHOLD
 from .venta import VentaData, VentaDataUpdateCoordinator, VentaDeviceType
 
 
@@ -34,12 +34,12 @@ class VentaBinarySensorEntityDescription(
 
 def _supported_sensors(
     device_type: VentaDeviceType,
-) -> tuple[VentaBinarySensorEntityDescription, ...]:
+) -> list[VentaBinarySensorEntityDescription]:
     """Return supported sensors for given device type."""
     match device_type:
         case VentaDeviceType.LW73_LW74 | VentaDeviceType.UNKNOWN:
             service_warnings = [16, 17]
-            return (
+            return [
                 VentaBinarySensorEntityDescription(
                     key=ATTR_NEEDS_REFILL,
                     translation_key="needs_refill",
@@ -57,9 +57,9 @@ def _supported_sensors(
                         lambda data: data.info.get("Warnings") in service_warnings
                     ),
                 ),
-            )
+            ]
         case VentaDeviceType.AH550_AH555:
-            return (
+            return [
                 VentaBinarySensorEntityDescription(
                     key=ATTR_NEEDS_REFILL,
                     translation_key="needs_refill",
@@ -75,7 +75,9 @@ def _supported_sensors(
                         and data.info.get("ServiceT") >= data.info.get("ServiceMax")
                     ),
                 ),
-            )
+            ]
+        case _:
+            return []
 
 
 async def async_setup_entry(
