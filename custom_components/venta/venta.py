@@ -140,7 +140,6 @@ class VentaDevice:
 
     async def detect_api(self, api_version: int | None = None) -> None:
         """Detect the venta api."""
-
         definitions = API_DEFINITIONS
         if api_version is not None:
             definitions = [d for d in definitions if d.version.value == api_version]
