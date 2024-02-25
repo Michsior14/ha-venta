@@ -1,3 +1,10 @@
+## [0.5.1-beta.4](https://github.com/Michsior14/ha-venta/compare/v0.5.1-beta.3...v0.5.1-beta.4) (2024-02-25)
+
+
+### Bug Fixes
+
+* parse all responses as json ([ff5e88d](https://github.com/Michsior14/ha-venta/commit/ff5e88d4769ca19ab65da0f7174b57640024dd48))
+
 ## [0.5.1-beta.3](https://github.com/Michsior14/ha-venta/compare/v0.5.1-beta.2...v0.5.1-beta.3) (2024-02-25)
 
 
@@ -25,12 +32,4 @@
 ### Features
 
 * support raw socket based devices ([#13](https://github.com/Michsior14/ha-venta/issues/13)) ([2c28774](https://github.com/Michsior14/ha-venta/commit/2c28774f09247b01b8bed68f226b429674992e9f)), closes [#5](https://github.com/Michsior14/ha-venta/issues/5)
-
-## [0.5.0](https://github.com/Michsior14/ha-venta/compare/v0.4.1...v0.5.0) (2024-01-27)
-
-
-### Features
-
-* add custom device update interval ([#11](https://github.com/Michsior14/ha-venta/issues/11)) ([05999b2](https://github.com/Michsior14/ha-venta/commit/05999b20a57a7c0b38fb0fb122c686067e1ccd9c))
-* support new languages ([#12](https://github.com/Michsior14/ha-venta/issues/12)) ([4b7b9a2](https://github.com/Michsior14/ha-venta/commit/4b7b9a2c065635925ec64ff7012ec2f4ad4a07d1))
 
