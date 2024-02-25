@@ -1,6 +1,7 @@
 """Constants for the Venta integration."""
 
 DOMAIN = "venta"
+CONF_API_DEFINITION_ID = "api_definition_id"
 
 AUTO_API_VERSION = "auto"
 DEFAULT_SCAN_INTERVAL = 10

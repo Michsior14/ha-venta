@@ -57,33 +57,40 @@ class VentaApiEndpointDefinition:
 class VentaApiDefinition:
     """Venta api definition."""
 
+    version: VentaApiVersion
     status: VentaApiEndpointDefinition
     action: VentaApiEndpointDefinition | None
     port: int = 80
 
+    @property
+    def id(self) -> str:
+        """Return the id of the definition."""
+        status_id = self.status.url
+        action_id = self.action.url if self.action else "None"
+        return f"{self.version.value}/{status_id}/{action_id}"
 
-API_VERSION_ENDPOINTS: dict[VentaApiVersion, list[VentaApiDefinition]] = {
-    VentaApiVersion.V0: [
-        VentaApiDefinition(
-            VentaApiEndpointDefinition("GET", "Complete"),
-            VentaApiEndpointDefinition("POST", "Action"),
-            48000,
-        )
-    ],
-    VentaApiVersion.V2: [
-        VentaApiDefinition(
-            VentaApiEndpointDefinition("POST", "datastructure"),
-            VentaApiEndpointDefinition("POST", "datastructure"),
-        )
-    ],
-    VentaApiVersion.V3: [
-        VentaApiDefinition(
-            VentaApiEndpointDefinition("POST", "api/telemetry"),
-            VentaApiEndpointDefinition("POST", "api/telemetry?request=set"),
-        ),
-        VentaApiDefinition(VentaApiEndpointDefinition("GET", "sensordata.json"), None),
-    ],
-}
+
+API_DEFINITIONS: list[VentaApiDefinition] = [
+    VentaApiDefinition(
+        VentaApiVersion.V3,
+        VentaApiEndpointDefinition("POST", "api/telemetry"),
+        VentaApiEndpointDefinition("POST", "api/telemetry?request=set"),
+    ),
+    VentaApiDefinition(
+        VentaApiVersion.V3, VentaApiEndpointDefinition("GET", "sensordata.json"), None
+    ),
+    VentaApiDefinition(
+        VentaApiVersion.V2,
+        VentaApiEndpointDefinition("POST", "datastructure"),
+        VentaApiEndpointDefinition("POST", "datastructure"),
+    ),
+    VentaApiDefinition(
+        VentaApiVersion.V0,
+        VentaApiEndpointDefinition("GET", "Complete"),
+        VentaApiEndpointDefinition("POST", "Action"),
+        48000,
+    ),
+]
 
 
 @dataclass
@@ -110,7 +117,7 @@ class VentaDevice:
         self,
         host: str,
         update_interval: timedelta,
-        api_version: int | None,
+        api_definition_id: str | None,
         session: ClientSession | None = None,
     ) -> None:
         """Venta device constructor."""
@@ -121,22 +128,41 @@ class VentaDevice:
         self._session = session
         self._endpoint_definition = None
         self._strategy = None
-        if api_version is not None:
-            self.api_version = VentaApiVersion(api_version)
 
-    async def detect_api_version(self) -> None:
-        """Detect the api version version."""
-        for api_version in reversed(list(VentaApiVersion)):
-            self.api_version = api_version
-            if await self._detect_endpoint_definition():
-                return
+        if api_definition_id is not None:
+            api_definition = next(
+                (d for d in API_DEFINITIONS if d.id == api_definition_id),
+                None,
+            )
+            if api_definition is None:
+                raise ValueError(f"Api definition {api_definition_id} not found.")
+            self._set_api_definition(api_definition)
+
+    async def detect_api(self, api_version: int | None = None) -> None:
+        """Detect the venta api."""
+
+        definitions = API_DEFINITIONS
+        if api_version is not None:
+            definitions = [d for d in definitions if d.version.value == api_version]
+
+        for api_definition in definitions:
+            self._set_api_definition(api_definition)
+            try:
+                status = self.api_definition.status
+                async with asyncio.timeout(5):
+                    data = await self._strategy.get_status(
+                        status.method,
+                        status.url,
+                    )
+                    if data is not None and data.get("Header") is not None:
+                        return
+                await asyncio.sleep(0.5)
+            except (asyncio.TimeoutError, ClientError):
+                pass
         raise VentaApiVersionError()
 
-    async def init(self, endpoint_known: bool = False) -> None:
+    async def init(self) -> None:
         """Initialize the Venta device."""
-        if not endpoint_known:
-            await self._detect_endpoint_definition()
-
         data = await self.status()
         self.mac = data.header.get("MacAdress")
         try:
@@ -165,26 +191,9 @@ class VentaDevice:
             )
         )
 
-    async def _detect_endpoint_definition(self) -> bool:
-        """Detect the endpoint definition."""
-        for api_definition in API_VERSION_ENDPOINTS[self.api_version]:
-            self._set_api_definition(api_definition)
-            try:
-                status = self.api_definition.status
-                async with asyncio.timeout(5):
-                    data = await self._strategy.get_status(
-                        status.method,
-                        status.url,
-                    )
-                    if data is not None and data.get("Header") is not None:
-                        return True
-                await asyncio.sleep(0.5)
-            except (asyncio.TimeoutError, ClientError):
-                pass
-        return False
-
     def _set_api_definition(self, api_definition: VentaApiDefinition) -> None:
-        """Set the api version defaults."""
+        """Set the api definition defaults."""
+        self.api_version = api_definition.version
         self.api_definition = api_definition
 
         host_definition = VentaApiHostDefinition(self.host, self.api_definition.port)

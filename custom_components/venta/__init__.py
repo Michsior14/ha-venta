@@ -20,8 +20,14 @@ from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .config_flow import ConfigVersion
-from .const import DOMAIN, DEFAULT_SCAN_INTERVAL
-from .venta import VentaApi, VentaApiVersion, VentaDataUpdateCoordinator, VentaDevice
+from .const import CONF_API_DEFINITION_ID, DEFAULT_SCAN_INTERVAL, DOMAIN
+from .venta import (
+    API_DEFINITIONS,
+    VentaApi,
+    VentaApiVersion,
+    VentaDataUpdateCoordinator,
+    VentaDevice,
+)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -45,7 +51,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         hass,
         conf[CONF_HOST],
         timedelta(seconds=conf.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL)),
-        conf[CONF_API_VERSION],
+        conf[CONF_API_DEFINITION_ID],
     )
     if not api:
         return False
@@ -73,13 +79,16 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
 
 async def venta_api_setup(
-    hass: HomeAssistant, host: str, update_interval: timedelta, api_version: int
+    hass: HomeAssistant,
+    host: str,
+    update_interval: timedelta,
+    api_definition_id: str,
 ) -> VentaApi | None:
     """Create a Venta instance only once."""
     session = async_get_clientsession(hass)
     try:
-        async with asyncio.timeout(30):
-            device = VentaDevice(host, update_interval, api_version, session)
+        async with asyncio.timeout(10):
+            device = VentaDevice(host, update_interval, api_definition_id, session)
             await device.init()
     except asyncio.TimeoutError as err:
         _LOGGER.debug("Connection to %s timed out", host, exc_info=err)
@@ -107,6 +116,14 @@ async def async_migrate_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     if entry.version == ConfigVersion.V2:
         entry.version = ConfigVersion.V3
         hass.config_entries.async_update_entry(entry)
+    if entry.version == ConfigVersion.V3:
+        api_version = entry.data[CONF_API_VERSION]
+        api_definition = [
+            api for api in API_DEFINITIONS if api.version.value == api_version
+        ][0]
+        new = {**entry.data, CONF_API_DEFINITION_ID: api_definition.id}
+        entry.version = ConfigVersion.V4
+        hass.config_entries.async_update_entry(entry, data=new)
 
     _LOGGER.debug("Migration to version %s successful", entry.version)
 

@@ -22,8 +22,18 @@ from homeassistant.data_entry_flow import FlowResult
 from homeassistant.helpers import selector
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
-from .const import AUTO_API_VERSION, DEFAULT_SCAN_INTERVAL, DOMAIN
-from .venta import VentaApiVersion, VentaApiVersionError, VentaDevice
+from .const import (
+    AUTO_API_VERSION,
+    CONF_API_DEFINITION_ID,
+    DEFAULT_SCAN_INTERVAL,
+    DOMAIN,
+)
+from .venta import (
+    VentaApiDefinition,
+    VentaApiVersion,
+    VentaApiVersionError,
+    VentaDevice,
+)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -56,12 +66,13 @@ class ConfigVersion(IntEnum):
     V1 = 1
     V2 = 2
     V3 = 3
+    V4 = 4
 
 
 class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Handle a config flow for Venta."""
 
-    VERSION = ConfigVersion.V3
+    VERSION = max(ConfigVersion)
 
     @staticmethod
     def async_get_options_flow(
@@ -90,13 +101,11 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     device = VentaDevice(
                         host,
                         update_interval,
-                        api_version,
+                        None,
                         async_get_clientsession(self.hass),
                     )
-                    api_version_not_known = api_version is None
-                    if api_version_not_known:
-                        await device.detect_api_version()
-                    await device.init(endpoint_known=api_version_not_known)
+                    await device.detect_api(api_version=api_version)
+                    await device.init()
             except (asyncio.TimeoutError, ClientError):
                 _LOGGER.debug("Connection to %s timed out", host)
                 errors["base"] = "cannot_connect"
@@ -108,7 +117,10 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 errors["base"] = "unknown"
             else:
                 return await self._create_entry(
-                    device.host, device.update_interval, device.api_version, device.mac
+                    device.host,
+                    device.update_interval,
+                    device.api_definition,
+                    device.mac,
                 )
 
         return self.async_show_form(
@@ -119,7 +131,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         self,
         host: str,
         update_interval: timedelta,
-        api_version: VentaApiVersion,
+        api_definition: VentaApiDefinition,
         mac: str,
     ) -> FlowResult:
         """Register new entry."""
@@ -131,7 +143,8 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             title=host,
             data={
                 CONF_HOST: host,
-                CONF_API_VERSION: api_version,
+                CONF_API_VERSION: api_definition.version.value,
+                CONF_API_DEFINITION_ID: api_definition.id,
                 CONF_MAC: mac,
                 CONF_SCAN_INTERVAL: update_interval.seconds,
             },

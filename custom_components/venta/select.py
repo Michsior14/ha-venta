@@ -17,9 +17,8 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import DOMAIN, ATTR_LED_STRIP_MODE
+from .const import ATTR_LED_STRIP_MODE, DOMAIN
 from .venta import VentaData, VentaDataUpdateCoordinator
-
 
 LED_STRIP_MODES = {
     0: "internal",
@@ -74,11 +73,10 @@ async def async_setup_entry(
 ) -> None:
     """Set up Venta select on config_entry."""
     coordinator: VentaDataUpdateCoordinator = hass.data[DOMAIN].get(entry.entry_id)
-    sensors = [ATTR_LED_STRIP_MODE]
     entities = [
         VentaSelect(coordinator, description)
         for description in SENSOR_TYPES
-        if description.key in sensors and description.exists_func(coordinator)
+        if description.key in description.exists_func(coordinator)
     ]
     async_add_entities(entities)
 
