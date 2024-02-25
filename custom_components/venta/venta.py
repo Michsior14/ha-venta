@@ -163,7 +163,7 @@ class VentaDevice:
     async def init(self) -> None:
         """Initialize the Venta device."""
         data = await self.status()
-        self.mac = data.header.get("MacAdress")
+        self.mac = data.header.get("MacAdress") or data.header.get("DeviceId")
         try:
             self.device_type = VentaDeviceType(data.header.get("DeviceType"))
         except ValueError:
