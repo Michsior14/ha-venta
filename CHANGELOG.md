@@ -1,3 +1,11 @@
+## [0.5.1-beta.8](https://github.com/Michsior14/ha-venta/compare/v0.5.1-beta.7...v0.5.1-beta.8) (2024-02-25)
+
+
+### Bug Fixes
+
+* change suggested temperature precision ([38ce6d5](https://github.com/Michsior14/ha-venta/commit/38ce6d5cceaf25ebc323f672c05b88e9d5a19569))
+* formaldehyde translations ([a0a7ea3](https://github.com/Michsior14/ha-venta/commit/a0a7ea3944f2ebc8c0a2e2de96437cd1b38dc51a))
+
 ## [0.5.1-beta.7](https://github.com/Michsior14/ha-venta/compare/v0.5.1-beta.6...v0.5.1-beta.7) (2024-02-25)
 
 
@@ -26,11 +34,4 @@
 ### Bug Fixes
 
 * parse all responses as json ([ff5e88d](https://github.com/Michsior14/ha-venta/commit/ff5e88d4769ca19ab65da0f7174b57640024dd48))
-
-## [0.5.1-beta.3](https://github.com/Michsior14/ha-venta/compare/v0.5.1-beta.2...v0.5.1-beta.3) (2024-02-25)
-
-
-### Bug Fixes
-
-* handle timeout on endpoint definition ([ffe0553](https://github.com/Michsior14/ha-venta/commit/ffe055344b9afa5fba22dadfe8554a53db127a49))
 
