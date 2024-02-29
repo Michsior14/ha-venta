@@ -48,7 +48,18 @@ from .const import (
     ATTR_VOC,
     ATTR_HCHO,
 )
-from .venta import VentaData, VentaDataUpdateCoordinator
+from .venta import VentaDataUpdateCoordinator, VentaDeviceType
+
+
+def skip_zeros(
+    value: str | int | bool | None,
+    coordinator: VentaDataUpdateCoordinator,
+    devices: list[VentaDeviceType],
+) -> str | int | bool | None:
+    """Skip zero values for certain devices."""
+    if coordinator.api.device.device_type not in devices:
+        return value
+    return None if value == 0 else value
 
 
 @dataclass
@@ -56,7 +67,7 @@ class VentaSensorRequiredKeysMixin:
     """Mixin for required keys."""
 
     exists_func: Callable[[VentaDataUpdateCoordinator], bool]
-    value_func: Callable[[VentaData], int | None]
+    value_func: Callable[[VentaDataUpdateCoordinator], int | None]
 
 
 @dataclass
@@ -78,7 +89,7 @@ SENSOR_TYPES: list[VentaSensorEntityDescription] = (
         suggested_display_precision=1,
         exists_func=lambda coordinator: coordinator.data.measure.get("Temperature")
         is not None,
-        value_func=lambda data: data.measure.get("Temperature"),
+        value_func=lambda coordinator: coordinator.data.measure.get("Temperature"),
     ),
     VentaSensorEntityDescription(
         key=ATTR_WATER_LEVEL,
@@ -88,7 +99,7 @@ SENSOR_TYPES: list[VentaSensorEntityDescription] = (
         entity_category=EntityCategory.DIAGNOSTIC,
         exists_func=lambda coordinator: coordinator.data.measure.get("WaterLevel")
         is not None,
-        value_func=lambda data: data.measure.get("WaterLevel"),
+        value_func=lambda coordinator: coordinator.data.measure.get("WaterLevel"),
     ),
     VentaSensorEntityDescription(
         key=ATTR_FAN_SPEED,
@@ -99,7 +110,7 @@ SENSOR_TYPES: list[VentaSensorEntityDescription] = (
         entity_category=EntityCategory.DIAGNOSTIC,
         exists_func=lambda coordinator: coordinator.data.measure.get("FanRpm")
         is not None,
-        value_func=lambda data: data.measure.get("FanRpm"),
+        value_func=lambda coordinator: coordinator.data.measure.get("FanRpm"),
     ),
     VentaSensorEntityDescription(
         key=ATTR_OPERATION_TIME,
@@ -109,7 +120,7 @@ SENSOR_TYPES: list[VentaSensorEntityDescription] = (
         entity_category=EntityCategory.DIAGNOSTIC,
         exists_func=lambda coordinator: coordinator.data.info.get("OperationT")
         is not None,
-        value_func=lambda data: data.info.get("OperationT"),
+        value_func=lambda coordinator: coordinator.data.info.get("OperationT"),
     ),
     VentaSensorEntityDescription(
         key=ATTR_DISC_ION_TIME,
@@ -119,7 +130,7 @@ SENSOR_TYPES: list[VentaSensorEntityDescription] = (
         entity_category=EntityCategory.DIAGNOSTIC,
         exists_func=lambda coordinator: coordinator.data.info.get("DiscIonT")
         is not None,
-        value_func=lambda data: data.info.get("DiscIonT"),
+        value_func=lambda coordinator: coordinator.data.info.get("DiscIonT"),
     ),
     VentaSensorEntityDescription(
         key=ATTR_CLEANING_TIME,
@@ -129,7 +140,7 @@ SENSOR_TYPES: list[VentaSensorEntityDescription] = (
         entity_category=EntityCategory.DIAGNOSTIC,
         exists_func=lambda coordinator: coordinator.data.info.get("CleaningT")
         is not None,
-        value_func=lambda data: data.info.get("CleaningT"),
+        value_func=lambda coordinator: coordinator.data.info.get("CleaningT"),
     ),
     VentaSensorEntityDescription(
         key=ATTR_SERVICE_TIME,
@@ -139,7 +150,7 @@ SENSOR_TYPES: list[VentaSensorEntityDescription] = (
         entity_category=EntityCategory.DIAGNOSTIC,
         exists_func=lambda coordinator: coordinator.data.info.get("ServiceT")
         is not None,
-        value_func=lambda data: data.info.get("ServiceT"),
+        value_func=lambda coordinator: coordinator.data.info.get("ServiceT"),
     ),
     VentaSensorEntityDescription(
         key=ATTR_SERVICE_MAX_TIME,
@@ -149,7 +160,7 @@ SENSOR_TYPES: list[VentaSensorEntityDescription] = (
         entity_category=EntityCategory.DIAGNOSTIC,
         exists_func=lambda coordinator: coordinator.data.info.get("ServiceMax")
         is not None,
-        value_func=lambda data: data.info.get("ServiceMax"),
+        value_func=lambda coordinator: coordinator.data.info.get("ServiceMax"),
     ),
     VentaSensorEntityDescription(
         key=ATTR_WARNINGS,
@@ -158,7 +169,7 @@ SENSOR_TYPES: list[VentaSensorEntityDescription] = (
         entity_category=EntityCategory.DIAGNOSTIC,
         exists_func=lambda coordinator: coordinator.data.info.get("Warnings")
         is not None,
-        value_func=lambda data: data.info.get("Warnings"),
+        value_func=lambda coordinator: coordinator.data.info.get("Warnings"),
     ),
     VentaSensorEntityDescription(
         key=ATTR_PARTICLES_0_3,
@@ -166,7 +177,7 @@ SENSOR_TYPES: list[VentaSensorEntityDescription] = (
         state_class=SensorStateClass.MEASUREMENT,
         exists_func=lambda coordinator: coordinator.data.measure.get("Particles0u3")
         is not None,
-        value_func=lambda data: data.measure.get("Particles0u3"),
+        value_func=lambda coordinator: coordinator.data.measure.get("Particles0u3"),
     ),
     VentaSensorEntityDescription(
         key=ATTR_PARTICLES_0_5,
@@ -174,7 +185,7 @@ SENSOR_TYPES: list[VentaSensorEntityDescription] = (
         state_class=SensorStateClass.MEASUREMENT,
         exists_func=lambda coordinator: coordinator.data.measure.get("Particles0u5")
         is not None,
-        value_func=lambda data: data.measure.get("Particles0u5"),
+        value_func=lambda coordinator: coordinator.data.measure.get("Particles0u5"),
     ),
     VentaSensorEntityDescription(
         key=ATTR_PARTICLES_2_5,
@@ -182,7 +193,7 @@ SENSOR_TYPES: list[VentaSensorEntityDescription] = (
         state_class=SensorStateClass.MEASUREMENT,
         exists_func=lambda coordinator: coordinator.data.measure.get("Particles2u5")
         is not None,
-        value_func=lambda data: data.measure.get("Particles2u5"),
+        value_func=lambda coordinator: coordinator.data.measure.get("Particles2u5"),
     ),
     VentaSensorEntityDescription(
         key=ATTR_PARTICLES_5_0,
@@ -190,7 +201,7 @@ SENSOR_TYPES: list[VentaSensorEntityDescription] = (
         state_class=SensorStateClass.MEASUREMENT,
         exists_func=lambda coordinator: coordinator.data.measure.get("Particles5u0")
         is not None,
-        value_func=lambda data: data.measure.get("Particles5u0"),
+        value_func=lambda coordinator: coordinator.data.measure.get("Particles5u0"),
     ),
     VentaSensorEntityDescription(
         key=ATTR_PARTICLES_10,
@@ -198,7 +209,7 @@ SENSOR_TYPES: list[VentaSensorEntityDescription] = (
         state_class=SensorStateClass.MEASUREMENT,
         exists_func=lambda coordinator: coordinator.data.measure.get("Particles10u")
         is not None,
-        value_func=lambda data: data.measure.get("Particles10u"),
+        value_func=lambda coordinator: coordinator.data.measure.get("Particles10u"),
     ),
     VentaSensorEntityDescription(
         key=ATTR_PM_1_0,
@@ -209,8 +220,8 @@ SENSOR_TYPES: list[VentaSensorEntityDescription] = (
         exists_func=lambda coordinator: coordinator.data.measure.get("PmCalc1u0")
         is not None
         or coordinator.data.measure.get("Pm1u0") is not None,
-        value_func=lambda data: data.measure.get("PmCalc1u0")
-        or data.measure.get("Pm1u0"),
+        value_func=lambda coordinator: coordinator.data.measure.get("PmCalc1u0")
+        or coordinator.data.measure.get("Pm1u0"),
     ),
     VentaSensorEntityDescription(
         key=ATTR_PM_2_5,
@@ -221,8 +232,8 @@ SENSOR_TYPES: list[VentaSensorEntityDescription] = (
         exists_func=lambda coordinator: coordinator.data.measure.get("PmCalc2u5")
         is not None
         or coordinator.data.measure.get("Pm2u5") is not None,
-        value_func=lambda data: data.measure.get("PmCalc2u5")
-        or data.measure.get("Pm2u5"),
+        value_func=lambda coordinator: coordinator.data.measure.get("PmCalc2u5")
+        or coordinator.data.measure.get("Pm2u5"),
     ),
     VentaSensorEntityDescription(
         key=ATTR_PM_10,
@@ -233,8 +244,8 @@ SENSOR_TYPES: list[VentaSensorEntityDescription] = (
         exists_func=lambda coordinator: coordinator.data.measure.get("PmCalc10u")
         is not None
         or coordinator.data.measure.get("Pm10u") is not None,
-        value_func=lambda data: data.measure.get("PmCalc10u")
-        or data.measure.get("Pm10u"),
+        value_func=lambda coordinator: coordinator.data.measure.get("PmCalc10u")
+        or coordinator.data.measure.get("Pm10u"),
     ),
     VentaSensorEntityDescription(
         key=ATTR_CO2,
@@ -243,16 +254,23 @@ SENSOR_TYPES: list[VentaSensorEntityDescription] = (
         native_unit_of_measurement=CONCENTRATION_PARTS_PER_MILLION,
         state_class=SensorStateClass.MEASUREMENT,
         exists_func=lambda coordinator: coordinator.data.measure.get("Co2") is not None,
-        value_func=lambda data: data.measure.get("Co2"),
+        value_func=lambda coordinator: skip_zeros(
+            coordinator.data.measure.get("Co2"),
+            coordinator,
+            [VentaDeviceType.AS150],
+        ),
     ),
     VentaSensorEntityDescription(
         key=ATTR_VOC,
-        translation_key="voc",
+        translation_key="voc_index",
         device_class=SensorDeviceClass.VOLATILE_ORGANIC_COMPOUNDS_PARTS,
-        native_unit_of_measurement=CONCENTRATION_PARTS_PER_BILLION,
         state_class=SensorStateClass.MEASUREMENT,
         exists_func=lambda coordinator: coordinator.data.measure.get("Voc") is not None,
-        value_func=lambda data: data.measure.get("Voc"),
+        value_func=lambda coordinator: skip_zeros(
+            coordinator.data.measure.get("Voc"),
+            coordinator,
+            [VentaDeviceType.AS150],
+        ),
     ),
     VentaSensorEntityDescription(
         key=ATTR_HCHO,
@@ -261,7 +279,11 @@ SENSOR_TYPES: list[VentaSensorEntityDescription] = (
         state_class=SensorStateClass.MEASUREMENT,
         exists_func=lambda coordinator: coordinator.data.measure.get("Hcho")
         is not None,
-        value_func=lambda data: data.measure.get("Hcho"),
+        value_func=lambda coordinator: skip_zeros(
+            coordinator.data.measure.get("Hcho"),
+            coordinator,
+            [VentaDeviceType.AS150],
+        ),
     ),
 )
 
@@ -299,4 +321,4 @@ class VentaSensor(CoordinatorEntity[VentaDataUpdateCoordinator], SensorEntity):
     @property
     def native_value(self) -> int | None:
         """Return the state of the sensor."""
-        return self.entity_description.value_func(self.coordinator.data)
+        return self.entity_description.value_func(self.coordinator)

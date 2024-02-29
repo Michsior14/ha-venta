@@ -92,7 +92,7 @@
         "name": "CO2"
       },
       "voc": {
-        "name": "VOCs"
+        "name": "VOC Index"
       },
       "hcho": {
         "name": "Formaldehyde"
