@@ -1,3 +1,10 @@
+## [0.6.1](https://github.com/Michsior14/ha-venta/compare/v0.6.0...v0.6.1) (2024-02-29)
+
+
+### Bug Fixes
+
+* skip zero values for as150 ([#19](https://github.com/Michsior14/ha-venta/issues/19)) ([99fb151](https://github.com/Michsior14/ha-venta/commit/99fb151f7879d7dcd547e16c6ce2aafd37a12022)), closes [#18](https://github.com/Michsior14/ha-venta/issues/18)
+
 ## [0.6.0](https://github.com/Michsior14/ha-venta/compare/v0.5.1-beta.8...v0.6.0) (2024-02-25)
 
 ## [0.5.1-beta.8](https://github.com/Michsior14/ha-venta/compare/v0.5.1-beta.7...v0.5.1-beta.8) (2024-02-25)
@@ -21,12 +28,4 @@
 ### Bug Fixes
 
 * properly initialize select entities ([48ae9ef](https://github.com/Michsior14/ha-venta/commit/48ae9ef5fb3a75a213797e550bc794ac3e0085e9))
-
-## [0.5.1-beta.5](https://github.com/Michsior14/ha-venta/compare/v0.5.1-beta.4...v0.5.1-beta.5) (2024-02-25)
-
-
-### Bug Fixes
-
-* errors during binary sensors setup for new devices ([3310299](https://github.com/Michsior14/ha-venta/commit/3310299d8940ff6b718becad106a9427d4192c07))
-* make api definition part of config ([3de4eb3](https://github.com/Michsior14/ha-venta/commit/3de4eb3fd5bb5f7f56b445f7fa85c400f2b40c5f))
 
