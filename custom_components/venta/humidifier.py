@@ -59,9 +59,9 @@ async def async_setup_entry(
         return
 
     entity: VentaBaseHumidifierEntity
-    if coordinator.api.device.api_version == VentaApiVersion.V0:
+    if coordinator.api.device.api_version.value == VentaApiVersion.V0.value:
         entity = VentaV0HumidifierEntity(coordinator, HUMIDIFIER_ENTITY_DESCRIPTION)
-    if coordinator.api.device.api_version == VentaApiVersion.V2:
+    elif coordinator.api.device.api_version.value == VentaApiVersion.V2.value:
         entity = VentaV2HumidifierEntity(coordinator, HUMIDIFIER_ENTITY_DESCRIPTION)
     else:
         entity = VentaV3HumidifierEntity(coordinator, HUMIDIFIER_ENTITY_DESCRIPTION)
@@ -169,6 +169,12 @@ class VentaV0HumidifierEntity(VentaBaseHumidifierEntity):
             action = {"FanSpeed": int(mode[-1])}
         await self._send_action(action)
 
+    async def _send_action(self, data: dict[str, Any]) -> None:
+        """Send action to device."""
+        await self._device.action(self._map_to_action(data))
+        # TBD:
+        # Sendig an update request immediately after sending the action, causes the Humidifier to not respond for some time.
+        # Instead it would be helpful to use the response, that the action causes, to update the information. And then not update for at least one cycle (the minimum time is yet to be found out)
 
 class VentaV2HumidifierEntity(VentaBaseHumidifierEntity):
     """Venta humidifier device for protocol version 2."""

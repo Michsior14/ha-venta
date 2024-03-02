@@ -7,6 +7,7 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from json import JSONDecodeError, dumps, loads
 from typing import Any
+import re
 
 from aiohttp import ClientSession
 
@@ -119,30 +120,23 @@ class VentaTcpStrategy(VentaProtocolStrategy):
         body = dumps(
             {
                 "Header": {
-                    "DeviceType": self._header.device_type,
-                    "MacAdress": self._header.mac,
                     "Hash": "-42",
                     "DeviceName": "HomeAssistant",
                 },
                 **(action if action else {}),
             }
         )
-        return f"{method} /{url}\nContent-Length: {len(body)}\n\n{body}\n\n"
+        # The Venta V0 Humidifier expects a JSON without any whitespaces
+        body = body.replace(" ", "")
+        return f"{method} /{url}\nContent-Length: {len(body)}\n{body}"
 
     async def _send_request(self, message: str) -> dict[str, Any]:
         """Request data from the Venta device using TCP protocol."""
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
             sock.settimeout(self._host_definition.timeout)
-            try:
-                sock.connect((self._host_definition.host, self._host_definition.port))
-            except OSError as err:
-                _LOGGER.error(
-                    "Unable to connect to %s on port %s: %s",
-                    self._host_definition.host,
-                    self._host_definition.port,
-                    err,
-                )
-                return
+
+            # the error here has to be ignored. Seems like the response the socket is getting, is not what it expects or something like that.
+            sock.connect((self._host_definition.host, self._host_definition.port))
 
             try:
                 sock.sendall(message.encode())
@@ -172,21 +166,19 @@ class VentaTcpStrategy(VentaProtocolStrategy):
                 )
                 return
 
-            try:
-                return loads(sock.recv(self._buffer_size).decode())
-            except OSError as err:
+            data = sock.recv(self._buffer_size).decode()
+            _LOGGER.debug("received Data: %s", data)
+
+            # find the Part of the Response, that is important to us
+            json_part = re.search(r'\{.*\}', data)
+            if json_part:
+                # parse it to a format, Python can handle
+                json_string = json_part.group()
+                return loads(json_string)
+            else:
                 _LOGGER.error(
-                    "Unable to receive payload from %s on port %s: %s",
+                    "Unable to receive payload from %s on port %s: No JSON Part found",
                     self._host_definition.host,
                     self._host_definition.port,
-                    err,
-                )
-                return
-            except (JSONDecodeError, TypeError) as err:
-                _LOGGER.error(
-                    "Unable to parse payload from %s on port %s: %s",
-                    self._host_definition.host,
-                    self._host_definition.port,
-                    err,
                 )
                 return
