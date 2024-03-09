@@ -172,9 +172,11 @@ class VentaV0HumidifierEntity(VentaBaseHumidifierEntity):
     async def _send_action(self, data: dict[str, Any]) -> None:
         """Send action to device."""
         await self._device.action(self._map_to_action(data))
-        # TBD:
-        # Sendig an update request immediately after sending the action, causes the Humidifier to not respond for some time.
-        # Instead it would be helpful to use the response, that the action causes, to update the information. And then not update for at least one cycle (the minimum time is yet to be found out)
+        # Sending an update request immediately after sending the action,
+        # causes the Humidifier to not respond for some time. Instead it would be helpful
+        # to use the response, that the action causes, to update the information.
+        # And then not update for at least one cycle (the minimum time is yet to be found out)
+
 
 class VentaV2HumidifierEntity(VentaBaseHumidifierEntity):
     """Venta humidifier device for protocol version 2."""
