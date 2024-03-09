@@ -84,7 +84,7 @@ class VentaLight(CoordinatorEntity[VentaDataUpdateCoordinator], LightEntity):
         """Turn light on."""
         _LOGGER.debug("Turm on called with: %s", str(kwargs))
         if (rgb_color := kwargs.get(light.ATTR_RGB_COLOR)) is not None:
-            await self._device.action(
+            response_data = await self._device.action(
                 {
                     "Action": {
                         "LEDStrip": f"#{color_rgb_to_hex(rgb_color[0], rgb_color[1], rgb_color[2])}"
@@ -92,10 +92,15 @@ class VentaLight(CoordinatorEntity[VentaDataUpdateCoordinator], LightEntity):
                 }
             )
         else:
-            await self._device.action({"Action": {"LEDStripActive": True}})
-        await self.coordinator.async_request_refresh()
+            response_data = await self._device.action(
+                {"Action": {"LEDStripActive": True}}
+            )
+
+        if response_data is not None:
+            self.coordinator.async_set_updated_data(response_data)
 
     async def async_turn_off(self, **kwargs: dict[str, Any]) -> None:
         """Turn light off."""
-        await self._device.action({"Action": {"LEDStripActive": False}})
-        await self.coordinator.async_request_refresh()
+        response_data = await self._device.action({"Action": {"LEDStripActive": False}})
+        if response_data is not None:
+            self.coordinator.async_set_updated_data(response_data)

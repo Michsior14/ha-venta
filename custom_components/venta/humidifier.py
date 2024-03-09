@@ -151,8 +151,9 @@ class VentaBaseHumidifierEntity(
 
     async def _send_action(self, data: dict[str, Any]) -> None:
         """Send action to device."""
-        await self._device.action(self._map_to_action(data))
-        await self.coordinator.async_request_refresh()
+        response_data = await self._device.action(self._map_to_action(data))
+        if response_data is not None:
+            self.coordinator.async_set_updated_data(response_data)
 
 
 class VentaV0HumidifierEntity(VentaBaseHumidifierEntity):
