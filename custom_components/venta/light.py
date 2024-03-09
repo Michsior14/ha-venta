@@ -96,11 +96,10 @@ class VentaLight(CoordinatorEntity[VentaDataUpdateCoordinator], LightEntity):
                 {"Action": {"LEDStripActive": True}}
             )
 
-        if response_data is not None:
-            self.coordinator.async_set_updated_data(response_data)
+        self.coordinator.async_set_updated_data(response_data)
 
     async def async_turn_off(self, **kwargs: dict[str, Any]) -> None:
         """Turn light off."""
-        response_data = await self._device.action({"Action": {"LEDStripActive": False}})
-        if response_data is not None:
-            self.coordinator.async_set_updated_data(response_data)
+        self.coordinator.async_set_updated_data(
+            await self._device.action({"Action": {"LEDStripActive": False}})
+        )
