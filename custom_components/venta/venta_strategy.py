@@ -6,8 +6,8 @@ import socket
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from json import JSONDecodeError, dumps, loads
+from re import search
 from typing import Any
-import re
 
 from aiohttp import ClientSession
 
@@ -124,10 +124,10 @@ class VentaTcpStrategy(VentaProtocolStrategy):
                     "DeviceName": "HomeAssistant",
                 },
                 **(action if action else {}),
-            }
+            },
+            # Venta devices expect no spaces in the JSON string
+            separators=(",", ":"),
         )
-        # The Venta V0 Humidifier expects a JSON without any whitespaces
-        body = body.replace(" ", "")
         return f"{method} /{url}\nContent-Length: {len(body)}\n{body}"
 
     async def _send_request(self, message: str) -> dict[str, Any]:
@@ -135,8 +135,16 @@ class VentaTcpStrategy(VentaProtocolStrategy):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
             sock.settimeout(self._host_definition.timeout)
 
-            # the error here has to be ignored. Seems like the response the socket is getting, is not what it expects or something like that.
-            sock.connect((self._host_definition.host, self._host_definition.port))
+            try:
+                sock.connect((self._host_definition.host, self._host_definition.port))
+            except OSError as err:
+                # Ignore the error for now.
+                _LOGGER.error(
+                    "Socket error while connection to %s on port %s: %s",
+                    self._host_definition.host,
+                    self._host_definition.port,
+                    err,
+                )
 
             try:
                 sock.sendall(message.encode())
@@ -166,19 +174,37 @@ class VentaTcpStrategy(VentaProtocolStrategy):
                 )
                 return
 
-            data = sock.recv(self._buffer_size).decode()
-            _LOGGER.debug("received Data: %s", data)
-
-            # find the Part of the Response, that is important to us
-            json_part = re.search(r'\{.*\}', data)
-            if json_part:
-                # parse it to a format, Python can handle
-                json_string = json_part.group()
-                return loads(json_string)
-            else:
-                _LOGGER.error(
-                    "Unable to receive payload from %s on port %s: No JSON Part found",
+            try:
+                payload = sock.recv(self._buffer_size).decode()
+                _LOGGER.debug(
+                    "Receive payload from %s on port %s: %s",
                     self._host_definition.host,
                     self._host_definition.port,
+                    payload,
                 )
-                return
+
+                json_part = search(r"\{.*\}", payload)
+                if json_part:
+                    json_string = json_part.group()
+                    return loads(json_string)
+
+                _LOGGER.error(
+                    "Malformed response from %s on port %s: %s",
+                    self._host_definition.host,
+                    self._host_definition.port,
+                    json_part,
+                )
+            except OSError as err:
+                _LOGGER.error(
+                    "Unable to receive payload from %s on port %s: %s",
+                    self._host_definition.host,
+                    self._host_definition.port,
+                    err,
+                )
+            except (JSONDecodeError, TypeError) as err:
+                _LOGGER.error(
+                    "Unable to parse payload from %s on port %s: %s",
+                    self._host_definition.host,
+                    self._host_definition.port,
+                    err,
+                )
