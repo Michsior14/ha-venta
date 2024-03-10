@@ -1,3 +1,11 @@
+## [0.6.2](https://github.com/Michsior14/ha-venta/compare/v0.6.1...v0.6.2) (2024-03-10)
+
+
+### Bug Fixes
+
+* manually update coordinator on action ([#21](https://github.com/Michsior14/ha-venta/issues/21)) ([5758d3c](https://github.com/Michsior14/ha-venta/commit/5758d3c960d77b1d0934d76ad295b7df8d9babe6))
+* v0 devices compatibility improvements ([#20](https://github.com/Michsior14/ha-venta/issues/20)) ([ef18254](https://github.com/Michsior14/ha-venta/commit/ef182545f22e0a46d02d8889e7097cf3aa6084f2))
+
 ## [0.6.1](https://github.com/Michsior14/ha-venta/compare/v0.6.0...v0.6.1) (2024-02-29)
 
 
@@ -21,11 +29,4 @@
 ### Bug Fixes
 
 * fallback to device id for mac address retrieval ([0f19adb](https://github.com/Michsior14/ha-venta/commit/0f19adbf6c6b31b3945edccbe95d6f70130fcc9b))
-
-## [0.5.1-beta.6](https://github.com/Michsior14/ha-venta/compare/v0.5.1-beta.5...v0.5.1-beta.6) (2024-02-25)
-
-
-### Bug Fixes
-
-* properly initialize select entities ([48ae9ef](https://github.com/Michsior14/ha-venta/commit/48ae9ef5fb3a75a213797e550bc794ac3e0085e9))
 
