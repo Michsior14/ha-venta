@@ -13,7 +13,7 @@ from aiohttp import ClientSession
 
 _LOGGER = logging.getLogger(__name__)
 
-JSON_REGEX = re.compile(r"^\{(?:[^{}]|(?R))*\}")
+JSON_REGEX = re.compile(r"\{.*\}")
 
 
 @dataclass
