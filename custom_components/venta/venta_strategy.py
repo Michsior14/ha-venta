@@ -1,17 +1,19 @@
 """Venta API strategies definitions."""
 
 import logging
+import re
 import select
 import socket
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from json import JSONDecodeError, dumps, loads
-from re import search
 from typing import Any
 
 from aiohttp import ClientSession
 
 _LOGGER = logging.getLogger(__name__)
+
+JSON_REGEX = re.compile(r"^\{(?:[^{}]|(?R))*\}")
 
 
 @dataclass
@@ -120,6 +122,8 @@ class VentaTcpStrategy(VentaProtocolStrategy):
         body = dumps(
             {
                 "Header": {
+                    "DeviceType": self._header.device_type,
+                    "MacAdress": self._header.mac,
                     "Hash": "-42",
                     "DeviceName": "HomeAssistant",
                 },
@@ -175,7 +179,14 @@ class VentaTcpStrategy(VentaProtocolStrategy):
                 return
 
             try:
-                payload = sock.recv(self._buffer_size).decode()
+                fragments = []
+                while True:
+                    chunk = sock.recv(self._buffer_size)
+                    if not chunk:
+                        break
+                    fragments.append(chunk)
+                payload = b"".join(fragments).decode()
+
                 _LOGGER.debug(
                     "Receive payload from %s on port %s: %s",
                     self._host_definition.host,
@@ -183,10 +194,9 @@ class VentaTcpStrategy(VentaProtocolStrategy):
                     payload,
                 )
 
-                json_part = search(r"\{.*\}", payload)
+                json_part = JSON_REGEX.search(payload)
                 if json_part:
-                    json_string = json_part.group()
-                    return loads(json_string)
+                    return loads(json_part.group())
 
                 _LOGGER.error(
                     "Malformed response from %s on port %s: %s",
