@@ -1,135 +1,135 @@
 {
-  "config": {
-    "abort": {
-      "already_configured": "Zariadenie je už nakonfigurované"
-    },
-    "error": {
-      "cannot_connect": "Nepodarilo sa pripojiť",
-      "cannot_detect_api_version": "Nie je možné určiť verziu API",
-      "unknown": "Neočakávaná chyba"
-    },
-    "step": {
-      "user": {
-        "data": {
-          "host": "Hostiteľ",
-          "scan_interval": "Interval aktualizácie (sekundy)",
-          "api_version": "API version (keep auto if unsure)"
+    "config": {
+        "abort": {
+            "already_configured": "Zariadenie je už nakonfigurované"
+        },
+        "error": {
+            "cannot_connect": "Nepodarilo sa pripojiť",
+            "cannot_detect_api_version": "Nie je možné určiť verziu API",
+            "unknown": "Neočakávaná chyba"
+        },
+        "step": {
+            "user": {
+                "data": {
+                    "host": "Hostiteľ",
+                    "scan_interval": "Interval aktualizácie (sekundy)",
+                    "api_version": "Verzia API (ak si nie ste istí, ponechajte automatické)"
+                }
+            }
         }
-      }
-    }
-  },
-  "options": {
-    "step": {
-      "init": {
-        "data": {
-          "scan_interval": "Interval aktualizácie (sekundy)"
+    },
+    "options": {
+        "step": {
+            "init": {
+                "data": {
+                    "scan_interval": "Interval aktualizácie (sekundy)"
+                }
+            }
         }
-      }
+    },
+    "entity": {
+        "humidifier": {
+            "humidifier": {
+                "name": "Zvlhčovač"
+            }
+        },
+        "sensor": {
+            "temperature": {
+                "name": "Teplota"
+            },
+            "water_level": {
+                "name": "Hladina vody"
+            },
+            "fan_speed": {
+                "name": "Rýchlosť ventilátora"
+            },
+            "operation_time": {
+                "name": "Doba prevádzky"
+            },
+            "disc_ion_time": {
+                "name": "Čas ionizácie disku"
+            },
+            "cleaning_time": {
+                "name": "Čas upratovania"
+            },
+            "service_time": {
+                "name": "Čas služby"
+            },
+            "service_max_time": {
+                "name": "Maximálny čas služby"
+            },
+            "warnings": {
+                "name": "Varovania"
+            },
+            "particles_0_3": {
+                "name": "Počet častíc (0,3u)"
+            },
+            "particles_0_5": {
+                "name": "Počet častíc (0,5u)"
+            },
+            "particles_1_0": {
+                "name": "Počet častíc (1,0u)"
+            },
+            "particles_2_5": {
+                "name": "Počet častíc (2,5u)"
+            },
+            "particles_5_0": {
+                "name": "Počet častíc (5u)"
+            },
+            "particles_10": {
+                "name": "Počet častíc (10u)"
+            },
+            "pm_1_0": {
+                "name": "PM1.0"
+            },
+            "pm_2_5": {
+                "name": "PM2.5"
+            },
+            "pm_10": {
+                "name": "PM10"
+            },
+            "co2": {
+                "name": "CO2"
+            },
+            "voc": {
+                "name": "VOC"
+            },
+            "hcho": {
+                "name": "formaldehyd"
+            }
+        },
+        "binary_sensor": {
+            "needs_refill": {
+                "name": "Potrebuje doplniť"
+            },
+            "needs_service": {
+                "name": "Potrebuje servis"
+            }
+        },
+        "light": {
+            "led_strip": {
+                "name": "LED pásik"
+            }
+        },
+        "select": {
+            "led_strip_mode": {
+                "name": "Režim LED pásu"
+            }
+        },
+        "switch": {
+            "sleep_mode": {
+                "name": "Spánkový režim"
+            }
+        }
+    },
+    "selector": {
+        "api_version": {
+            "options": {
+                "auto": "Automatické zisťovanie",
+                "0": "v0",
+                "2": "V2",
+                "3": "v3"
+            }
+        }
     }
-  },
-  "entity": {
-    "humidifier": {
-      "humidifier": {
-        "name": "Zvlhčovač"
-      }
-    },
-    "sensor": {
-      "temperature": {
-        "name": "Teplota"
-      },
-      "water_level": {
-        "name": "Hladina vody"
-      },
-      "fan_speed": {
-        "name": "Rýchlosť ventilátora"
-      },
-      "operation_time": {
-        "name": "Doba prevádzky"
-      },
-      "disc_ion_time": {
-        "name": "Čas ionizácie disku"
-      },
-      "cleaning_time": {
-        "name": "Čas upratovania"
-      },
-      "service_time": {
-        "name": "Čas služby"
-      },
-      "service_max_time": {
-        "name": "Maximálny čas služby"
-      },
-      "warnings": {
-        "name": "Varovania"
-      },
-      "particles_0_3": {
-        "name": "Particles count (0.3u)"
-      },
-      "particles_0_5": {
-        "name": "Particles count (0.5u)"
-      },
-      "particles_1_0": {
-        "name": "Particles count (1.0u)"
-      },
-      "particles_2_5": {
-        "name": "Particles count (2.5u)"
-      },
-      "particles_5_0": {
-        "name": "Particles count (5u)"
-      },
-      "particles_10": {
-        "name": "Particles count (10u)"
-      },
-      "pm_1_0": {
-        "name": "PM1.0"
-      },
-      "pm_2_5": {
-        "name": "PM2.5"
-      },
-      "pm_10": {
-        "name": "PM10"
-      },
-      "co2": {
-        "name": "CO2"
-      },
-      "voc": {
-        "name": "VOC Index"
-      },
-      "hcho": {
-        "name": "Formaldehyde"
-      }
-    },
-    "binary_sensor": {
-      "needs_refill": {
-        "name": "Potrebuje doplniť"
-      },
-      "needs_service": {
-        "name": "Potrebuje servis"
-      }
-    },
-    "light": {
-      "led_strip": {
-        "name": "LED pásik"
-      }
-    },
-    "select": {
-      "led_strip_mode": {
-        "name": "Režim LED pásu"
-      }
-    },
-    "switch": {
-      "sleep_mode": {
-        "name": "Spánkový režim"
-      }
-    }
-  },
-  "selector": {
-    "api_version": {
-      "options": {
-        "auto": "Auto discovery",
-        "0": "v0",
-        "2": "V2",
-        "3": "v3"
-      }
-    }
-  }
 }

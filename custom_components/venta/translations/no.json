@@ -1,135 +1,135 @@
 {
-  "config": {
-    "abort": {
-      "already_configured": "Enheten er allerede konfigurert"
-    },
-    "error": {
-      "cannot_connect": "Tilkobling mislyktes",
-      "cannot_detect_api_version": "Kan ikke bestemme API-versjonen",
-      "unknown": "Uventet feil"
-    },
-    "step": {
-      "user": {
-        "data": {
-          "host": "Vert",
-          "scan_interval": "Oppdateringsintervall (sekunder)",
-          "api_version": "API version (keep auto if unsure)"
+    "config": {
+        "abort": {
+            "already_configured": "Enheten er allerede konfigurert"
+        },
+        "error": {
+            "cannot_connect": "Tilkobling mislyktes",
+            "cannot_detect_api_version": "Kan ikke bestemme API-versjonen",
+            "unknown": "Uventet feil"
+        },
+        "step": {
+            "user": {
+                "data": {
+                    "host": "Vert",
+                    "scan_interval": "Oppdateringsintervall (sekunder)",
+                    "api_version": "API-versjon (behold automatisk hvis du er usikker)"
+                }
+            }
         }
-      }
-    }
-  },
-  "options": {
-    "step": {
-      "init": {
-        "data": {
-          "scan_interval": "Oppdateringsintervall (sekunder)"
+    },
+    "options": {
+        "step": {
+            "init": {
+                "data": {
+                    "scan_interval": "Oppdateringsintervall (sekunder)"
+                }
+            }
         }
-      }
+    },
+    "entity": {
+        "humidifier": {
+            "humidifier": {
+                "name": "Luftfukter"
+            }
+        },
+        "sensor": {
+            "temperature": {
+                "name": "Temperatur"
+            },
+            "water_level": {
+                "name": "Vannstand"
+            },
+            "fan_speed": {
+                "name": "Viftehastighet"
+            },
+            "operation_time": {
+                "name": "Driftstid"
+            },
+            "disc_ion_time": {
+                "name": "Skiveioniseringstid"
+            },
+            "cleaning_time": {
+                "name": "Rengjøringstid"
+            },
+            "service_time": {
+                "name": "Tjenestetid"
+            },
+            "service_max_time": {
+                "name": "Maksimal servicetid"
+            },
+            "warnings": {
+                "name": "Advarsler"
+            },
+            "particles_0_3": {
+                "name": "Antall partikler (0,3u)"
+            },
+            "particles_0_5": {
+                "name": "Antall partikler (0,5u)"
+            },
+            "particles_1_0": {
+                "name": "Antall partikler (1,0u)"
+            },
+            "particles_2_5": {
+                "name": "Antall partikler (2,5u)"
+            },
+            "particles_5_0": {
+                "name": "Antall partikler (5u)"
+            },
+            "particles_10": {
+                "name": "Antall partikler (10u)"
+            },
+            "pm_1_0": {
+                "name": "PM1.0"
+            },
+            "pm_2_5": {
+                "name": "PM2.5"
+            },
+            "pm_10": {
+                "name": "PM10"
+            },
+            "co2": {
+                "name": "CO2"
+            },
+            "voc": {
+                "name": "VOC"
+            },
+            "hcho": {
+                "name": "Formaldehyd"
+            }
+        },
+        "binary_sensor": {
+            "needs_refill": {
+                "name": "Trenger påfyll"
+            },
+            "needs_service": {
+                "name": "Trenger service"
+            }
+        },
+        "light": {
+            "led_strip": {
+                "name": "LED stripe"
+            }
+        },
+        "select": {
+            "led_strip_mode": {
+                "name": "LED stripe modus"
+            }
+        },
+        "switch": {
+            "sleep_mode": {
+                "name": "Hvilemodus"
+            }
+        }
+    },
+    "selector": {
+        "api_version": {
+            "options": {
+                "auto": "Autofunn",
+                "0": "v0",
+                "2": "V2",
+                "3": "v3"
+            }
+        }
     }
-  },
-  "entity": {
-    "humidifier": {
-      "humidifier": {
-        "name": "Luftfukter"
-      }
-    },
-    "sensor": {
-      "temperature": {
-        "name": "Temperatur"
-      },
-      "water_level": {
-        "name": "Vannstand"
-      },
-      "fan_speed": {
-        "name": "Viftehastighet"
-      },
-      "operation_time": {
-        "name": "Driftstid"
-      },
-      "disc_ion_time": {
-        "name": "Skiveioniseringstid"
-      },
-      "cleaning_time": {
-        "name": "Rengjøringstid"
-      },
-      "service_time": {
-        "name": "Tjenestetid"
-      },
-      "service_max_time": {
-        "name": "Maksimal servicetid"
-      },
-      "warnings": {
-        "name": "Advarsler"
-      },
-      "particles_0_3": {
-        "name": "Particles count (0.3u)"
-      },
-      "particles_0_5": {
-        "name": "Particles count (0.5u)"
-      },
-      "particles_1_0": {
-        "name": "Particles count (1.0u)"
-      },
-      "particles_2_5": {
-        "name": "Particles count (2.5u)"
-      },
-      "particles_5_0": {
-        "name": "Particles count (5u)"
-      },
-      "particles_10": {
-        "name": "Particles count (10u)"
-      },
-      "pm_1_0": {
-        "name": "PM1.0"
-      },
-      "pm_2_5": {
-        "name": "PM2.5"
-      },
-      "pm_10": {
-        "name": "PM10"
-      },
-      "co2": {
-        "name": "CO2"
-      },
-      "voc": {
-        "name": "VOC Index"
-      },
-      "hcho": {
-        "name": "Formaldehyde"
-      }
-    },
-    "binary_sensor": {
-      "needs_refill": {
-        "name": "Trenger påfyll"
-      },
-      "needs_service": {
-        "name": "Trenger service"
-      }
-    },
-    "light": {
-      "led_strip": {
-        "name": "LED stripe"
-      }
-    },
-    "select": {
-      "led_strip_mode": {
-        "name": "LED stripe modus"
-      }
-    },
-    "switch": {
-      "sleep_mode": {
-        "name": "Hvilemodus"
-      }
-    }
-  },
-  "selector": {
-    "api_version": {
-      "options": {
-        "auto": "Auto discovery",
-        "0": "v0",
-        "2": "V2",
-        "3": "v3"
-      }
-    }
-  }
 }

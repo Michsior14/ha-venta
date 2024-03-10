@@ -1,135 +1,135 @@
 {
-  "config": {
-    "abort": {
-      "already_configured": "Urządzenie jest już skonfigurowane"
-    },
-    "error": {
-      "cannot_connect": "Nie udało się połączyć",
-      "cannot_detect_api_version": "Nie można określić wersji API",
-      "unknown": "Niespodziewany błąd"
-    },
-    "step": {
-      "user": {
-        "data": {
-          "host": "Gospodarz",
-          "scan_interval": "Interwał aktualizacji (sekundy)",
-          "api_version": "API version (keep auto if unsure)"
+    "config": {
+        "abort": {
+            "already_configured": "Urządzenie jest już skonfigurowane"
+        },
+        "error": {
+            "cannot_connect": "Nie udało się połączyć",
+            "cannot_detect_api_version": "Nie można określić wersji API",
+            "unknown": "Niespodziewany błąd"
+        },
+        "step": {
+            "user": {
+                "data": {
+                    "host": "Gospodarz",
+                    "scan_interval": "Interwał aktualizacji (sekundy)",
+                    "api_version": "Wersja API (zachowaj auto, jeśli nie jesteś pewien)"
+                }
+            }
         }
-      }
-    }
-  },
-  "options": {
-    "step": {
-      "init": {
-        "data": {
-          "scan_interval": "Interwał aktualizacji (sekundy)"
+    },
+    "options": {
+        "step": {
+            "init": {
+                "data": {
+                    "scan_interval": "Interwał aktualizacji (sekundy)"
+                }
+            }
         }
-      }
+    },
+    "entity": {
+        "humidifier": {
+            "humidifier": {
+                "name": "Nawilżacz"
+            }
+        },
+        "sensor": {
+            "temperature": {
+                "name": "Temperatura"
+            },
+            "water_level": {
+                "name": "Poziom wody"
+            },
+            "fan_speed": {
+                "name": "Prędkość wentylatora"
+            },
+            "operation_time": {
+                "name": "Czas działania"
+            },
+            "disc_ion_time": {
+                "name": "Czas jonizacji dysku"
+            },
+            "cleaning_time": {
+                "name": "Czas na sprzątanie"
+            },
+            "service_time": {
+                "name": "Czas serwisu"
+            },
+            "service_max_time": {
+                "name": "Maksymalny czas usługi"
+            },
+            "warnings": {
+                "name": "Ostrzeżenia"
+            },
+            "particles_0_3": {
+                "name": "Liczba cząstek (0,3u)"
+            },
+            "particles_0_5": {
+                "name": "Liczba cząstek (0,5u)"
+            },
+            "particles_1_0": {
+                "name": "Liczba cząstek (1,0u)"
+            },
+            "particles_2_5": {
+                "name": "Liczba cząstek (2,5u)"
+            },
+            "particles_5_0": {
+                "name": "Liczba cząstek (5u)"
+            },
+            "particles_10": {
+                "name": "Liczba cząstek (10u)"
+            },
+            "pm_1_0": {
+                "name": "PM1.0"
+            },
+            "pm_2_5": {
+                "name": "PM2.5"
+            },
+            "pm_10": {
+                "name": "PM10"
+            },
+            "co2": {
+                "name": "CO2"
+            },
+            "voc": {
+                "name": "LZO"
+            },
+            "hcho": {
+                "name": "Formaldehyd"
+            }
+        },
+        "binary_sensor": {
+            "needs_refill": {
+                "name": "Wymaga uzupełnienia"
+            },
+            "needs_service": {
+                "name": "Potrzebuje serwisu"
+            }
+        },
+        "light": {
+            "led_strip": {
+                "name": "Taśma LED"
+            }
+        },
+        "select": {
+            "led_strip_mode": {
+                "name": "Tryb taśmy LED"
+            }
+        },
+        "switch": {
+            "sleep_mode": {
+                "name": "Tryb nocny"
+            }
+        }
+    },
+    "selector": {
+        "api_version": {
+            "options": {
+                "auto": "Automatyczne wykrywanie",
+                "0": "v0",
+                "2": "V2",
+                "3": "v3"
+            }
+        }
     }
-  },
-  "entity": {
-    "humidifier": {
-      "humidifier": {
-        "name": "Nawilżacz"
-      }
-    },
-    "sensor": {
-      "temperature": {
-        "name": "Temperatura"
-      },
-      "water_level": {
-        "name": "Poziom wody"
-      },
-      "fan_speed": {
-        "name": "Prędkość wentylatora"
-      },
-      "operation_time": {
-        "name": "Czas działania"
-      },
-      "disc_ion_time": {
-        "name": "Czas jonizacji dysku"
-      },
-      "cleaning_time": {
-        "name": "Czas na sprzątanie"
-      },
-      "service_time": {
-        "name": "Czas serwisu"
-      },
-      "service_max_time": {
-        "name": "Maksymalny czas usługi"
-      },
-      "warnings": {
-        "name": "Ostrzeżenia"
-      },
-      "particles_0_3": {
-        "name": "Particles count (0.3u)"
-      },
-      "particles_0_5": {
-        "name": "Particles count (0.5u)"
-      },
-      "particles_1_0": {
-        "name": "Particles count (1.0u)"
-      },
-      "particles_2_5": {
-        "name": "Particles count (2.5u)"
-      },
-      "particles_5_0": {
-        "name": "Particles count (5u)"
-      },
-      "particles_10": {
-        "name": "Particles count (10u)"
-      },
-      "pm_1_0": {
-        "name": "PM1.0"
-      },
-      "pm_2_5": {
-        "name": "PM2.5"
-      },
-      "pm_10": {
-        "name": "PM10"
-      },
-      "co2": {
-        "name": "CO2"
-      },
-      "voc": {
-        "name": "VOC Index"
-      },
-      "hcho": {
-        "name": "Formaldehyde"
-      }
-    },
-    "binary_sensor": {
-      "needs_refill": {
-        "name": "Wymaga uzupełnienia"
-      },
-      "needs_service": {
-        "name": "Potrzebuje serwisu"
-      }
-    },
-    "light": {
-      "led_strip": {
-        "name": "Taśma LED"
-      }
-    },
-    "select": {
-      "led_strip_mode": {
-        "name": "Tryb taśmy LED"
-      }
-    },
-    "switch": {
-      "sleep_mode": {
-        "name": "Tryb nocny"
-      }
-    }
-  },
-  "selector": {
-    "api_version": {
-      "options": {
-        "auto": "Auto discovery",
-        "0": "v0",
-        "2": "V2",
-        "3": "v3"
-      }
-    }
-  }
 }
