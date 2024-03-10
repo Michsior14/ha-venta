@@ -82,7 +82,7 @@ class VentaLight(CoordinatorEntity[VentaDataUpdateCoordinator], LightEntity):
         **kwargs: dict[str, Any],
     ) -> None:
         """Turn light on."""
-        _LOGGER.debug("Turm on called with: %s", str(kwargs))
+        _LOGGER.debug("Turn on called with: %s", str(kwargs))
         if (rgb_color := kwargs.get(light.ATTR_RGB_COLOR)) is not None:
             response_data = await self._device.action(
                 {
