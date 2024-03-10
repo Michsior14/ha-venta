@@ -1,3 +1,10 @@
+## [0.6.3](https://github.com/Michsior14/ha-venta/compare/v0.6.2...v0.6.3) (2024-03-10)
+
+
+### Bug Fixes
+
+* unsupported regex syntax ([24259c2](https://github.com/Michsior14/ha-venta/commit/24259c28052226ba25997b636d38eceb78a19238))
+
 ## [0.6.2](https://github.com/Michsior14/ha-venta/compare/v0.6.1...v0.6.2) (2024-03-10)
 
 
@@ -22,11 +29,4 @@
 
 * change suggested temperature precision ([38ce6d5](https://github.com/Michsior14/ha-venta/commit/38ce6d5cceaf25ebc323f672c05b88e9d5a19569))
 * formaldehyde translations ([a0a7ea3](https://github.com/Michsior14/ha-venta/commit/a0a7ea3944f2ebc8c0a2e2de96437cd1b38dc51a))
-
-## [0.5.1-beta.7](https://github.com/Michsior14/ha-venta/compare/v0.5.1-beta.6...v0.5.1-beta.7) (2024-02-25)
-
-
-### Bug Fixes
-
-* fallback to device id for mac address retrieval ([0f19adb](https://github.com/Michsior14/ha-venta/commit/0f19adbf6c6b31b3945edccbe95d6f70130fcc9b))
 
