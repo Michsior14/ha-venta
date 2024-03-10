@@ -61,7 +61,7 @@ async def async_setup_entry(
     entity: VentaBaseHumidifierEntity
     if coordinator.api.device.api_version == VentaApiVersion.V0:
         entity = VentaV0HumidifierEntity(coordinator, HUMIDIFIER_ENTITY_DESCRIPTION)
-    if coordinator.api.device.api_version == VentaApiVersion.V2:
+    elif coordinator.api.device.api_version == VentaApiVersion.V2:
         entity = VentaV2HumidifierEntity(coordinator, HUMIDIFIER_ENTITY_DESCRIPTION)
     else:
         entity = VentaV3HumidifierEntity(coordinator, HUMIDIFIER_ENTITY_DESCRIPTION)

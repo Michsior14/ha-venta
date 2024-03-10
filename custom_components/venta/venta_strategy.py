@@ -1,6 +1,7 @@
 """Venta API strategies definitions."""
 
 import logging
+import re
 import select
 import socket
 from abc import ABC, abstractmethod
@@ -11,6 +12,8 @@ from typing import Any
 from aiohttp import ClientSession
 
 _LOGGER = logging.getLogger(__name__)
+
+JSON_REGEX = re.compile(r"^\{(?:[^{}]|(?R))*\}")
 
 
 @dataclass
@@ -125,24 +128,27 @@ class VentaTcpStrategy(VentaProtocolStrategy):
                     "DeviceName": "HomeAssistant",
                 },
                 **(action if action else {}),
-            }
+            },
+            # Venta devices expect no spaces in the JSON string
+            separators=(",", ":"),
         )
-        return f"{method} /{url}\nContent-Length: {len(body)}\n\n{body}\n\n"
+        return f"{method} /{url}\nContent-Length: {len(body)}\n{body}"
 
     async def _send_request(self, message: str) -> dict[str, Any]:
         """Request data from the Venta device using TCP protocol."""
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
             sock.settimeout(self._host_definition.timeout)
+
             try:
                 sock.connect((self._host_definition.host, self._host_definition.port))
             except OSError as err:
+                # Ignore the error for now.
                 _LOGGER.error(
-                    "Unable to connect to %s on port %s: %s",
+                    "Socket error while connection to %s on port %s: %s",
                     self._host_definition.host,
                     self._host_definition.port,
                     err,
                 )
-                return
 
             try:
                 sock.sendall(message.encode())
@@ -173,7 +179,31 @@ class VentaTcpStrategy(VentaProtocolStrategy):
                 return
 
             try:
-                return loads(sock.recv(self._buffer_size).decode())
+                fragments = []
+                while True:
+                    chunk = sock.recv(self._buffer_size)
+                    if not chunk:
+                        break
+                    fragments.append(chunk)
+                payload = b"".join(fragments).decode()
+
+                _LOGGER.debug(
+                    "Receive payload from %s on port %s: %s",
+                    self._host_definition.host,
+                    self._host_definition.port,
+                    payload,
+                )
+
+                json_part = JSON_REGEX.search(payload)
+                if json_part:
+                    return loads(json_part.group())
+
+                _LOGGER.error(
+                    "Malformed response from %s on port %s: %s",
+                    self._host_definition.host,
+                    self._host_definition.port,
+                    json_part,
+                )
             except OSError as err:
                 _LOGGER.error(
                     "Unable to receive payload from %s on port %s: %s",
@@ -181,7 +211,6 @@ class VentaTcpStrategy(VentaProtocolStrategy):
                     self._host_definition.port,
                     err,
                 )
-                return
             except (JSONDecodeError, TypeError) as err:
                 _LOGGER.error(
                     "Unable to parse payload from %s on port %s: %s",
@@ -189,4 +218,3 @@ class VentaTcpStrategy(VentaProtocolStrategy):
                     self._host_definition.port,
                     err,
                 )
-                return
