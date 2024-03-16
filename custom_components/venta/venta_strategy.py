@@ -92,16 +92,20 @@ class VentaTcpHeader:
 class VentaTcpStrategy(VentaProtocolStrategy):
     """Venta raw TCP strategy."""
 
+    _header: VentaTcpHeader | None = None
+
     def __init__(
         self,
         host_definition: VentaApiHostDefinition,
-        header: VentaTcpHeader,
         buffer_size: int = 2**16,
     ) -> None:
         """Venta TCP strategy constructor."""
         self._host_definition = host_definition
-        self._header = header
         self._buffer_size = buffer_size
+
+    def set_header(self, header: VentaTcpHeader) -> None:
+        """Set the header information."""
+        self._header = header
 
     async def get_status(self, method: str, url: str) -> dict[str, Any]:
         """Request status of the Venta device using TCP protocol."""
@@ -119,14 +123,22 @@ class VentaTcpStrategy(VentaProtocolStrategy):
         self, method: str, url: str, action: dict[str, Any] | None = None
     ) -> str:
         """Build the message to send to the Venta device."""
+        header = {
+            "Hash": "-42",
+            "DeviceName": "HomeAssistant",
+        }
+
+        if self._header and self._header.mac and self._header.device_type:
+            header.update(
+                {
+                    "DeviceType": self._header.device_type,
+                    "MacAddress": self._header.mac,
+                }
+            )
+
         body = dumps(
             {
-                "Header": {
-                    "DeviceType": self._header.device_type,
-                    "MacAdress": self._header.mac,
-                    "Hash": "-42",
-                    "DeviceName": "HomeAssistant",
-                },
+                "Header": header,
                 **(action if action else {}),
             },
             # Venta devices expect no spaces in the JSON string

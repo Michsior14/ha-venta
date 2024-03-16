@@ -164,10 +164,19 @@ class VentaDevice:
         """Initialize the Venta device."""
         data = await self.status()
         self.mac = data.header.get("MacAdress") or data.header.get("DeviceId")
+
         try:
             self.device_type = VentaDeviceType(data.header.get("DeviceType"))
         except ValueError:
             self.device_type = VentaDeviceType.UNKNOWN
+
+        if isinstance(self._strategy, VentaTcpStrategy):
+            self._strategy.set_header(
+                VentaTcpHeader(
+                    mac=self.mac,
+                    device_type=self.device_type.value,
+                )
+            )
 
     async def status(self) -> VentaData:
         """Update the Venta device."""
@@ -197,10 +206,7 @@ class VentaDevice:
 
         host_definition = VentaApiHostDefinition(self.host, self.api_definition.port)
         if self.api_version == VentaApiVersion.V0:
-            self._strategy = VentaTcpStrategy(
-                host_definition,
-                VentaTcpHeader(self.mac, self.device_type.value),
-            )
+            self._strategy = VentaTcpStrategy(host_definition)
         else:
             self._strategy = VentaHttpStrategy(host_definition, self._session)
 
