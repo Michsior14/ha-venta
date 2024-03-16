@@ -1,3 +1,10 @@
+## [0.6.4](https://github.com/Michsior14/ha-venta/compare/v0.6.3...v0.6.4) (2024-03-16)
+
+
+### Bug Fixes
+
+* empty header data on v0 devices ([#24](https://github.com/Michsior14/ha-venta/issues/24)) ([7660d33](https://github.com/Michsior14/ha-venta/commit/7660d339fbf0755d14442463c87d5354b29c02c8)), closes [#23](https://github.com/Michsior14/ha-venta/issues/23)
+
 ## [0.6.3](https://github.com/Michsior14/ha-venta/compare/v0.6.2...v0.6.3) (2024-03-10)
 
 
@@ -21,12 +28,4 @@
 * skip zero values for as150 ([#19](https://github.com/Michsior14/ha-venta/issues/19)) ([99fb151](https://github.com/Michsior14/ha-venta/commit/99fb151f7879d7dcd547e16c6ce2aafd37a12022)), closes [#18](https://github.com/Michsior14/ha-venta/issues/18)
 
 ## [0.6.0](https://github.com/Michsior14/ha-venta/compare/v0.5.1-beta.8...v0.6.0) (2024-02-25)
-
-## [0.5.1-beta.8](https://github.com/Michsior14/ha-venta/compare/v0.5.1-beta.7...v0.5.1-beta.8) (2024-02-25)
-
-
-### Bug Fixes
-
-* change suggested temperature precision ([38ce6d5](https://github.com/Michsior14/ha-venta/commit/38ce6d5cceaf25ebc323f672c05b88e9d5a19569))
-* formaldehyde translations ([a0a7ea3](https://github.com/Michsior14/ha-venta/commit/a0a7ea3944f2ebc8c0a2e2de96437cd1b38dc51a))
 
