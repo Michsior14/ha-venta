@@ -96,6 +96,15 @@
             },
             "hcho": {
                 "name": "Формальдегід"
+            },
+            "disc_ion_time_to_replace": {
+                "name": "Замініть іонізаційний диск"
+            },
+            "time_to_clean": {
+                "name": "Очистити машину"
+            },
+            "time_to_service": {
+                "name": "Сервісна машина в"
             }
         },
         "binary_sensor": {
@@ -104,6 +113,12 @@
             },
             "needs_service": {
                 "name": "Потребує обслуговування"
+            },
+            "needs_cleaning": {
+                "name": "Потребує прибирання"
+            },
+            "needs_disc_replacement": {
+                "name": "Потрібна заміна диска іонізації"
             }
         },
         "light": {

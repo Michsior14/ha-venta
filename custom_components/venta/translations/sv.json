@@ -96,6 +96,15 @@
             },
             "hcho": {
                 "name": "Formaldehyd"
+            },
+            "disc_ion_time_to_replace": {
+                "name": "Byt ut joniseringsskivan"
+            },
+            "time_to_clean": {
+                "name": "Rengör maskinen in"
+            },
+            "time_to_service": {
+                "name": "Servicemaskin in"
             }
         },
         "binary_sensor": {
@@ -104,6 +113,12 @@
             },
             "needs_service": {
                 "name": "Behöver service"
+            },
+            "needs_cleaning": {
+                "name": "Behöver rengöring"
+            },
+            "needs_disc_replacement": {
+                "name": "Behöver byta joniseringsskiva"
             }
         },
         "light": {

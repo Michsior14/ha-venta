@@ -96,6 +96,15 @@
             },
             "hcho": {
                 "name": "Formaldéhyde"
+            },
+            "disc_ion_time_to_replace": {
+                "name": "Remplacez le disque d'ionisation dans"
+            },
+            "time_to_clean": {
+                "name": "Nettoyer la machine"
+            },
+            "time_to_service": {
+                "name": "Machine de service dans"
             }
         },
         "binary_sensor": {
@@ -104,6 +113,12 @@
             },
             "needs_service": {
                 "name": "Nécessite un service"
+            },
+            "needs_cleaning": {
+                "name": "A besoin d'être nettoyé"
+            },
+            "needs_disc_replacement": {
+                "name": "Nécessite le remplacement du disque d’ionisation"
             }
         },
         "light": {

@@ -96,6 +96,15 @@
             },
             "hcho": {
                 "name": "Formaldehyde"
+            },
+            "disc_ion_time_to_replace": {
+                "name": "Vervang de ionisatieschijf erin"
+            },
+            "time_to_clean": {
+                "name": "Machine schoon binnen"
+            },
+            "time_to_service": {
+                "name": "Serviceautomaat binnen"
             }
         },
         "binary_sensor": {
@@ -104,6 +113,12 @@
             },
             "needs_service": {
                 "name": "Service nodig"
+            },
+            "needs_cleaning": {
+                "name": "Heeft schoonmaak nodig"
+            },
+            "needs_disc_replacement": {
+                "name": "Heeft vervanging van de ionisatieschijf nodig"
             }
         },
         "light": {

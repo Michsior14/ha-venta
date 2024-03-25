@@ -96,6 +96,15 @@
             },
             "hcho": {
                 "name": "Formaldehyd"
+            },
+            "disc_ion_time_to_replace": {
+                "name": "Setzen Sie die Ionisationsscheibe wieder ein"
+            },
+            "time_to_clean": {
+                "name": "Maschine reinigen"
+            },
+            "time_to_service": {
+                "name": "Servicemaschine rein"
             }
         },
         "binary_sensor": {
@@ -104,6 +113,12 @@
             },
             "needs_service": {
                 "name": "Benötigt Service"
+            },
+            "needs_cleaning": {
+                "name": "Muss gereinigt werden"
+            },
+            "needs_disc_replacement": {
+                "name": "Ionisationsscheibe muss ausgetauscht werden"
             }
         },
         "light": {

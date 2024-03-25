@@ -96,6 +96,15 @@
             },
             "hcho": {
                 "name": "Formaldeído"
+            },
+            "disc_ion_time_to_replace": {
+                "name": "Substitua o disco de ionização em"
+            },
+            "time_to_clean": {
+                "name": "Limpe a máquina em"
+            },
+            "time_to_service": {
+                "name": "Máquina de serviço em"
             }
         },
         "binary_sensor": {
@@ -104,6 +113,12 @@
             },
             "needs_service": {
                 "name": "Necessita de serviço"
+            },
+            "needs_cleaning": {
+                "name": "Precisa de limpeza"
+            },
+            "needs_disc_replacement": {
+                "name": "Precisa de substituição do disco de ionização"
             }
         },
         "light": {
