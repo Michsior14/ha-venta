@@ -96,6 +96,15 @@
             },
             "hcho": {
                 "name": "Formaldehído"
+            },
+            "disc_ion_time_to_replace": {
+                "name": "Reemplace el disco de ionización en"
+            },
+            "time_to_clean": {
+                "name": "Limpiar la máquina en"
+            },
+            "time_to_service": {
+                "name": "Máquina de servicio en"
             }
         },
         "binary_sensor": {
@@ -104,6 +113,12 @@
             },
             "needs_service": {
                 "name": "Necesita servicio"
+            },
+            "needs_cleaning": {
+                "name": "Necesita limpieza"
+            },
+            "needs_disc_replacement": {
+                "name": "Necesita reemplazo del disco de ionización"
             }
         },
         "light": {

@@ -96,6 +96,15 @@
             },
             "hcho": {
                 "name": "formaldehyd"
+            },
+            "disc_ion_time_to_replace": {
+                "name": "Vymeňte ionizačný disk"
+            },
+            "time_to_clean": {
+                "name": "Vyčistite stroj v"
+            },
+            "time_to_service": {
+                "name": "Servisný stroj v"
             }
         },
         "binary_sensor": {
@@ -104,6 +113,12 @@
             },
             "needs_service": {
                 "name": "Potrebuje servis"
+            },
+            "needs_cleaning": {
+                "name": "Vyžaduje čistenie"
+            },
+            "needs_disc_replacement": {
+                "name": "Vyžaduje výmenu ionizačného disku"
             }
         },
         "light": {

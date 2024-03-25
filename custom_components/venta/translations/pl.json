@@ -96,6 +96,15 @@
             },
             "hcho": {
                 "name": "Formaldehyd"
+            },
+            "disc_ion_time_to_replace": {
+                "name": "Wymień dysk jonizacyjny za"
+            },
+            "time_to_clean": {
+                "name": "Wyczyść maszynę za"
+            },
+            "time_to_service": {
+                "name": "Serwis maszyny za"
             }
         },
         "binary_sensor": {
@@ -104,6 +113,12 @@
             },
             "needs_service": {
                 "name": "Potrzebuje serwisu"
+            },
+            "needs_cleaning": {
+                "name": "Wymaga czyszczenia"
+            },
+            "needs_disc_replacement": {
+                "name": "Wymaga wymiany dysku jonizacyjnego"
             }
         },
         "light": {

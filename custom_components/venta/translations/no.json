@@ -96,6 +96,15 @@
             },
             "hcho": {
                 "name": "Formaldehyd"
+            },
+            "disc_ion_time_to_replace": {
+                "name": "Bytt ioniseringsskive inn"
+            },
+            "time_to_clean": {
+                "name": "Rengjør maskinen inn"
+            },
+            "time_to_service": {
+                "name": "Servicemaskin inn"
             }
         },
         "binary_sensor": {
@@ -104,6 +113,12 @@
             },
             "needs_service": {
                 "name": "Trenger service"
+            },
+            "needs_cleaning": {
+                "name": "Trenger rengjøring"
+            },
+            "needs_disc_replacement": {
+                "name": "Trenger bytte av ioniseringsskive"
             }
         },
         "light": {

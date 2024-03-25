@@ -96,6 +96,15 @@
             },
             "hcho": {
                 "name": "Formaldeide"
+            },
+            "disc_ion_time_to_replace": {
+                "name": "Sostituire il disco di ionizzazione"
+            },
+            "time_to_clean": {
+                "name": "Pulire la macchina"
+            },
+            "time_to_service": {
+                "name": "Macchina di servizio dentro"
             }
         },
         "binary_sensor": {
@@ -104,6 +113,12 @@
             },
             "needs_service": {
                 "name": "Necessità di assistenza"
+            },
+            "needs_cleaning": {
+                "name": "Necessita di pulizia"
+            },
+            "needs_disc_replacement": {
+                "name": "Necessita della sostituzione del disco di ionizzazione"
             }
         },
         "light": {
