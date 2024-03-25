@@ -68,6 +68,15 @@
       "service_max_time": {
         "name": "Service max time"
       },
+      "disc_ion_time_to_replace": {
+        "name": "Replace ionization disc in"
+      },
+      "time_to_clean": {
+        "name": "Clean machine in"
+      },
+      "time_to_service": {
+        "name": "Service machine in"
+      },
       "warnings": {
         "name": "Warnings"
       },
@@ -114,6 +123,12 @@
       },
       "needs_service": {
         "name": "Needs service"
+      },
+      "needs_cleaning": {
+        "name": "Needs cleaning"
+      },
+      "needs_disc_replacement": {
+        "name": "Needs ionization disc replacement"
       }
     },
     "light": {

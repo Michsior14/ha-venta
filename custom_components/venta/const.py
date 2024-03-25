@@ -17,8 +17,11 @@ ATTR_WATER_LEVEL = "water_level"
 ATTR_FAN_SPEED = "fan_speed"
 ATTR_OPERATION_TIME = "operation_time"
 ATTR_DISC_ION_TIME = "disc_ion_time"
+ATTR_DISC_ION_TIME_TO_REPLACE = "disc_ion_time_to_replace"
 ATTR_CLEANING_TIME = "cleaning_time"
+ATTR_TIME_TO_CLEAN = "time_to_clean"
 ATTR_SERVICE_TIME = "service_time"
+ATTR_TIME_TO_SERVICE = "time_to_service"
 ATTR_SERVICE_MAX_TIME = "service_max_time"
 ATTR_WARNINGS = "warnings"
 ATTR_PARTICLES_0_3 = "particles_0_3"
@@ -35,5 +38,12 @@ ATTR_HCHO = "hcho"
 ATTR_CO2 = "co2"
 ATTR_NEEDS_REFILL = "needs_refill"
 ATTR_NEEDS_SERVICE = "needs_service"
+ATTR_NEEDS_DISC_REPLACEMENT = "needs_disc_replacement"
+ATTR_NEEDS_CLEANING = "needs_cleaning"
+
 ATTR_LED_STRIP_MODE = "led_strip_mode"
 ATTR_SLEEP_MODE = "sleep_mode"
+
+LW74_ION_DISC_REPLACE_TIME_DAYS = 121  # max seen value 17426 ~ 121 days
+LW74_CLEAN_TIME_DAYS = 182  # max seen value 26210 ~ 182 days
+LW74_SERVICE_TIME_DAYS = 14  # max seen value 2018 ~ 14 days

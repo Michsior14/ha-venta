@@ -14,7 +14,18 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import ATTR_NEEDS_REFILL, ATTR_NEEDS_SERVICE, DOMAIN, NO_WATER_THRESHOLD
+from .const import (
+    ATTR_NEEDS_CLEANING,
+    ATTR_NEEDS_DISC_REPLACEMENT,
+    ATTR_NEEDS_REFILL,
+    ATTR_NEEDS_SERVICE,
+    DOMAIN,
+    LW74_SERVICE_TIME_DAYS,
+    LW74_CLEAN_TIME_DAYS,
+    NO_WATER_THRESHOLD,
+    LW74_ION_DISC_REPLACE_TIME_DAYS,
+)
+from .utils import needs_maintenance
 from .venta import VentaData, VentaDataUpdateCoordinator, VentaDeviceType
 
 
@@ -36,17 +47,49 @@ def _supported_sensors(
     device_type: VentaDeviceType,
 ) -> list[VentaBinarySensorEntityDescription]:
     """Return supported sensors for given device type."""
+    common_service_warnings = [16, 17]
+    common_sensors = [
+        VentaBinarySensorEntityDescription(
+            key=ATTR_NEEDS_REFILL,
+            translation_key="needs_refill",
+            icon="mdi:water-alert",
+            value_func=(
+                lambda data: data.info.get("Warnings") != 0
+                and data.measure.get("WaterLevel") < NO_WATER_THRESHOLD
+            ),
+        ),
+    ]
     match device_type:
-        case VentaDeviceType.LW73_LW74 | VentaDeviceType.UNKNOWN:
-            service_warnings = [16, 17]
+        case VentaDeviceType.UNKNOWN:
             return [
+                *common_sensors,
                 VentaBinarySensorEntityDescription(
-                    key=ATTR_NEEDS_REFILL,
-                    translation_key="needs_refill",
-                    icon="mdi:water-alert",
+                    key=ATTR_NEEDS_SERVICE,
+                    translation_key="needs_service",
+                    icon="mdi:account-wrench",
                     value_func=(
-                        lambda data: data.info.get("Warnings") != 0
-                        and data.measure.get("WaterLevel") < NO_WATER_THRESHOLD
+                        lambda data: data.info.get("Warnings")
+                        in common_service_warnings
+                    ),
+                ),
+            ]
+        case VentaDeviceType.LW73_LW74:
+            return [
+                *common_sensors,
+                VentaBinarySensorEntityDescription(
+                    key=ATTR_NEEDS_DISC_REPLACEMENT,
+                    translation_key="needs_disc_replacement",
+                    icon="mdi:disc-alert",
+                    value_func=lambda data: needs_maintenance(
+                        data.info.get("DiscIonT"), LW74_ION_DISC_REPLACE_TIME_DAYS
+                    ),
+                ),
+                VentaBinarySensorEntityDescription(
+                    key=ATTR_NEEDS_CLEANING,
+                    translation_key="needs_cleaning",
+                    icon="mdi:spray-bottle",
+                    value_func=lambda data: needs_maintenance(
+                        data.info.get("CleaningT"), LW74_CLEAN_TIME_DAYS
                     ),
                 ),
                 VentaBinarySensorEntityDescription(
@@ -54,7 +97,11 @@ def _supported_sensors(
                     translation_key="needs_service",
                     icon="mdi:account-wrench",
                     value_func=(
-                        lambda data: data.info.get("Warnings") in service_warnings
+                        lambda data: data.info.get("Warnings")
+                        in common_service_warnings
+                        or needs_maintenance(
+                            data.info.get("ServiceT"), LW74_SERVICE_TIME_DAYS
+                        )
                     ),
                 ),
             ]
