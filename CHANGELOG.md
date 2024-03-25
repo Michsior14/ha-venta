@@ -1,3 +1,11 @@
+## [0.6.5](https://github.com/Michsior14/ha-venta/compare/v0.6.4...v0.6.5) (2024-03-25)
+
+
+### Bug Fixes
+
+* properly handle venta time ([#26](https://github.com/Michsior14/ha-venta/issues/26)) ([c764be6](https://github.com/Michsior14/ha-venta/commit/c764be629e8609d6cdc57bedb30df3e223c39ff4)), closes [#25](https://github.com/Michsior14/ha-venta/issues/25)
+* update translations ([#27](https://github.com/Michsior14/ha-venta/issues/27)) ([195704b](https://github.com/Michsior14/ha-venta/commit/195704b941fee374f2bbaec7907109516262bc92))
+
 ## [0.6.4](https://github.com/Michsior14/ha-venta/compare/v0.6.3...v0.6.4) (2024-03-16)
 
 
@@ -26,6 +34,4 @@
 ### Bug Fixes
 
 * skip zero values for as150 ([#19](https://github.com/Michsior14/ha-venta/issues/19)) ([99fb151](https://github.com/Michsior14/ha-venta/commit/99fb151f7879d7dcd547e16c6ce2aafd37a12022)), closes [#18](https://github.com/Michsior14/ha-venta/issues/18)
-
-## [0.6.0](https://github.com/Michsior14/ha-venta/compare/v0.5.1-beta.8...v0.6.0) (2024-02-25)
 
