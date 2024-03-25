@@ -27,8 +27,13 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import (
-    DOMAIN,
+    ATTR_CLEANING_TIME,
     ATTR_CO2,
+    ATTR_DISC_ION_TIME,
+    ATTR_DISC_ION_TIME_TO_REPLACE,
+    ATTR_FAN_SPEED,
+    ATTR_HCHO,
+    ATTR_OPERATION_TIME,
     ATTR_PARTICLES_0_3,
     ATTR_PARTICLES_0_5,
     ATTR_PARTICLES_2_5,
@@ -37,29 +42,20 @@ from .const import (
     ATTR_PM_1_0,
     ATTR_PM_2_5,
     ATTR_PM_10,
-    ATTR_WATER_LEVEL,
-    ATTR_FAN_SPEED,
-    ATTR_OPERATION_TIME,
-    ATTR_DISC_ION_TIME,
-    ATTR_CLEANING_TIME,
-    ATTR_SERVICE_TIME,
     ATTR_SERVICE_MAX_TIME,
-    ATTR_WARNINGS,
+    ATTR_SERVICE_TIME,
+    ATTR_TIME_TO_CLEAN,
+    ATTR_TIME_TO_SERVICE,
     ATTR_VOC,
-    ATTR_HCHO,
+    ATTR_WARNINGS,
+    ATTR_WATER_LEVEL,
+    DOMAIN,
+    LW74_CLEAN_TIME_DAYS,
+    LW74_ION_DISC_REPLACE_TIME_DAYS,
+    LW74_SERVICE_TIME_DAYS,
 )
+from .utils import skip_zeros, venta_time_to_days_left, venta_time_to_minutes
 from .venta import VentaDataUpdateCoordinator, VentaDeviceType
-
-
-def skip_zeros(
-    value: str | int | bool | None,
-    coordinator: VentaDataUpdateCoordinator,
-    devices: list[VentaDeviceType],
-) -> str | int | bool | None:
-    """Skip zero values for certain devices."""
-    if coordinator.api.device.device_type not in devices:
-        return value
-    return None if value == 0 else value
 
 
 @dataclass
@@ -80,6 +76,48 @@ class VentaSensorEntityDescription(
 
 
 SENSOR_TYPES: list[VentaSensorEntityDescription] = (
+    # LW73/LW74 only sensors
+    VentaSensorEntityDescription(
+        key=ATTR_DISC_ION_TIME_TO_REPLACE,
+        translation_key="disc_ion_time_to_replace",
+        icon="mdi:power-settings",
+        native_unit_of_measurement=UnitOfTime.DAYS,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        exists_func=lambda coordinator: coordinator.api.device.device_type
+        is VentaDeviceType.LW73_LW74
+        and coordinator.data.info.get("DiscIonT") is not None,
+        value_func=lambda coordinator: venta_time_to_days_left(
+            coordinator.data.info.get("DiscIonT"),
+            LW74_ION_DISC_REPLACE_TIME_DAYS,
+        ),
+    ),
+    VentaSensorEntityDescription(
+        key=ATTR_TIME_TO_CLEAN,
+        translation_key="time_to_clean",
+        icon="mdi:power-settings",
+        native_unit_of_measurement=UnitOfTime.DAYS,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        exists_func=lambda coordinator: coordinator.api.device.device_type
+        is VentaDeviceType.LW73_LW74
+        and coordinator.data.info.get("CleaningT") is not None,
+        value_func=lambda coordinator: venta_time_to_days_left(
+            coordinator.data.info.get("CleaningT"), LW74_CLEAN_TIME_DAYS
+        ),
+    ),
+    VentaSensorEntityDescription(
+        key=ATTR_TIME_TO_SERVICE,
+        translation_key="time_to_service",
+        icon="mdi:power-settings",
+        native_unit_of_measurement=UnitOfTime.DAYS,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        exists_func=lambda coordinator: coordinator.api.device.device_type
+        is VentaDeviceType.LW73_LW74
+        and coordinator.data.info.get("ServiceT") is not None,
+        value_func=lambda coordinator: venta_time_to_days_left(
+            coordinator.data.info.get("ServiceT"), LW74_SERVICE_TIME_DAYS
+        ),
+    ),
+    # All sensors
     VentaSensorEntityDescription(
         key=ATTR_TEMPERATURE,
         translation_key="temperature",
@@ -120,7 +158,9 @@ SENSOR_TYPES: list[VentaSensorEntityDescription] = (
         entity_category=EntityCategory.DIAGNOSTIC,
         exists_func=lambda coordinator: coordinator.data.info.get("OperationT")
         is not None,
-        value_func=lambda coordinator: coordinator.data.info.get("OperationT"),
+        value_func=lambda coordinator: venta_time_to_minutes(
+            coordinator.data.info.get("OperationT")
+        ),
     ),
     VentaSensorEntityDescription(
         key=ATTR_DISC_ION_TIME,
@@ -130,7 +170,9 @@ SENSOR_TYPES: list[VentaSensorEntityDescription] = (
         entity_category=EntityCategory.DIAGNOSTIC,
         exists_func=lambda coordinator: coordinator.data.info.get("DiscIonT")
         is not None,
-        value_func=lambda coordinator: coordinator.data.info.get("DiscIonT"),
+        value_func=lambda coordinator: venta_time_to_minutes(
+            coordinator.data.info.get("DiscIonT")
+        ),
     ),
     VentaSensorEntityDescription(
         key=ATTR_CLEANING_TIME,
@@ -140,7 +182,9 @@ SENSOR_TYPES: list[VentaSensorEntityDescription] = (
         entity_category=EntityCategory.DIAGNOSTIC,
         exists_func=lambda coordinator: coordinator.data.info.get("CleaningT")
         is not None,
-        value_func=lambda coordinator: coordinator.data.info.get("CleaningT"),
+        value_func=lambda coordinator: venta_time_to_minutes(
+            coordinator.data.info.get("CleaningT")
+        ),
     ),
     VentaSensorEntityDescription(
         key=ATTR_SERVICE_TIME,
@@ -150,7 +194,9 @@ SENSOR_TYPES: list[VentaSensorEntityDescription] = (
         entity_category=EntityCategory.DIAGNOSTIC,
         exists_func=lambda coordinator: coordinator.data.info.get("ServiceT")
         is not None,
-        value_func=lambda coordinator: coordinator.data.info.get("ServiceT"),
+        value_func=lambda coordinator: venta_time_to_minutes(
+            coordinator.data.info.get("ServiceT")
+        ),
     ),
     VentaSensorEntityDescription(
         key=ATTR_SERVICE_MAX_TIME,
