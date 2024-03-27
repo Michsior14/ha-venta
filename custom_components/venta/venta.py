@@ -30,8 +30,15 @@ class VentaDeviceType(Enum):
     """Venta device types."""
 
     UNKNOWN = -1
-    LW60 = 2
-    AH902 = 12
+    LP60 = 1
+    LPH60 = 2
+    LW60 = 3,
+    LW60T = 4,
+    LW62 = 5,
+    LW62T = 6,
+    AP902 = 11,
+    AH902 = 12,
+    AW902 = 13,
     LW73_LW74 = 106
     AS150 = 150
     AH550_AH555 = 500
