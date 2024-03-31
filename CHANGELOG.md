@@ -1,4 +1,4 @@
-## [1.0.0](https://github.com/Michsior14/ha-venta/compare/v0.6.5...v1.0.0) (2024-03-31)
+## [0.7.0](https://github.com/Michsior14/ha-venta/compare/v0.6.5...v0.7.0) (2024-03-31)
 
 
 ### ⚠ BREAKING CHANGES
