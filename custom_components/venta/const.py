@@ -1,5 +1,9 @@
 """Constants for the Venta integration."""
 
+from homeassistant.components.humidifier import (
+    MODE_AUTO,
+)
+
 DOMAIN = "venta"
 CONF_API_DEFINITION_ID = "api_definition_id"
 
@@ -8,10 +12,27 @@ DEFAULT_SCAN_INTERVAL = 10
 NO_WATER_THRESHOLD = 50000
 
 MODE_SLEEP = "sleep"
+MODE_TURBO = "turbo"
 MODE_LEVEL_1 = "level 1"
 MODE_LEVEL_2 = "level 2"
 MODE_LEVEL_3 = "level 3"
 MODE_LEVEL_4 = "level 4"
+MODE_LEVEL_5 = "level 5"
+
+MODES_3: list[str] = [
+    MODE_AUTO,
+    MODE_LEVEL_1,
+    MODE_LEVEL_2,
+    MODE_LEVEL_3,
+]
+MODES_4: list[str] = [
+    *MODES_3,
+    MODE_LEVEL_4,
+]
+MODES_5: list[str] = [
+    *MODES_4,
+    MODE_LEVEL_5,
+]
 
 ATTR_WATER_LEVEL = "water_level"
 ATTR_FAN_SPEED = "fan_speed"
