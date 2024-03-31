@@ -57,11 +57,13 @@ ATTR_PM_10 = "pm_10"
 ATTR_VOC = "voc"
 ATTR_HCHO = "hcho"
 ATTR_CO2 = "co2"
+ATTR_DUST = "dust"
 ATTR_NEEDS_REFILL = "needs_refill"
 ATTR_NEEDS_SERVICE = "needs_service"
 ATTR_NEEDS_DISC_REPLACEMENT = "needs_disc_replacement"
 ATTR_NEEDS_CLEANING = "needs_cleaning"
 
+ATTR_LED_STRIP = "led_strip"
 ATTR_LED_STRIP_MODE = "led_strip_mode"
 ATTR_SLEEP_MODE = "sleep_mode"
 
