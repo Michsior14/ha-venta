@@ -41,7 +41,7 @@ class VentaSwitchEntityDescription(
 SENSOR_TYPES: list[VentaSwitchEntityDescription] = (
     VentaSwitchEntityDescription(
         key=ATTR_SLEEP_MODE,
-        translation_key="sleep_mode",
+        translation_key=ATTR_SLEEP_MODE,
         entity_category=EntityCategory.CONFIG,
         exists_func=lambda coordinator: coordinator.api.device.device_type
         == VentaDeviceType.AH550_AH555,

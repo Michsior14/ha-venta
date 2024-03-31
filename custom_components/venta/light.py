@@ -18,7 +18,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from homeassistant.util.color import color_rgb_to_hex, rgb_hex_to_rgb_list
 
-from .const import DOMAIN
+from .const import ATTR_LED_STRIP, DOMAIN
 from .venta import VentaDataUpdateCoordinator
 
 _LOGGER = logging.getLogger(__name__)
@@ -30,7 +30,7 @@ class VentaLightEntityDescription(LightEntityDescription):
 
 
 LIGHT_ENTITY_DESCRIPTION = VentaLightEntityDescription(
-    key="light", translation_key="led_strip"
+    key=ATTR_LED_STRIP, translation_key=ATTR_LED_STRIP
 )
 
 

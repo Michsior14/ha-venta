@@ -107,7 +107,7 @@ class VentaBaseHumidifierEntity(
         if MODE_SLEEP in self._attr_available_modes and data.action.get("SleepMode"):
             return MODE_SLEEP
         level = data.action.get("FanSpeed", 1)
-        return f"level {level}"
+        return f"level_{level}"
 
     @property
     def target_humidity(self) -> int | None:

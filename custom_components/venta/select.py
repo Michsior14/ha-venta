@@ -49,7 +49,7 @@ class VentaSelectEntityDescription(
 SENSOR_TYPES: list[VentaSelectEntityDescription] = (
     VentaSelectEntityDescription(
         key=ATTR_LED_STRIP_MODE,
-        translation_key="led_strip_mode",
+        translation_key=ATTR_LED_STRIP_MODE,
         entity_category=EntityCategory.CONFIG,
         exists_func=lambda coordinator: coordinator.data.action.get("LEDStripMode")
         is not None,
