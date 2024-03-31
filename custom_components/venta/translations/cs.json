@@ -30,7 +30,21 @@
     "entity": {
         "humidifier": {
             "humidifier": {
-                "name": "Zvlhčovač vzduchu"
+                "name": "Zvlhčovač vzduchu",
+                "state_attributes": {
+                    "mode": {
+                        "state": {
+                            "sleep": "Spát",
+                            "auto": "Auto",
+                            "turbo": "Turbo",
+                            "level_1": "Úroveň 1",
+                            "level_2": "Úroveň 2",
+                            "level_3": "Úroveň 3",
+                            "level_4": "Úroveň 4",
+                            "level_5": "Úroveň 5"
+                        }
+                    }
+                }
             }
         },
         "sensor": {
@@ -105,6 +119,9 @@
             },
             "time_to_service": {
                 "name": "Servisní stroj v"
+            },
+            "dust": {
+                "name": "Prach"
             }
         },
         "binary_sensor": {

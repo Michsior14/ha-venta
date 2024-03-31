@@ -30,7 +30,21 @@
     "entity": {
         "humidifier": {
             "humidifier": {
-                "name": "Зволожувач повітря"
+                "name": "Зволожувач повітря",
+                "state_attributes": {
+                    "mode": {
+                        "state": {
+                            "sleep": "сон",
+                            "auto": "Авто",
+                            "turbo": "Турбо",
+                            "level_1": "Рівень 1",
+                            "level_2": "Рівень 2",
+                            "level_3": "Рівень 3",
+                            "level_4": "Рівень 4",
+                            "level_5": "Рівень 5"
+                        }
+                    }
+                }
             }
         },
         "sensor": {
@@ -105,6 +119,9 @@
             },
             "time_to_service": {
                 "name": "Сервісна машина в"
+            },
+            "dust": {
+                "name": "Пил"
             }
         },
         "binary_sensor": {
