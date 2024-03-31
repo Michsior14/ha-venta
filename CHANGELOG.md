@@ -1,3 +1,10 @@
+## [0.7.1](https://github.com/Michsior14/ha-venta/compare/v0.7.0...v0.7.1) (2024-03-31)
+
+
+### Bug Fixes
+
+* update translations ([#34](https://github.com/Michsior14/ha-venta/issues/34)) ([60e335a](https://github.com/Michsior14/ha-venta/commit/60e335a646dd763f2bcba86c426b19775aea621d))
+
 ## [0.7.0](https://github.com/Michsior14/ha-venta/compare/v0.6.5...v0.7.0) (2024-03-31)
 
 
@@ -35,12 +42,4 @@
 ### Bug Fixes
 
 * unsupported regex syntax ([24259c2](https://github.com/Michsior14/ha-venta/commit/24259c28052226ba25997b636d38eceb78a19238))
-
-## [0.6.2](https://github.com/Michsior14/ha-venta/compare/v0.6.1...v0.6.2) (2024-03-10)
-
-
-### Bug Fixes
-
-* manually update coordinator on action ([#21](https://github.com/Michsior14/ha-venta/issues/21)) ([5758d3c](https://github.com/Michsior14/ha-venta/commit/5758d3c960d77b1d0934d76ad295b7df8d9babe6))
-* v0 devices compatibility improvements ([#20](https://github.com/Michsior14/ha-venta/issues/20)) ([ef18254](https://github.com/Michsior14/ha-venta/commit/ef182545f22e0a46d02d8889e7097cf3aa6084f2))
 
