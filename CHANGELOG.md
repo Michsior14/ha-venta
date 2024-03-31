@@ -1,3 +1,19 @@
+## [1.0.0](https://github.com/Michsior14/ha-venta/compare/v0.6.5...v1.0.0) (2024-03-31)
+
+
+### ⚠ BREAKING CHANGES
+
+* model levels values no longer contains spaces
+
+### Features
+
+* **LW60:** support more modes ([#29](https://github.com/Michsior14/ha-venta/issues/29)) ([2d6ad60](https://github.com/Michsior14/ha-venta/commit/2d6ad602f3f08f807e519967ce178429b460a351)), closes [#28](https://github.com/Michsior14/ha-venta/issues/28)
+
+
+### Bug Fixes
+
+* improve translations handling and icons ([#30](https://github.com/Michsior14/ha-venta/issues/30)) ([29a472e](https://github.com/Michsior14/ha-venta/commit/29a472e50e075c9e7ff20bfe80413a3661cb8d9e))
+
 ## [0.6.5](https://github.com/Michsior14/ha-venta/compare/v0.6.4...v0.6.5) (2024-03-25)
 
 
@@ -27,11 +43,4 @@
 
 * manually update coordinator on action ([#21](https://github.com/Michsior14/ha-venta/issues/21)) ([5758d3c](https://github.com/Michsior14/ha-venta/commit/5758d3c960d77b1d0934d76ad295b7df8d9babe6))
 * v0 devices compatibility improvements ([#20](https://github.com/Michsior14/ha-venta/issues/20)) ([ef18254](https://github.com/Michsior14/ha-venta/commit/ef182545f22e0a46d02d8889e7097cf3aa6084f2))
-
-## [0.6.1](https://github.com/Michsior14/ha-venta/compare/v0.6.0...v0.6.1) (2024-02-29)
-
-
-### Bug Fixes
-
-* skip zero values for as150 ([#19](https://github.com/Michsior14/ha-venta/issues/19)) ([99fb151](https://github.com/Michsior14/ha-venta/commit/99fb151f7879d7dcd547e16c6ce2aafd37a12022)), closes [#18](https://github.com/Michsior14/ha-venta/issues/18)
 
