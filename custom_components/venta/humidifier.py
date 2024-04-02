@@ -19,22 +19,21 @@ from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import (
     DOMAIN,
-    MODE_LEVEL_1,
-    MODE_LEVEL_2,
-    MODE_LEVEL_3,
-    MODE_LEVEL_4,
     MODE_SLEEP,
+    MODES_3,
+    MODES_4,
+    MODES_5,
 )
 from .venta import VentaApiVersion, VentaDataUpdateCoordinator, VentaDeviceType
 
-AVAILABLE_MODES = [
-    MODE_AUTO,
-    MODE_SLEEP,
-    MODE_LEVEL_1,
-    MODE_LEVEL_2,
-    MODE_LEVEL_3,
-    MODE_LEVEL_4,
-]
+DEFAULT_MODES: list[str] = [MODE_SLEEP, *MODES_3]
+
+DEVICE_MODES: dict[VentaDeviceType, list[str]] = {
+    VentaDeviceType.LW60: [MODE_SLEEP, *MODES_5],
+    # VentaDeviceType.LW62: [MODE_SLEEP, *MODES_5],
+    VentaDeviceType.LW73_LW74: [MODE_SLEEP, *MODES_4],
+    VentaDeviceType.AH550_AH555: MODES_3,
+}
 
 
 @dataclass
@@ -77,7 +76,6 @@ class VentaBaseHumidifierEntity(
     _attr_has_entity_name = True
     _attr_device_class = HumidifierDeviceClass.HUMIDIFIER
     _attr_supported_features = HumidifierEntityFeature.MODES
-    _attr_available_modes = AVAILABLE_MODES
     entity_description: VentaHumidifierEntityDescription
 
     def __init__(
@@ -91,6 +89,9 @@ class VentaBaseHumidifierEntity(
         self._device = coordinator.api.device
         self._attr_device_info = coordinator.device_info
         self._attr_unique_id = f"{self._device.mac}-{description.key}"
+        self._attr_available_modes = DEVICE_MODES.get(
+            self._device.device_type, DEFAULT_MODES
+        )
 
     @property
     def is_on(self) -> bool:
@@ -106,7 +107,7 @@ class VentaBaseHumidifierEntity(
         if MODE_SLEEP in self._attr_available_modes and data.action.get("SleepMode"):
             return MODE_SLEEP
         level = data.action.get("FanSpeed", 1)
-        return f"level {level}"
+        return f"level_{level}"
 
     @property
     def target_humidity(self) -> int | None:
@@ -177,21 +178,6 @@ class VentaV2HumidifierEntity(VentaBaseHumidifierEntity):
 
 class VentaV3HumidifierEntity(VentaBaseHumidifierEntity):
     """Venta humidifier device for protocol version 3."""
-
-    def __init__(
-        self,
-        coordinator: VentaDataUpdateCoordinator,
-        description: VentaHumidifierEntityDescription,
-    ) -> None:
-        """Initialize Venta V3 humidifier."""
-        super().__init__(coordinator, description)
-        if coordinator.api.device.device_type == VentaDeviceType.AH550_AH555:
-            self._attr_available_modes = [
-                MODE_AUTO,
-                MODE_LEVEL_1,
-                MODE_LEVEL_2,
-                MODE_LEVEL_3,
-            ]
 
     def _map_to_action(self, data: dict[str, Any]) -> dict[str, Any]:
         return {

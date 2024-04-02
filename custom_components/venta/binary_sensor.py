@@ -53,7 +53,7 @@ def _supported_sensors(
     common_sensors = [
         VentaBinarySensorEntityDescription(
             key=ATTR_NEEDS_REFILL,
-            translation_key="needs_refill",
+            translation_key=ATTR_NEEDS_REFILL,
             icon="mdi:water-alert",
             value_func=(
                 lambda data: data.info.get("Warnings") != 0
@@ -67,7 +67,7 @@ def _supported_sensors(
                 *common_sensors,
                 VentaBinarySensorEntityDescription(
                     key=ATTR_NEEDS_SERVICE,
-                    translation_key="needs_service",
+                    translation_key=ATTR_NEEDS_SERVICE,
                     icon="mdi:account-wrench",
                     value_func=(
                         lambda data: data.info.get("Warnings")
@@ -80,7 +80,7 @@ def _supported_sensors(
                 *common_sensors,
                 VentaBinarySensorEntityDescription(
                     key=ATTR_NEEDS_DISC_REPLACEMENT,
-                    translation_key="needs_disc_replacement",
+                    translation_key=ATTR_NEEDS_DISC_REPLACEMENT,
                     icon="mdi:disc-alert",
                     value_func=lambda data: needs_maintenance(
                         data.info.get("DiscIonT"), ION_DISC_REPLACE_TIME_DAYS
@@ -88,10 +88,22 @@ def _supported_sensors(
                 ),
                 VentaBinarySensorEntityDescription(
                     key=ATTR_NEEDS_CLEANING,
-                    translation_key="needs_cleaning",
+                    translation_key=ATTR_NEEDS_CLEANING,
                     icon="mdi:spray-bottle",
                     value_func=lambda data: needs_maintenance(
                         data.info.get("CleaningT"), CLEAN_TIME_DAYS
+                    ),
+                ),
+                VentaBinarySensorEntityDescription(
+                    key=ATTR_NEEDS_SERVICE,
+                    translation_key=ATTR_NEEDS_SERVICE,
+                    icon="mdi:account-wrench",
+                    value_func=(
+                        lambda data: data.info.get("Warnings")
+                        in common_service_warnings
+                        or needs_maintenance(
+                            data.info.get("ServiceT"), SERVICE_TIME_DAYS
+                        )
                     ),
                 ),
                 VentaBinarySensorEntityDescription(
@@ -113,13 +125,13 @@ def _supported_sensors(
             return [
                 VentaBinarySensorEntityDescription(
                     key=ATTR_NEEDS_REFILL,
-                    translation_key="needs_refill",
+                    translation_key=ATTR_NEEDS_REFILL,
                     icon="mdi:water-alert",
                     value_func=(lambda data: data.info.get("Warnings") == 1),
                 ),
                 VentaBinarySensorEntityDescription(
                     key=ATTR_NEEDS_SERVICE,
-                    translation_key="needs_service",
+                    translation_key=ATTR_NEEDS_SERVICE,
                     icon="mdi:account-wrench",
                     value_func=(
                         lambda data: data.info.get("ServiceT") is not None

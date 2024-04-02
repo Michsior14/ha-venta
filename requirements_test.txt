@@ -1,5 +1,5 @@
 codespell==2.2.6
-mypy==1.8.0
+mypy==1.9.0
 pydocstyle==6.3.0
-homeassistant==2024.2.3
-ruff==0.2.2
+homeassistant==2024.3.3
+ruff==0.3.4

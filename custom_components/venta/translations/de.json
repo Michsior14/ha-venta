@@ -30,7 +30,21 @@
     "entity": {
         "humidifier": {
             "humidifier": {
-                "name": "Luftbefeuchter"
+                "name": "Luftbefeuchter",
+                "state_attributes": {
+                    "mode": {
+                        "state": {
+                            "sleep": "Ruhe",
+                            "auto": "Auto",
+                            "turbo": "Turbo",
+                            "level_1": "Stufe 1",
+                            "level_2": "Stufe 2",
+                            "level_3": "Stufe 3",
+                            "level_4": "Stufe 4",
+                            "level_5": "Stufe 5"
+                        }
+                    }
+                }
             }
         },
         "sensor": {
@@ -98,13 +112,16 @@
                 "name": "Formaldehyd"
             },
             "disc_ion_time_to_replace": {
-                "name": "HYGIENEDISK tauschen in"
+                "name": "HYGIENEDISK tauschen"
             },
             "time_to_clean": {
-                "name": "Maschine reinigen in"
+                "name": "Maschine reinigen"
             },
             "time_to_service": {
-                "name": "Maschine warten in"
+                "name": "Maschine warten"
+            },
+            "dust": {
+                "name": "Staub"
             }
         },
         "binary_sensor": {

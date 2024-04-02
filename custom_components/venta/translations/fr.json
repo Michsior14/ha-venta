@@ -30,7 +30,21 @@
     "entity": {
         "humidifier": {
             "humidifier": {
-                "name": "Humidificateur"
+                "name": "Humidificateur",
+                "state_attributes": {
+                    "mode": {
+                        "state": {
+                            "sleep": "Veille",
+                            "auto": "Auto",
+                            "turbo": "Turbo",
+                            "level_1": "Niveau 1",
+                            "level_2": "Niveau 2",
+                            "level_3": "Niveau 3",
+                            "level_4": "Niveau 4",
+                            "level_5": "Niveau 5"
+                        }
+                    }
+                }
             }
         },
         "sensor": {
@@ -105,6 +119,9 @@
             },
             "time_to_service": {
                 "name": "Machine de service dans"
+            },
+            "dust": {
+                "name": "Poussière"
             }
         },
         "binary_sensor": {

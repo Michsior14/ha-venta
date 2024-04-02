@@ -37,7 +37,7 @@ The configuration page will appear, requesting to input ip of the device.
 
 ## Translations
 
-Translations are managed via [Lokalise](https://app.lokalise.com/public/2728010065b52d190d6247.58782749/).
+Translations are managed via [Lokalise](https://app.lokalise.com/public/2728010065b52d190d6247.58782749/). Feel free to contribute over there!
 
 ## Contributing
 

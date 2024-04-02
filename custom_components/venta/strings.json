@@ -40,7 +40,21 @@
   "entity": {
     "humidifier": {
       "humidifier": {
-        "name": "Humidifier"
+        "name": "Humidifier",
+        "state_attributes": {
+          "mode": {
+            "state": {
+              "sleep": "Sleep",
+              "auto": "Auto",
+              "turbo": "Turbo",
+              "level_1": "Level 1",
+              "level_2": "Level 2",
+              "level_3": "Level 3",
+              "level_4": "Level 4",
+              "level_5": "Level 5"
+            }
+          }
+        }
       }
     },
     "sensor": {
@@ -115,6 +129,9 @@
       },
       "hcho": {
         "name": "Formaldehyde"
+      },
+      "dust": {
+        "name": "Dust"
       }
     },
     "binary_sensor": {
