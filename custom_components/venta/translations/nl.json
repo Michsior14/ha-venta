@@ -13,7 +13,7 @@
                 "data": {
                     "host": "Gastheer",
                     "scan_interval": "Update-interval (seconden)",
-                    "api_version": "API-versie (automatisch behouden als u het niet zeker weet)"
+                    "api_version": "API-versie (automatisch indien onzeker)"
                 }
             }
         }
@@ -30,7 +30,21 @@
     "entity": {
         "humidifier": {
             "humidifier": {
-                "name": "Bevochtiger"
+                "name": "Bevochtiger",
+                "state_attributes": {
+                    "mode": {
+                        "state": {
+                            "sleep": "Slaap",
+                            "auto": "Auto",
+                            "turbo": "Turbo",
+                            "level_1": "Niveau 1",
+                            "level_2": "Niveau 2",
+                            "level_3": "Niveau 3",
+                            "level_4": "Niveau 4",
+                            "level_5": "Niveau 5"
+                        }
+                    }
+                }
             }
         },
         "sensor": {
@@ -47,7 +61,7 @@
                 "name": "Bedrijfstijd"
             },
             "disc_ion_time": {
-                "name": "Schijfionisatietijd"
+                "name": "Hygiënedisk tijd"
             },
             "cleaning_time": {
                 "name": "Schoonmaaktijd"
@@ -98,13 +112,16 @@
                 "name": "Formaldehyde"
             },
             "disc_ion_time_to_replace": {
-                "name": "Vervang de ionisatieschijf erin"
+                "name": "Vervang hygiënedisk in"
             },
             "time_to_clean": {
-                "name": "Machine schoon binnen"
+                "name": "Schoonmaken in"
             },
             "time_to_service": {
-                "name": "Serviceautomaat binnen"
+                "name": "Onderhoud in"
+            },
+            "dust": {
+                "name": "Stof"
             }
         },
         "binary_sensor": {
@@ -118,7 +135,7 @@
                 "name": "Heeft schoonmaak nodig"
             },
             "needs_disc_replacement": {
-                "name": "Heeft vervanging van de ionisatieschijf nodig"
+                "name": "Hygiënedisk dient vervangen te worden"
             }
         },
         "light": {

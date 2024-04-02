@@ -1,5 +1,9 @@
 """Constants for the Venta integration."""
 
+from homeassistant.components.humidifier import (
+    MODE_AUTO,
+)
+
 DOMAIN = "venta"
 CONF_API_DEFINITION_ID = "api_definition_id"
 
@@ -8,10 +12,27 @@ DEFAULT_SCAN_INTERVAL = 10
 NO_WATER_THRESHOLD = 50000
 
 MODE_SLEEP = "sleep"
-MODE_LEVEL_1 = "level 1"
-MODE_LEVEL_2 = "level 2"
-MODE_LEVEL_3 = "level 3"
-MODE_LEVEL_4 = "level 4"
+MODE_TURBO = "turbo"
+MODE_LEVEL_1 = "level_1"
+MODE_LEVEL_2 = "level_2"
+MODE_LEVEL_3 = "level_3"
+MODE_LEVEL_4 = "level_4"
+MODE_LEVEL_5 = "level_5"
+
+MODES_3: list[str] = [
+    MODE_AUTO,
+    MODE_LEVEL_1,
+    MODE_LEVEL_2,
+    MODE_LEVEL_3,
+]
+MODES_4: list[str] = [
+    *MODES_3,
+    MODE_LEVEL_4,
+]
+MODES_5: list[str] = [
+    *MODES_4,
+    MODE_LEVEL_5,
+]
 
 ATTR_HUMIDITY = "humidity"
 ATTR_WATER_LEVEL = "water_level"
@@ -37,12 +58,14 @@ ATTR_PM_10 = "pm_10"
 ATTR_VOC = "voc"
 ATTR_HCHO = "hcho"
 ATTR_CO2 = "co2"
+ATTR_DUST = "dust"
 ATTR_NEEDS_REFILL = "needs_refill"
 ATTR_NEEDS_SERVICE = "needs_service"
 ATTR_NEEDS_DISC_REPLACEMENT = "needs_disc_replacement"
 ATTR_NEEDS_CLEANING = "needs_cleaning"
 ATTR_CLEANING="cleaning"
 
+ATTR_LED_STRIP = "led_strip"
 ATTR_LED_STRIP_MODE = "led_strip_mode"
 ATTR_SLEEP_MODE = "sleep_mode"
 

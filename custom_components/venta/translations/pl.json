@@ -30,7 +30,21 @@
     "entity": {
         "humidifier": {
             "humidifier": {
-                "name": "Nawilżacz"
+                "name": "Nawilżacz",
+                "state_attributes": {
+                    "mode": {
+                        "state": {
+                            "sleep": "Nocny",
+                            "auto": "Automatyczny",
+                            "turbo": "Turbo",
+                            "level_1": "Poziom 1",
+                            "level_2": "Poziom 2",
+                            "level_3": "Poziom 3",
+                            "level_4": "Poziom 4",
+                            "level_5": "Poziom 5"
+                        }
+                    }
+                }
             }
         },
         "sensor": {
@@ -105,6 +119,9 @@
             },
             "time_to_service": {
                 "name": "Serwis maszyny za"
+            },
+            "dust": {
+                "name": "Pył"
             }
         },
         "binary_sensor": {
