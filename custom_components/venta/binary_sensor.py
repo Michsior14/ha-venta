@@ -17,6 +17,7 @@ from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from .const import (
     ATTR_NEEDS_CLEANING,
     ATTR_NEEDS_DISC_REPLACEMENT,
+    ATTR_FILTER_NEEDS_CLEANING,
     ATTR_NEEDS_REFILL,
     ATTR_NEEDS_SERVICE,
     ATTR_CLEANING,
@@ -107,7 +108,7 @@ def _supported_sensors(
                     ),
                 ),
                 VentaBinarySensorEntityDescription(
-                    key=ATTR_NEEDS_CLEANING,
+                    key=ATTR_FILTER_NEEDS_CLEANING,
                     translation_key="needs_cleaning",
                     icon="mdi:filter",
                     value_func=lambda data: needs_maintenance(

@@ -96,7 +96,7 @@ SENSOR_TYPES: list[VentaSensorEntityDescription] = (
         ),
     ),
     VentaSensorEntityDescription(
-        key=ATTR_TIME_TO_CLEAN,
+        key=ATTR_TIME_TO_CLEAN_FILTER,
         translation_key=ATTR_TIME_TO_CLEAN,
         icon="mdi:wrench-clock",
         native_unit_of_measurement=UnitOfTime.DAYS,
@@ -193,7 +193,7 @@ SENSOR_TYPES: list[VentaSensorEntityDescription] = (
     VentaSensorEntityDescription(
         key=ATTR_OPERATION_TIME,
         translation_key=ATTR_OPERATION_TIME,
-        icon="mdi:timelapse",
+        icon="mdi:timer",
         native_unit_of_measurement=UnitOfTime.MINUTES,
         entity_category=EntityCategory.DIAGNOSTIC,
         exists_func=lambda coordinator: coordinator.data.info.get("OperationT")
@@ -205,7 +205,7 @@ SENSOR_TYPES: list[VentaSensorEntityDescription] = (
     VentaSensorEntityDescription(
         key=ATTR_DISC_ION_TIME,
         translation_key=ATTR_DISC_ION_TIME,
-        icon="mdi:timelapse",
+        icon="mdi:timer",
         native_unit_of_measurement=UnitOfTime.MINUTES,
         entity_category=EntityCategory.DIAGNOSTIC,
         exists_func=lambda coordinator: coordinator.data.info.get("DiscIonT")
@@ -217,7 +217,7 @@ SENSOR_TYPES: list[VentaSensorEntityDescription] = (
     VentaSensorEntityDescription(
         key=ATTR_CLEANING_TIME,
         translation_key=ATTR_CLEANING_TIME,
-        icon="mdi:timelapse",
+        icon="mdi:timer",
         native_unit_of_measurement=UnitOfTime.MINUTES,
         entity_category=EntityCategory.DIAGNOSTIC,
         exists_func=lambda coordinator: coordinator.data.info.get("CleaningT")
