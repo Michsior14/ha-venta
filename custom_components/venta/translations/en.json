@@ -139,7 +139,7 @@
             },
             "cleaning": {
                 "name": "Cleaning"
-            }            }
+            }
         },
         "light": {
             "led_strip": {
