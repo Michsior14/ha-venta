@@ -50,7 +50,6 @@ from .const import (
     ATTR_VOC,
     ATTR_WARNINGS,
     ATTR_WATER_LEVEL,
-    ATTR_CLEANING,
     ATTR_HUMIDITY,
     DOMAIN,
     CLEAN_TIME_DAYS,

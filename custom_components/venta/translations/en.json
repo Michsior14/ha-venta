@@ -136,7 +136,10 @@
             },
             "needs_disc_replacement": {
                 "name": "Needs ionization disc replacement"
-            }
+            },
+            "cleaning": {
+                "name": "Cleaning"
+            }            }
         },
         "light": {
             "led_strip": {
