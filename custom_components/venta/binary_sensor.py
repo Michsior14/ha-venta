@@ -15,15 +15,18 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import (
+    ATTR_CLEAN_MODE,
     ATTR_NEEDS_CLEANING,
     ATTR_NEEDS_DISC_REPLACEMENT,
+    ATTR_NEEDS_FILTER_CLEANING,
     ATTR_NEEDS_REFILL,
     ATTR_NEEDS_SERVICE,
+    CLEAN_TIME_DAYS,
     DOMAIN,
-    LW74_SERVICE_TIME_DAYS,
-    LW74_CLEAN_TIME_DAYS,
+    FILTER_TIME_DAYS,
+    ION_DISC_REPLACE_TIME_DAYS,
     NO_WATER_THRESHOLD,
-    LW74_ION_DISC_REPLACE_TIME_DAYS,
+    SERVICE_TIME_DAYS,
 )
 from .utils import needs_maintenance
 from .venta import VentaData, VentaDataUpdateCoordinator, VentaDeviceType
@@ -81,7 +84,7 @@ def _supported_sensors(
                     translation_key=ATTR_NEEDS_DISC_REPLACEMENT,
                     icon="mdi:disc-alert",
                     value_func=lambda data: needs_maintenance(
-                        data.info.get("DiscIonT"), LW74_ION_DISC_REPLACE_TIME_DAYS
+                        data.info.get("DiscIonT"), ION_DISC_REPLACE_TIME_DAYS
                     ),
                 ),
                 VentaBinarySensorEntityDescription(
@@ -89,7 +92,7 @@ def _supported_sensors(
                     translation_key=ATTR_NEEDS_CLEANING,
                     icon="mdi:spray-bottle",
                     value_func=lambda data: needs_maintenance(
-                        data.info.get("CleaningT"), LW74_CLEAN_TIME_DAYS
+                        data.info.get("CleaningT"), CLEAN_TIME_DAYS
                     ),
                 ),
                 VentaBinarySensorEntityDescription(
@@ -100,9 +103,55 @@ def _supported_sensors(
                         lambda data: data.info.get("Warnings")
                         in common_service_warnings
                         or needs_maintenance(
-                            data.info.get("ServiceT"), LW74_SERVICE_TIME_DAYS
+                            data.info.get("ServiceT"), SERVICE_TIME_DAYS
                         )
                     ),
+                ),
+            ]
+        case VentaDeviceType.LPH60:
+            return [
+                *common_sensors,
+                VentaBinarySensorEntityDescription(
+                    key=ATTR_NEEDS_DISC_REPLACEMENT,
+                    translation_key=ATTR_NEEDS_DISC_REPLACEMENT,
+                    icon="mdi:disc-alert",
+                    value_func=lambda data: needs_maintenance(
+                        data.info.get("DiscIonT"), ION_DISC_REPLACE_TIME_DAYS
+                    ),
+                ),
+                VentaBinarySensorEntityDescription(
+                    key=ATTR_NEEDS_CLEANING,
+                    translation_key=ATTR_NEEDS_CLEANING,
+                    icon="mdi:spray-bottle",
+                    value_func=lambda data: needs_maintenance(
+                        data.info.get("CleaningT"), CLEAN_TIME_DAYS
+                    ),
+                ),
+                VentaBinarySensorEntityDescription(
+                    key=ATTR_NEEDS_SERVICE,
+                    translation_key=ATTR_NEEDS_SERVICE,
+                    icon="mdi:account-wrench",
+                    value_func=(
+                        lambda data: data.info.get("Warnings")
+                        in common_service_warnings
+                        or needs_maintenance(
+                            data.info.get("ServiceT"), SERVICE_TIME_DAYS
+                        )
+                    ),
+                ),
+                VentaBinarySensorEntityDescription(
+                    key=ATTR_NEEDS_FILTER_CLEANING,
+                    translation_key=ATTR_NEEDS_FILTER_CLEANING,
+                    icon="mdi:filter",
+                    value_func=lambda data: needs_maintenance(
+                        data.info.get("FilterT"), FILTER_TIME_DAYS
+                    ),
+                ),
+                VentaBinarySensorEntityDescription(
+                    key=ATTR_CLEAN_MODE,
+                    translation_key=ATTR_CLEAN_MODE,
+                    icon="mdi:silverware-clean",
+                    value_func=(lambda data: data.info.get("CleanMode")),
                 ),
             ]
         case VentaDeviceType.AH550_AH555:
