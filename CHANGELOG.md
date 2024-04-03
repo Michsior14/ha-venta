@@ -1,3 +1,16 @@
+## [0.8.0](https://github.com/Michsior14/ha-venta/compare/v0.7.2...v0.8.0) (2024-04-03)
+
+
+### Features
+
+* support more protocol 0 devices ([#36](https://github.com/Michsior14/ha-venta/issues/36)) ([e2de552](https://github.com/Michsior14/ha-venta/commit/e2de552a808e2924fd3c8b1fa2281c5c47d94e15))
+
+
+### Bug Fixes
+
+* add humidity sensor unit ([5c02ba8](https://github.com/Michsior14/ha-venta/commit/5c02ba8918cc9da43a1600100be7583f8b180ff3))
+* update translations ([#37](https://github.com/Michsior14/ha-venta/issues/37)) ([5771264](https://github.com/Michsior14/ha-venta/commit/57712640098fb8703cba63282b58f76c1a7ad216))
+
 ## [0.7.2](https://github.com/Michsior14/ha-venta/compare/v0.7.1...v0.7.2) (2024-04-01)
 
 
@@ -35,11 +48,4 @@
 
 * properly handle venta time ([#26](https://github.com/Michsior14/ha-venta/issues/26)) ([c764be6](https://github.com/Michsior14/ha-venta/commit/c764be629e8609d6cdc57bedb30df3e223c39ff4)), closes [#25](https://github.com/Michsior14/ha-venta/issues/25)
 * update translations ([#27](https://github.com/Michsior14/ha-venta/issues/27)) ([195704b](https://github.com/Michsior14/ha-venta/commit/195704b941fee374f2bbaec7907109516262bc92))
-
-## [0.6.4](https://github.com/Michsior14/ha-venta/compare/v0.6.3...v0.6.4) (2024-03-16)
-
-
-### Bug Fixes
-
-* empty header data on v0 devices ([#24](https://github.com/Michsior14/ha-venta/issues/24)) ([7660d33](https://github.com/Michsior14/ha-venta/commit/7660d339fbf0755d14442463c87d5354b29c02c8)), closes [#23](https://github.com/Michsior14/ha-venta/issues/23)
 
