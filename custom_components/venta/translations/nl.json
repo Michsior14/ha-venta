@@ -1,167 +1,179 @@
 {
-    "config": {
-        "abort": {
-            "already_configured": "Apparaat is al geconfigureerd"
-        },
-        "error": {
-            "cannot_connect": "Kon niet verbinden",
-            "cannot_detect_api_version": "Kan de API-versie niet bepalen",
-            "unknown": "Onverwachte fout"
-        },
-        "step": {
-            "user": {
-                "data": {
-                    "host": "Gastheer",
-                    "scan_interval": "Update-interval (seconden)",
-                    "api_version": "API-versie (automatisch indien onzeker)"
-                }
-            }
-        }
+  "config": {
+    "abort": {
+      "already_configured": "Apparaat is al geconfigureerd"
     },
-    "options": {
-        "step": {
-            "init": {
-                "data": {
-                    "scan_interval": "Update-interval (seconden)"
-                }
-            }
-        }
+    "error": {
+      "cannot_connect": "Kon niet verbinden",
+      "cannot_detect_api_version": "Kan de API-versie niet bepalen",
+      "unknown": "Onverwachte fout"
     },
-    "entity": {
-        "humidifier": {
-            "humidifier": {
-                "name": "Bevochtiger",
-                "state_attributes": {
-                    "mode": {
-                        "state": {
-                            "sleep": "Slaap",
-                            "auto": "Auto",
-                            "turbo": "Turbo",
-                            "level_1": "Niveau 1",
-                            "level_2": "Niveau 2",
-                            "level_3": "Niveau 3",
-                            "level_4": "Niveau 4",
-                            "level_5": "Niveau 5"
-                        }
-                    }
-                }
-            }
-        },
-        "sensor": {
-            "temperature": {
-                "name": "Temperatuur"
-            },
-            "water_level": {
-                "name": "Waterstand"
-            },
-            "fan_speed": {
-                "name": "Ventilatorsnelheid"
-            },
-            "operation_time": {
-                "name": "Bedrijfstijd"
-            },
-            "disc_ion_time": {
-                "name": "Hygiënedisk tijd"
-            },
-            "cleaning_time": {
-                "name": "Schoonmaaktijd"
-            },
-            "service_time": {
-                "name": "Servicetijd"
-            },
-            "service_max_time": {
-                "name": "Service max. tijd"
-            },
-            "warnings": {
-                "name": "Waarschuwingen"
-            },
-            "particles_0_3": {
-                "name": "Aantal deeltjes (0,3u)"
-            },
-            "particles_0_5": {
-                "name": "Aantal deeltjes (0,5u)"
-            },
-            "particles_1_0": {
-                "name": "Aantal deeltjes (1,0u)"
-            },
-            "particles_2_5": {
-                "name": "Aantal deeltjes (2,5u)"
-            },
-            "particles_5_0": {
-                "name": "Deeltjestelling (5u)"
-            },
-            "particles_10": {
-                "name": "Deeltjestelling (10u)"
-            },
-            "pm_1_0": {
-                "name": "PM1.0"
-            },
-            "pm_2_5": {
-                "name": "PM2.5"
-            },
-            "pm_10": {
-                "name": "PM10"
-            },
-            "co2": {
-                "name": "CO2"
-            },
-            "voc": {
-                "name": "VOC's"
-            },
-            "hcho": {
-                "name": "Formaldehyde"
-            },
-            "disc_ion_time_to_replace": {
-                "name": "Vervang hygiënedisk in"
-            },
-            "time_to_clean": {
-                "name": "Schoonmaken in"
-            },
-            "time_to_service": {
-                "name": "Onderhoud in"
-            },
-            "dust": {
-                "name": "Stof"
-            }
-        },
-        "binary_sensor": {
-            "needs_refill": {
-                "name": "Moet worden bijgevuld"
-            },
-            "needs_service": {
-                "name": "Service nodig"
-            },
-            "needs_cleaning": {
-                "name": "Heeft schoonmaak nodig"
-            },
-            "needs_disc_replacement": {
-                "name": "Hygiënedisk dient vervangen te worden"
-            }
-        },
-        "light": {
-            "led_strip": {
-                "name": "LED-strip"
-            }
-        },
-        "select": {
-            "led_strip_mode": {
-                "name": "LED-stripmodus"
-            }
-        },
-        "switch": {
-            "sleep_mode": {
-                "name": "Slaapstand"
-            }
+    "step": {
+      "user": {
+        "data": {
+          "host": "Gastheer",
+          "scan_interval": "Update-interval (seconden)",
+          "api_version": "API-versie (automatisch indien onzeker)"
         }
-    },
-    "selector": {
-        "api_version": {
-            "options": {
-                "auto": "Automatische ontdekking",
-                "0": "v0",
-                "2": "V2",
-                "3": "v3"
-            }
-        }
+      }
     }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "scan_interval": "Update-interval (seconden)"
+        }
+      }
+    }
+  },
+  "entity": {
+    "humidifier": {
+      "humidifier": {
+        "name": "Bevochtiger",
+        "state_attributes": {
+          "mode": {
+            "state": {
+              "sleep": "Slaap",
+              "auto": "Auto",
+              "turbo": "Turbo",
+              "level_1": "Niveau 1",
+              "level_2": "Niveau 2",
+              "level_3": "Niveau 3",
+              "level_4": "Niveau 4",
+              "level_5": "Niveau 5"
+            }
+          }
+        }
+      }
+    },
+    "sensor": {
+      "temperature": {
+        "name": "Temperatuur"
+      },
+      "water_level": {
+        "name": "Waterstand"
+      },
+      "fan_speed": {
+        "name": "Ventilatorsnelheid"
+      },
+      "operation_time": {
+        "name": "Bedrijfstijd"
+      },
+      "disc_ion_time": {
+        "name": "Hygiënedisk tijd"
+      },
+      "cleaning_time": {
+        "name": "Schoonmaaktijd"
+      },
+      "service_time": {
+        "name": "Servicetijd"
+      },
+      "service_max_time": {
+        "name": "Service max. tijd"
+      },
+      "warnings": {
+        "name": "Waarschuwingen"
+      },
+      "particles_0_3": {
+        "name": "Aantal deeltjes (0,3u)"
+      },
+      "particles_0_5": {
+        "name": "Aantal deeltjes (0,5u)"
+      },
+      "particles_1_0": {
+        "name": "Aantal deeltjes (1,0u)"
+      },
+      "particles_2_5": {
+        "name": "Aantal deeltjes (2,5u)"
+      },
+      "particles_5_0": {
+        "name": "Deeltjestelling (5u)"
+      },
+      "particles_10": {
+        "name": "Deeltjestelling (10u)"
+      },
+      "pm_1_0": {
+        "name": "PM1.0"
+      },
+      "pm_2_5": {
+        "name": "PM2.5"
+      },
+      "pm_10": {
+        "name": "PM10"
+      },
+      "co2": {
+        "name": "CO2"
+      },
+      "voc": {
+        "name": "VOC's"
+      },
+      "hcho": {
+        "name": "Formaldehyde"
+      },
+      "disc_ion_time_to_replace": {
+        "name": "Vervang hygiënedisk in"
+      },
+      "time_to_clean": {
+        "name": "Schoonmaken in"
+      },
+      "time_to_service": {
+        "name": "Onderhoud in"
+      },
+      "humidity": {
+        "name": "Vochtigheid"
+      },
+      "filter_time": {
+        "name": "Filtertijd"
+      },
+      "filter_time_to_clean": {
+        "name": "Filter erin reinigen"
+      }
+    },
+    "binary_sensor": {
+      "needs_refill": {
+        "name": "Moet worden bijgevuld"
+      },
+      "needs_service": {
+        "name": "Service nodig"
+      },
+      "needs_cleaning": {
+        "name": "Heeft schoonmaak nodig"
+      },
+      "needs_disc_replacement": {
+        "name": "Hygiënedisk dient vervangen te worden"
+      },
+      "needs_filter_cleaning": {
+        "name": "Heeft filterreiniging nodig"
+      },
+      "clean_mode": {
+        "name": "Schone modus"
+      }
+    },
+    "light": {
+      "led_strip": {
+        "name": "LED-strip"
+      }
+    },
+    "select": {
+      "led_strip_mode": {
+        "name": "LED-stripmodus"
+      }
+    },
+    "switch": {
+      "sleep_mode": {
+        "name": "Slaapstand"
+      }
+    }
+  },
+  "selector": {
+    "api_version": {
+      "options": {
+        "auto": "Automatische ontdekking",
+        "0": "v0",
+        "2": "V2",
+        "3": "v3"
+      }
+    }
+  }
 }

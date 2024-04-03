@@ -1,167 +1,179 @@
 {
-    "config": {
-        "abort": {
-            "already_configured": "El dispositivo ya está configurado"
-        },
-        "error": {
-            "cannot_connect": "Error al conectar",
-            "cannot_detect_api_version": "No se puede determinar la versión de la API",
-            "unknown": "Error inesperado"
-        },
-        "step": {
-            "user": {
-                "data": {
-                    "host": "Anfitrión",
-                    "scan_interval": "Intervalo de actualización (segundos)",
-                    "api_version": "Versión de API (mantener automática si no está seguro)"
-                }
-            }
-        }
+  "config": {
+    "abort": {
+      "already_configured": "El dispositivo ya está configurado"
     },
-    "options": {
-        "step": {
-            "init": {
-                "data": {
-                    "scan_interval": "Intervalo de actualización (segundos)"
-                }
-            }
-        }
+    "error": {
+      "cannot_connect": "Error al conectar",
+      "cannot_detect_api_version": "No se puede determinar la versión de la API",
+      "unknown": "Error inesperado"
     },
-    "entity": {
-        "humidifier": {
-            "humidifier": {
-                "name": "Humidificador",
-                "state_attributes": {
-                    "mode": {
-                        "state": {
-                            "sleep": "Dormir",
-                            "auto": "Auto",
-                            "turbo": "Turbo",
-                            "level_1": "Nivel 1",
-                            "level_2": "Nivel 2",
-                            "level_3": "Nivel 3",
-                            "level_4": "Nivel 4",
-                            "level_5": "Nivel 5"
-                        }
-                    }
-                }
-            }
-        },
-        "sensor": {
-            "temperature": {
-                "name": "Temperatura"
-            },
-            "water_level": {
-                "name": "Nivel de agua"
-            },
-            "fan_speed": {
-                "name": "Velocidad del ventilador"
-            },
-            "operation_time": {
-                "name": "Tiempo de operación"
-            },
-            "disc_ion_time": {
-                "name": "Tiempo de ionización del disco"
-            },
-            "cleaning_time": {
-                "name": "Tiempo de limpieza"
-            },
-            "service_time": {
-                "name": "Tiempo de servicio"
-            },
-            "service_max_time": {
-                "name": "Tiempo máximo de servicio"
-            },
-            "warnings": {
-                "name": "Advertencias"
-            },
-            "particles_0_3": {
-                "name": "Recuento de partículas (0,3u)"
-            },
-            "particles_0_5": {
-                "name": "Recuento de partículas (0,5u)"
-            },
-            "particles_1_0": {
-                "name": "Recuento de partículas (1,0u)"
-            },
-            "particles_2_5": {
-                "name": "Recuento de partículas (2,5u)"
-            },
-            "particles_5_0": {
-                "name": "Recuento de partículas (5u)"
-            },
-            "particles_10": {
-                "name": "Recuento de partículas (10u)"
-            },
-            "pm_1_0": {
-                "name": "PM1.0"
-            },
-            "pm_2_5": {
-                "name": "PM2.5"
-            },
-            "pm_10": {
-                "name": "PM10"
-            },
-            "co2": {
-                "name": "CO2"
-            },
-            "voc": {
-                "name": "COV"
-            },
-            "hcho": {
-                "name": "Formaldehído"
-            },
-            "disc_ion_time_to_replace": {
-                "name": "Reemplace el disco de ionización en"
-            },
-            "time_to_clean": {
-                "name": "Limpiar la máquina en"
-            },
-            "time_to_service": {
-                "name": "Máquina de servicio en"
-            },
-            "dust": {
-                "name": "Polvo"
-            }
-        },
-        "binary_sensor": {
-            "needs_refill": {
-                "name": "Necesita recarga"
-            },
-            "needs_service": {
-                "name": "Necesita servicio"
-            },
-            "needs_cleaning": {
-                "name": "Necesita limpieza"
-            },
-            "needs_disc_replacement": {
-                "name": "Necesita reemplazo del disco de ionización"
-            }
-        },
-        "light": {
-            "led_strip": {
-                "name": "tira de LED"
-            }
-        },
-        "select": {
-            "led_strip_mode": {
-                "name": "Modo de tira LED"
-            }
-        },
-        "switch": {
-            "sleep_mode": {
-                "name": "Modo de sueño"
-            }
+    "step": {
+      "user": {
+        "data": {
+          "host": "Anfitrión",
+          "scan_interval": "Intervalo de actualización (segundos)",
+          "api_version": "Versión de API (mantener automática si no está seguro)"
         }
-    },
-    "selector": {
-        "api_version": {
-            "options": {
-                "auto": "Descubrimiento automático",
-                "0": "v0",
-                "2": "V2",
-                "3": "v3"
-            }
-        }
+      }
     }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "scan_interval": "Intervalo de actualización (segundos)"
+        }
+      }
+    }
+  },
+  "entity": {
+    "humidifier": {
+      "humidifier": {
+        "name": "Humidificador",
+        "state_attributes": {
+          "mode": {
+            "state": {
+              "sleep": "Dormir",
+              "auto": "Auto",
+              "turbo": "Turbo",
+              "level_1": "Nivel 1",
+              "level_2": "Nivel 2",
+              "level_3": "Nivel 3",
+              "level_4": "Nivel 4",
+              "level_5": "Nivel 5"
+            }
+          }
+        }
+      }
+    },
+    "sensor": {
+      "temperature": {
+        "name": "Temperatura"
+      },
+      "water_level": {
+        "name": "Nivel de agua"
+      },
+      "fan_speed": {
+        "name": "Velocidad del ventilador"
+      },
+      "operation_time": {
+        "name": "Tiempo de operación"
+      },
+      "disc_ion_time": {
+        "name": "Tiempo de ionización del disco"
+      },
+      "cleaning_time": {
+        "name": "Tiempo de limpieza"
+      },
+      "service_time": {
+        "name": "Tiempo de servicio"
+      },
+      "service_max_time": {
+        "name": "Tiempo máximo de servicio"
+      },
+      "warnings": {
+        "name": "Advertencias"
+      },
+      "particles_0_3": {
+        "name": "Recuento de partículas (0,3u)"
+      },
+      "particles_0_5": {
+        "name": "Recuento de partículas (0,5u)"
+      },
+      "particles_1_0": {
+        "name": "Recuento de partículas (1,0u)"
+      },
+      "particles_2_5": {
+        "name": "Recuento de partículas (2,5u)"
+      },
+      "particles_5_0": {
+        "name": "Recuento de partículas (5u)"
+      },
+      "particles_10": {
+        "name": "Recuento de partículas (10u)"
+      },
+      "pm_1_0": {
+        "name": "PM1.0"
+      },
+      "pm_2_5": {
+        "name": "PM2.5"
+      },
+      "pm_10": {
+        "name": "PM10"
+      },
+      "co2": {
+        "name": "CO2"
+      },
+      "voc": {
+        "name": "COV"
+      },
+      "hcho": {
+        "name": "Formaldehído"
+      },
+      "disc_ion_time_to_replace": {
+        "name": "Reemplace el disco de ionización en"
+      },
+      "time_to_clean": {
+        "name": "Limpiar la máquina en"
+      },
+      "time_to_service": {
+        "name": "Máquina de servicio en"
+      },
+      "humidity": {
+        "name": "Humedad"
+      },
+      "filter_time": {
+        "name": "Tiempo de filtrado"
+      },
+      "filter_time_to_clean": {
+        "name": "Limpiar el filtro en"
+      }
+    },
+    "binary_sensor": {
+      "needs_refill": {
+        "name": "Necesita recarga"
+      },
+      "needs_service": {
+        "name": "Necesita servicio"
+      },
+      "needs_cleaning": {
+        "name": "Necesita limpieza"
+      },
+      "needs_disc_replacement": {
+        "name": "Necesita reemplazo del disco de ionización"
+      },
+      "needs_filter_cleaning": {
+        "name": "Necesita limpieza de filtro"
+      },
+      "clean_mode": {
+        "name": "Modo limpio"
+      }
+    },
+    "light": {
+      "led_strip": {
+        "name": "tira de LED"
+      }
+    },
+    "select": {
+      "led_strip_mode": {
+        "name": "Modo de tira LED"
+      }
+    },
+    "switch": {
+      "sleep_mode": {
+        "name": "Modo de sueño"
+      }
+    }
+  },
+  "selector": {
+    "api_version": {
+      "options": {
+        "auto": "Descubrimiento automático",
+        "0": "v0",
+        "2": "V2",
+        "3": "v3"
+      }
+    }
+  }
 }
