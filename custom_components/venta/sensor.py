@@ -283,14 +283,8 @@ SENSOR_TYPES: list[VentaSensorEntityDescription] = (
         translation_key=ATTR_PARTICLES_2_5,
         state_class=SensorStateClass.MEASUREMENT,
         exists_func=lambda coordinator: coordinator.data.measure.get("Particles2u5")
-        is not None
-        or (
-            # Skip LW73 and LW74 devices because they always report 0 values
-            coordinator.api.device.device_type != VentaDeviceType.LW73_LW74
-            and coordinator.data.measure.get("Dust") is not None
-        ),
-        value_func=lambda coordinator: coordinator.data.measure.get("Particles2u5")
-        or coordinator.data.measure.get("Dust"),
+        is not None,
+        value_func=lambda coordinator: coordinator.data.measure.get("Particles2u5"),
     ),
     VentaSensorEntityDescription(
         key=ATTR_PARTICLES_5_0,
@@ -328,9 +322,15 @@ SENSOR_TYPES: list[VentaSensorEntityDescription] = (
         state_class=SensorStateClass.MEASUREMENT,
         exists_func=lambda coordinator: coordinator.data.measure.get("PmCalc2u5")
         is not None
-        or coordinator.data.measure.get("Pm2u5") is not None,
+        or coordinator.data.measure.get("Pm2u5") is not None
+        or (
+            # Skip LW73 and LW74 devices because they always report 0 values
+            coordinator.api.device.device_type != VentaDeviceType.LW73_LW74
+            and coordinator.data.measure.get("Dust") is not None
+        ),
         value_func=lambda coordinator: coordinator.data.measure.get("PmCalc2u5")
-        or coordinator.data.measure.get("Pm2u5"),
+        or coordinator.data.measure.get("Pm2u5")
+        or coordinator.data.measure.get("Dust"),
     ),
     VentaSensorEntityDescription(
         key=ATTR_PM_10,
