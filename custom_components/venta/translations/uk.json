@@ -1,167 +1,179 @@
 {
-    "config": {
-        "abort": {
-            "already_configured": "Пристрій уже налаштовано"
-        },
-        "error": {
-            "cannot_connect": "Не вдалося підключитися",
-            "cannot_detect_api_version": "Неможливо визначити версію API",
-            "unknown": "Неочікувана помилка"
-        },
-        "step": {
-            "user": {
-                "data": {
-                    "host": "Хост",
-                    "scan_interval": "Інтервал оновлення (секунди)",
-                    "api_version": "Версія API (збережіть автоматичну, якщо не впевнені)"
-                }
-            }
-        }
+  "config": {
+    "abort": {
+      "already_configured": "Пристрій уже налаштовано"
     },
-    "options": {
-        "step": {
-            "init": {
-                "data": {
-                    "scan_interval": "Інтервал оновлення (секунди)"
-                }
-            }
-        }
+    "error": {
+      "cannot_connect": "Не вдалося підключитися",
+      "cannot_detect_api_version": "Неможливо визначити версію API",
+      "unknown": "Неочікувана помилка"
     },
-    "entity": {
-        "humidifier": {
-            "humidifier": {
-                "name": "Зволожувач повітря",
-                "state_attributes": {
-                    "mode": {
-                        "state": {
-                            "sleep": "сон",
-                            "auto": "Авто",
-                            "turbo": "Турбо",
-                            "level_1": "Рівень 1",
-                            "level_2": "Рівень 2",
-                            "level_3": "Рівень 3",
-                            "level_4": "Рівень 4",
-                            "level_5": "Рівень 5"
-                        }
-                    }
-                }
-            }
-        },
-        "sensor": {
-            "temperature": {
-                "name": "Температура"
-            },
-            "water_level": {
-                "name": "Рівень води"
-            },
-            "fan_speed": {
-                "name": "Швидкість вентилятора"
-            },
-            "operation_time": {
-                "name": "Час роботи"
-            },
-            "disc_ion_time": {
-                "name": "Час іонізації диска"
-            },
-            "cleaning_time": {
-                "name": "Час прибирання"
-            },
-            "service_time": {
-                "name": "Час обслуговування"
-            },
-            "service_max_time": {
-                "name": "Максимальний час обслуговування"
-            },
-            "warnings": {
-                "name": "Попередження"
-            },
-            "particles_0_3": {
-                "name": "Кількість частинок (0,3u)"
-            },
-            "particles_0_5": {
-                "name": "Кількість частинок (0,5u)"
-            },
-            "particles_1_0": {
-                "name": "Кількість частинок (1,0u)"
-            },
-            "particles_2_5": {
-                "name": "Кількість частинок (2,5u)"
-            },
-            "particles_5_0": {
-                "name": "Кількість частинок (5u)"
-            },
-            "particles_10": {
-                "name": "Кількість частинок (10u)"
-            },
-            "pm_1_0": {
-                "name": "PM1,0"
-            },
-            "pm_2_5": {
-                "name": "PM2.5"
-            },
-            "pm_10": {
-                "name": "PM10"
-            },
-            "co2": {
-                "name": "CO2"
-            },
-            "voc": {
-                "name": "ЛОС"
-            },
-            "hcho": {
-                "name": "Формальдегід"
-            },
-            "disc_ion_time_to_replace": {
-                "name": "Замініть іонізаційний диск"
-            },
-            "time_to_clean": {
-                "name": "Очистити машину"
-            },
-            "time_to_service": {
-                "name": "Сервісна машина в"
-            },
-            "dust": {
-                "name": "Пил"
-            }
-        },
-        "binary_sensor": {
-            "needs_refill": {
-                "name": "Потребує поповнення"
-            },
-            "needs_service": {
-                "name": "Потребує обслуговування"
-            },
-            "needs_cleaning": {
-                "name": "Потребує прибирання"
-            },
-            "needs_disc_replacement": {
-                "name": "Потрібна заміна диска іонізації"
-            }
-        },
-        "light": {
-            "led_strip": {
-                "name": "Світлодіодна стрічка"
-            }
-        },
-        "select": {
-            "led_strip_mode": {
-                "name": "Режим світлодіодної стрічки"
-            }
-        },
-        "switch": {
-            "sleep_mode": {
-                "name": "Сплячий режим"
-            }
+    "step": {
+      "user": {
+        "data": {
+          "host": "Хост",
+          "scan_interval": "Інтервал оновлення (секунди)",
+          "api_version": "Версія API (збережіть автоматичну, якщо не впевнені)"
         }
-    },
-    "selector": {
-        "api_version": {
-            "options": {
-                "auto": "Автоматичне виявлення",
-                "0": "v0",
-                "2": "V2",
-                "3": "v3"
-            }
-        }
+      }
     }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "scan_interval": "Інтервал оновлення (секунди)"
+        }
+      }
+    }
+  },
+  "entity": {
+    "humidifier": {
+      "humidifier": {
+        "name": "Зволожувач повітря",
+        "state_attributes": {
+          "mode": {
+            "state": {
+              "sleep": "сон",
+              "auto": "Авто",
+              "turbo": "Турбо",
+              "level_1": "Рівень 1",
+              "level_2": "Рівень 2",
+              "level_3": "Рівень 3",
+              "level_4": "Рівень 4",
+              "level_5": "Рівень 5"
+            }
+          }
+        }
+      }
+    },
+    "sensor": {
+      "temperature": {
+        "name": "Температура"
+      },
+      "water_level": {
+        "name": "Рівень води"
+      },
+      "fan_speed": {
+        "name": "Швидкість вентилятора"
+      },
+      "operation_time": {
+        "name": "Час роботи"
+      },
+      "disc_ion_time": {
+        "name": "Час іонізації диска"
+      },
+      "cleaning_time": {
+        "name": "Час прибирання"
+      },
+      "service_time": {
+        "name": "Час обслуговування"
+      },
+      "service_max_time": {
+        "name": "Максимальний час обслуговування"
+      },
+      "warnings": {
+        "name": "Попередження"
+      },
+      "particles_0_3": {
+        "name": "Кількість частинок (0,3u)"
+      },
+      "particles_0_5": {
+        "name": "Кількість частинок (0,5u)"
+      },
+      "particles_1_0": {
+        "name": "Кількість частинок (1,0u)"
+      },
+      "particles_2_5": {
+        "name": "Кількість частинок (2,5u)"
+      },
+      "particles_5_0": {
+        "name": "Кількість частинок (5u)"
+      },
+      "particles_10": {
+        "name": "Кількість частинок (10u)"
+      },
+      "pm_1_0": {
+        "name": "PM1,0"
+      },
+      "pm_2_5": {
+        "name": "PM2.5"
+      },
+      "pm_10": {
+        "name": "PM10"
+      },
+      "co2": {
+        "name": "CO2"
+      },
+      "voc": {
+        "name": "ЛОС"
+      },
+      "hcho": {
+        "name": "Формальдегід"
+      },
+      "disc_ion_time_to_replace": {
+        "name": "Замініть іонізаційний диск"
+      },
+      "time_to_clean": {
+        "name": "Очистити машину"
+      },
+      "time_to_service": {
+        "name": "Сервісна машина в"
+      },
+      "humidity": {
+        "name": "Вологість"
+      },
+      "filter_time": {
+        "name": "Час фільтрації"
+      },
+      "filter_time_to_clean": {
+        "name": "Очистіть фільтр"
+      }
+    },
+    "binary_sensor": {
+      "needs_refill": {
+        "name": "Потребує поповнення"
+      },
+      "needs_service": {
+        "name": "Потребує обслуговування"
+      },
+      "needs_cleaning": {
+        "name": "Потребує прибирання"
+      },
+      "needs_disc_replacement": {
+        "name": "Потрібна заміна диска іонізації"
+      },
+      "needs_filter_cleaning": {
+        "name": "Потребує очищення фільтра"
+      },
+      "clean_mode": {
+        "name": "Чистий режим"
+      }
+    },
+    "light": {
+      "led_strip": {
+        "name": "Світлодіодна стрічка"
+      }
+    },
+    "select": {
+      "led_strip_mode": {
+        "name": "Режим світлодіодної стрічки"
+      }
+    },
+    "switch": {
+      "sleep_mode": {
+        "name": "Сплячий режим"
+      }
+    }
+  },
+  "selector": {
+    "api_version": {
+      "options": {
+        "auto": "Автоматичне виявлення",
+        "0": "v0",
+        "2": "V2",
+        "3": "v3"
+      }
+    }
+  }
 }

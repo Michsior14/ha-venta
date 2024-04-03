@@ -1,167 +1,179 @@
 {
-    "config": {
-        "abort": {
-            "already_configured": "Urządzenie jest już skonfigurowane"
-        },
-        "error": {
-            "cannot_connect": "Nie udało się połączyć",
-            "cannot_detect_api_version": "Nie można określić wersji API",
-            "unknown": "Niespodziewany błąd"
-        },
-        "step": {
-            "user": {
-                "data": {
-                    "host": "Gospodarz",
-                    "scan_interval": "Interwał aktualizacji (sekundy)",
-                    "api_version": "Wersja API (zachowaj auto, jeśli nie jesteś pewien)"
-                }
-            }
-        }
+  "config": {
+    "abort": {
+      "already_configured": "Urządzenie jest już skonfigurowane"
     },
-    "options": {
-        "step": {
-            "init": {
-                "data": {
-                    "scan_interval": "Interwał aktualizacji (sekundy)"
-                }
-            }
-        }
+    "error": {
+      "cannot_connect": "Nie udało się połączyć",
+      "cannot_detect_api_version": "Nie można określić wersji API",
+      "unknown": "Niespodziewany błąd"
     },
-    "entity": {
-        "humidifier": {
-            "humidifier": {
-                "name": "Nawilżacz",
-                "state_attributes": {
-                    "mode": {
-                        "state": {
-                            "sleep": "Nocny",
-                            "auto": "Automatyczny",
-                            "turbo": "Turbo",
-                            "level_1": "Poziom 1",
-                            "level_2": "Poziom 2",
-                            "level_3": "Poziom 3",
-                            "level_4": "Poziom 4",
-                            "level_5": "Poziom 5"
-                        }
-                    }
-                }
-            }
-        },
-        "sensor": {
-            "temperature": {
-                "name": "Temperatura"
-            },
-            "water_level": {
-                "name": "Poziom wody"
-            },
-            "fan_speed": {
-                "name": "Prędkość wentylatora"
-            },
-            "operation_time": {
-                "name": "Czas działania"
-            },
-            "disc_ion_time": {
-                "name": "Czas jonizacji dysku"
-            },
-            "cleaning_time": {
-                "name": "Czas na sprzątanie"
-            },
-            "service_time": {
-                "name": "Czas serwisu"
-            },
-            "service_max_time": {
-                "name": "Maksymalny czas usługi"
-            },
-            "warnings": {
-                "name": "Ostrzeżenia"
-            },
-            "particles_0_3": {
-                "name": "Liczba cząstek (0,3u)"
-            },
-            "particles_0_5": {
-                "name": "Liczba cząstek (0,5u)"
-            },
-            "particles_1_0": {
-                "name": "Liczba cząstek (1,0u)"
-            },
-            "particles_2_5": {
-                "name": "Liczba cząstek (2,5u)"
-            },
-            "particles_5_0": {
-                "name": "Liczba cząstek (5u)"
-            },
-            "particles_10": {
-                "name": "Liczba cząstek (10u)"
-            },
-            "pm_1_0": {
-                "name": "PM1.0"
-            },
-            "pm_2_5": {
-                "name": "PM2.5"
-            },
-            "pm_10": {
-                "name": "PM10"
-            },
-            "co2": {
-                "name": "CO2"
-            },
-            "voc": {
-                "name": "LZO"
-            },
-            "hcho": {
-                "name": "Formaldehyd"
-            },
-            "disc_ion_time_to_replace": {
-                "name": "Wymień dysk jonizacyjny za"
-            },
-            "time_to_clean": {
-                "name": "Wyczyść maszynę za"
-            },
-            "time_to_service": {
-                "name": "Serwis maszyny za"
-            },
-            "dust": {
-                "name": "Pył"
-            }
-        },
-        "binary_sensor": {
-            "needs_refill": {
-                "name": "Wymaga uzupełnienia"
-            },
-            "needs_service": {
-                "name": "Potrzebuje serwisu"
-            },
-            "needs_cleaning": {
-                "name": "Wymaga czyszczenia"
-            },
-            "needs_disc_replacement": {
-                "name": "Wymaga wymiany dysku jonizacyjnego"
-            }
-        },
-        "light": {
-            "led_strip": {
-                "name": "Taśma LED"
-            }
-        },
-        "select": {
-            "led_strip_mode": {
-                "name": "Tryb taśmy LED"
-            }
-        },
-        "switch": {
-            "sleep_mode": {
-                "name": "Tryb nocny"
-            }
+    "step": {
+      "user": {
+        "data": {
+          "host": "Gospodarz",
+          "scan_interval": "Interwał aktualizacji (sekundy)",
+          "api_version": "Wersja API (zachowaj auto, jeśli nie jesteś pewien)"
         }
-    },
-    "selector": {
-        "api_version": {
-            "options": {
-                "auto": "Automatyczne wykrywanie",
-                "0": "v0",
-                "2": "V2",
-                "3": "v3"
-            }
-        }
+      }
     }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "scan_interval": "Interwał aktualizacji (sekundy)"
+        }
+      }
+    }
+  },
+  "entity": {
+    "humidifier": {
+      "humidifier": {
+        "name": "Nawilżacz",
+        "state_attributes": {
+          "mode": {
+            "state": {
+              "sleep": "Nocny",
+              "auto": "Automatyczny",
+              "turbo": "Turbo",
+              "level_1": "Poziom 1",
+              "level_2": "Poziom 2",
+              "level_3": "Poziom 3",
+              "level_4": "Poziom 4",
+              "level_5": "Poziom 5"
+            }
+          }
+        }
+      }
+    },
+    "sensor": {
+      "temperature": {
+        "name": "Temperatura"
+      },
+      "water_level": {
+        "name": "Poziom wody"
+      },
+      "fan_speed": {
+        "name": "Prędkość wentylatora"
+      },
+      "operation_time": {
+        "name": "Czas działania"
+      },
+      "disc_ion_time": {
+        "name": "Czas jonizacji dysku"
+      },
+      "cleaning_time": {
+        "name": "Czas na sprzątanie"
+      },
+      "service_time": {
+        "name": "Czas serwisu"
+      },
+      "service_max_time": {
+        "name": "Maksymalny czas usługi"
+      },
+      "warnings": {
+        "name": "Ostrzeżenia"
+      },
+      "particles_0_3": {
+        "name": "Liczba cząstek (0,3u)"
+      },
+      "particles_0_5": {
+        "name": "Liczba cząstek (0,5u)"
+      },
+      "particles_1_0": {
+        "name": "Liczba cząstek (1,0u)"
+      },
+      "particles_2_5": {
+        "name": "Liczba cząstek (2,5u)"
+      },
+      "particles_5_0": {
+        "name": "Liczba cząstek (5u)"
+      },
+      "particles_10": {
+        "name": "Liczba cząstek (10u)"
+      },
+      "pm_1_0": {
+        "name": "PM1.0"
+      },
+      "pm_2_5": {
+        "name": "PM2.5"
+      },
+      "pm_10": {
+        "name": "PM10"
+      },
+      "co2": {
+        "name": "CO2"
+      },
+      "voc": {
+        "name": "LZO"
+      },
+      "hcho": {
+        "name": "Formaldehyd"
+      },
+      "disc_ion_time_to_replace": {
+        "name": "Wymień dysk jonizacyjny za"
+      },
+      "time_to_clean": {
+        "name": "Wyczyść maszynę za"
+      },
+      "time_to_service": {
+        "name": "Serwis maszyny za"
+      },
+      "humidity": {
+        "name": "Wilgotność"
+      },
+      "filter_time": {
+        "name": "Czas filtrowania"
+      },
+      "filter_time_to_clean": {
+        "name": "Wyczyść filtr"
+      }
+    },
+    "binary_sensor": {
+      "needs_refill": {
+        "name": "Wymaga uzupełnienia"
+      },
+      "needs_service": {
+        "name": "Potrzebuje serwisu"
+      },
+      "needs_cleaning": {
+        "name": "Wymaga czyszczenia"
+      },
+      "needs_disc_replacement": {
+        "name": "Wymaga wymiany dysku jonizacyjnego"
+      },
+      "needs_filter_cleaning": {
+        "name": "Wymaga czyszczenia filtra"
+      },
+      "clean_mode": {
+        "name": "Tryb czyszczenia"
+      }
+    },
+    "light": {
+      "led_strip": {
+        "name": "Taśma LED"
+      }
+    },
+    "select": {
+      "led_strip_mode": {
+        "name": "Tryb taśmy LED"
+      }
+    },
+    "switch": {
+      "sleep_mode": {
+        "name": "Tryb nocny"
+      }
+    }
+  },
+  "selector": {
+    "api_version": {
+      "options": {
+        "auto": "Automatyczne wykrywanie",
+        "0": "v0",
+        "2": "V2",
+        "3": "v3"
+      }
+    }
+  }
 }
