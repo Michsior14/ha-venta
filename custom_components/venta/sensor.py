@@ -17,6 +17,7 @@ from homeassistant.const import (
     CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
     CONCENTRATION_PARTS_PER_BILLION,
     CONCENTRATION_PARTS_PER_MILLION,
+    PERCENTAGE,
     REVOLUTIONS_PER_MINUTE,
     EntityCategory,
     UnitOfTemperature,
@@ -153,6 +154,7 @@ SENSOR_TYPES: list[VentaSensorEntityDescription] = (
         translation_key=ATTR_HUMIDITY,
         state_class=SensorStateClass.MEASUREMENT,
         device_class=SensorDeviceClass.HUMIDITY,
+        native_unit_of_measurement=PERCENTAGE,
         suggested_display_precision=1,
         exists_func=lambda coordinator: coordinator.data.measure.get("Humidity")
         is not None,
