@@ -31,9 +31,11 @@ from .const import (
     ATTR_CO2,
     ATTR_DISC_ION_TIME,
     ATTR_DISC_ION_TIME_TO_REPLACE,
-    ATTR_DUST,
     ATTR_FAN_SPEED,
+    ATTR_FILTER_TIME,
+    ATTR_FILTER_TIME_TO_CLEAN,
     ATTR_HCHO,
+    ATTR_HUMIDITY,
     ATTR_OPERATION_TIME,
     ATTR_PARTICLES_0_3,
     ATTR_PARTICLES_0_5,
@@ -50,9 +52,8 @@ from .const import (
     ATTR_VOC,
     ATTR_WARNINGS,
     ATTR_WATER_LEVEL,
-    ATTR_HUMIDITY,
-    DOMAIN,
     CLEAN_TIME_DAYS,
+    DOMAIN,
     FILTER_TIME_DAYS,
     ION_DISC_REPLACE_TIME_DAYS,
     SERVICE_TIME_DAYS,
@@ -79,7 +80,7 @@ class VentaSensorEntityDescription(
 
 
 SENSOR_TYPES: list[VentaSensorEntityDescription] = (
-    # LW73/LW74 only sensors
+    # Time sensors
     VentaSensorEntityDescription(
         key=ATTR_DISC_ION_TIME_TO_REPLACE,
         translation_key=ATTR_DISC_ION_TIME_TO_REPLACE,
@@ -87,8 +88,7 @@ SENSOR_TYPES: list[VentaSensorEntityDescription] = (
         native_unit_of_measurement=UnitOfTime.DAYS,
         entity_category=EntityCategory.DIAGNOSTIC,
         exists_func=lambda coordinator: (
-            coordinator.api.device.device_type in [VentaDeviceType.LW73_LW74, VentaDeviceType.LPH60]
-            and coordinator.data.info.get("DiscIonT") is not None
+            coordinator.data.info.get("DiscIonT") is not None
         ),
         value_func=lambda coordinator: venta_time_to_days_left(
             coordinator.data.info.get("DiscIonT"),
@@ -96,13 +96,14 @@ SENSOR_TYPES: list[VentaSensorEntityDescription] = (
         ),
     ),
     VentaSensorEntityDescription(
-        key=ATTR_TIME_TO_CLEAN_FILTER,
-        translation_key=ATTR_TIME_TO_CLEAN,
+        key=ATTR_FILTER_TIME_TO_CLEAN,
+        translation_key=ATTR_FILTER_TIME_TO_CLEAN,
         icon="mdi:wrench-clock",
         native_unit_of_measurement=UnitOfTime.DAYS,
         entity_category=EntityCategory.DIAGNOSTIC,
         exists_func=lambda coordinator: (
-            coordinator.api.device.device_type in [VentaDeviceType.LW73_LW74, VentaDeviceType.LPH60, VentaDeviceType.LW60]
+            # Skip LW73 and LW74 devices because they always report 0 values
+            coordinator.api.device.device_type != VentaDeviceType.LW73_LW74
             and coordinator.data.info.get("FilterT") is not None
         ),
         value_func=lambda coordinator: venta_time_to_days_left(
@@ -111,13 +112,12 @@ SENSOR_TYPES: list[VentaSensorEntityDescription] = (
     ),
     VentaSensorEntityDescription(
         key=ATTR_TIME_TO_CLEAN,
-        translation_key="time_to_clean",
-        icon="mdi:power-settings",
+        translation_key=ATTR_TIME_TO_CLEAN,
+        icon="mdi:wrench-clock",
         native_unit_of_measurement=UnitOfTime.DAYS,
         entity_category=EntityCategory.DIAGNOSTIC,
         exists_func=lambda coordinator: (
-            coordinator.api.device.device_type in [VentaDeviceType.LW73_LW74, VentaDeviceType.LPH60, VentaDeviceType.LW60]
-            and coordinator.data.info.get("CleaningT") is not None
+            coordinator.data.info.get("CleaningT") is not None
         ),
         value_func=lambda coordinator: venta_time_to_days_left(
             coordinator.data.info.get("CleaningT"), CLEAN_TIME_DAYS
@@ -130,14 +130,13 @@ SENSOR_TYPES: list[VentaSensorEntityDescription] = (
         native_unit_of_measurement=UnitOfTime.DAYS,
         entity_category=EntityCategory.DIAGNOSTIC,
         exists_func=lambda coordinator: (
-            coordinator.api.device.device_type in [VentaDeviceType.LW73_LW74, VentaDeviceType.LPH60, VentaDeviceType.LW60]
-            and coordinator.data.info.get("ServiceT") is not None
+            coordinator.data.info.get("ServiceT") is not None
         ),
         value_func=lambda coordinator: venta_time_to_days_left(
             coordinator.data.info.get("ServiceT"), SERVICE_TIME_DAYS
         ),
     ),
-    # All sensors
+    # All other sensors
     VentaSensorEntityDescription(
         key=ATTR_TEMPERATURE,
         translation_key=ATTR_TEMPERATURE,
@@ -151,7 +150,7 @@ SENSOR_TYPES: list[VentaSensorEntityDescription] = (
     ),
     VentaSensorEntityDescription(
         key=ATTR_HUMIDITY,
-        translation_key="humidity",
+        translation_key=ATTR_HUMIDITY,
         state_class=SensorStateClass.MEASUREMENT,
         device_class=SensorDeviceClass.HUMIDITY,
         suggested_display_precision=1,
@@ -168,16 +167,6 @@ SENSOR_TYPES: list[VentaSensorEntityDescription] = (
         exists_func=lambda coordinator: coordinator.data.measure.get("WaterLevel")
         is not None,
         value_func=lambda coordinator: coordinator.data.measure.get("WaterLevel"),
-    ),
-    VentaSensorEntityDescription(
-        key=ATTR_PARTICLES_2_5,
-        translation_key="particles_2_5",
-        icon="mdi:molecule",
-        state_class=SensorStateClass.MEASUREMENT,
-        native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
-        exists_func=lambda coordinator: coordinator.data.measure.get("Dust")
-        is not None,
-        value_func=lambda coordinator: coordinator.data.measure.get("Dust"),
     ),
     VentaSensorEntityDescription(
         key=ATTR_FAN_SPEED,
@@ -229,7 +218,7 @@ SENSOR_TYPES: list[VentaSensorEntityDescription] = (
     VentaSensorEntityDescription(
         key=ATTR_SERVICE_TIME,
         translation_key=ATTR_SERVICE_TIME,
-        icon="mdi:wrench-clock",
+        icon="mdi:timer",
         native_unit_of_measurement=UnitOfTime.MINUTES,
         entity_category=EntityCategory.DIAGNOSTIC,
         exists_func=lambda coordinator: coordinator.data.info.get("ServiceT")
@@ -248,6 +237,20 @@ SENSOR_TYPES: list[VentaSensorEntityDescription] = (
         is not None,
         value_func=lambda coordinator: venta_time_to_minutes(
             coordinator.data.info.get("ServiceMax")
+        ),
+    ),
+    VentaSensorEntityDescription(
+        key=ATTR_FILTER_TIME,
+        translation_key=ATTR_FILTER_TIME,
+        icon="mdi:timer",
+        native_unit_of_measurement=UnitOfTime.MINUTES,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        # Skip LW73 and LW74 devices because they always report 0 values
+        exists_func=lambda coordinator: coordinator.api.device.device_type
+        != VentaDeviceType.LW73_LW74
+        and coordinator.data.info.get("FilterT") is not None,
+        value_func=lambda coordinator: venta_time_to_minutes(
+            coordinator.data.info.get("FilterT")
         ),
     ),
     VentaSensorEntityDescription(
@@ -280,8 +283,14 @@ SENSOR_TYPES: list[VentaSensorEntityDescription] = (
         translation_key=ATTR_PARTICLES_2_5,
         state_class=SensorStateClass.MEASUREMENT,
         exists_func=lambda coordinator: coordinator.data.measure.get("Particles2u5")
-        is not None,
-        value_func=lambda coordinator: coordinator.data.measure.get("Particles2u5"),
+        is not None
+        or (
+            # Skip LW73 and LW74 devices because they always report 0 values
+            coordinator.api.device.device_type != VentaDeviceType.LW73_LW74
+            and coordinator.data.measure.get("Dust") is not None
+        ),
+        value_func=lambda coordinator: coordinator.data.measure.get("Particles2u5")
+        or coordinator.data.measure.get("Dust"),
     ),
     VentaSensorEntityDescription(
         key=ATTR_PARTICLES_5_0,
@@ -369,19 +378,6 @@ SENSOR_TYPES: list[VentaSensorEntityDescription] = (
         is not None,
         value_func=lambda coordinator: skip_zeros(
             coordinator.data.measure.get("Hcho"),
-            coordinator,
-            [VentaDeviceType.AS150],
-        ),
-    ),
-    VentaSensorEntityDescription(
-        key=ATTR_DUST,
-        translation_key=ATTR_DUST,
-        native_unit_of_measurement=CONCENTRATION_PARTS_PER_BILLION,
-        state_class=SensorStateClass.MEASUREMENT,
-        exists_func=lambda coordinator: coordinator.data.measure.get("Dust")
-        is not None,
-        value_func=lambda coordinator: skip_zeros(
-            coordinator.data.measure.get("Dust"),
             coordinator,
             [VentaDeviceType.AS150],
         ),

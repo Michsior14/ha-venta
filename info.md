@@ -5,13 +5,16 @@ A Home Assistant custom Integration for Venta devices (protocol: v0, v2, v3) wit
 The following Venta device are currently tested and supported:
 
 - **Protocol v0:**
-  - LP60/LPH60/LW60/LW60T/LW62/LW62T/AP902/AH902/AW902 Humidifier
+  - LP60/LPH60
+  - LW60/LW60T
+  - LW62/LW62T
+  - AP902/AH902/AW902
 
 - **Protocol v2:**
-  - LW73/LW74 Humidifier
+  - LW73/LW74
 
 - **Protocol v3:**
-  - AH510/AH515/AH530/AH550/AH555 Humidifier
+  - AH510/AH515/AH530/AH550/AH555
   - AirSense 150 Pro
 
 ## Features

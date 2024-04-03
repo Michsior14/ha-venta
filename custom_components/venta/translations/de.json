@@ -5,15 +5,15 @@
         },
         "error": {
             "cannot_connect": "Verbindung fehlgeschlagen",
-            "cannot_detect_api_version": "Kann API-Version nicht ermitteln",
+            "cannot_detect_api_version": "Kann API-Version nicht bestimmen",
             "unknown": "Unerwarteter Fehler"
         },
         "step": {
             "user": {
                 "data": {
-                    "host": "Hostname / IP-Adresse",
+                    "host": "Gastgeber",
                     "scan_interval": "Aktualisierungsintervall (Sekunden)",
-                    "api_version": "API-Version (Automatische Erkennung, wenn unsicher)"
+                    "api_version": "API-Version (bei Unsicherheit automatisch beibehalten)"
                 }
             }
         }
@@ -34,7 +34,7 @@
                 "state_attributes": {
                     "mode": {
                         "state": {
-                            "sleep": "Ruhe",
+                            "sleep": "Schlafen",
                             "auto": "Auto",
                             "turbo": "Turbo",
                             "level_1": "Stufe 1",
@@ -61,7 +61,7 @@
                 "name": "Betriebszeit"
             },
             "disc_ion_time": {
-                "name": "Verwendungsdauer der HYGIENEDISK"
+                "name": "Scheibenionisationszeit"
             },
             "cleaning_time": {
                 "name": "Reinigungszeit"
@@ -76,22 +76,22 @@
                 "name": "Warnungen"
             },
             "particles_0_3": {
-                "name": "Partikelzahl (0,3µ)"
+                "name": "Partikelzahl (0,3u)"
             },
             "particles_0_5": {
-                "name": "Partikelzahl (0,5µ)"
+                "name": "Partikelzahl (0,5u)"
             },
             "particles_1_0": {
-                "name": "Partikelzahl (1,0µ)"
+                "name": "Partikelzahl (1,0u)"
             },
             "particles_2_5": {
-                "name": "Partikelanzahl (2,5µ)"
+                "name": "Partikelanzahl (2,5u)"
             },
             "particles_5_0": {
-                "name": "Partikelanzahl (5µ)"
+                "name": "Partikelanzahl (5u)"
             },
             "particles_10": {
-                "name": "Partikelzahl (10µ)"
+                "name": "Partikelzahl (10u)"
             },
             "pm_1_0": {
                 "name": "PM1.0"
@@ -112,13 +112,13 @@
                 "name": "Formaldehyd"
             },
             "disc_ion_time_to_replace": {
-                "name": "HYGIENEDISK tauschen"
+                "name": "Setzen Sie die Ionisationsscheibe wieder ein"
             },
             "time_to_clean": {
                 "name": "Maschine reinigen"
             },
             "time_to_service": {
-                "name": "Maschine warten"
+                "name": "Servicemaschine rein"
             },
             "dust": {
                 "name": "Staub"
@@ -126,19 +126,16 @@
         },
         "binary_sensor": {
             "needs_refill": {
-                "name": "Wasserstand niedrig"
+                "name": "Braucht Nachfüllung"
             },
             "needs_service": {
-                "name": "Gerätewartung erforderlich"
+                "name": "Benötigt Service"
             },
             "needs_cleaning": {
-                "name": "Gerätereinigung erforderlich"
+                "name": "Muss gereinigt werden"
             },
             "needs_disc_replacement": {
-                "name": "HYGIENEDISK tauschen"
-            },
-            "cleaning": {
-                "name": "Reinigungsmodus"
+                "name": "Ionisationsscheibe muss ausgetauscht werden"
             }
         },
         "light": {
