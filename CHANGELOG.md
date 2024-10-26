@@ -1,3 +1,10 @@
+## [0.8.1-beta.1](https://github.com/Michsior14/ha-venta/compare/v0.8.1-beta.0...v0.8.1-beta.1) (2024-10-26)
+
+
+### Bug Fixes
+
+* circular imports ([e1f9805](https://github.com/Michsior14/ha-venta/commit/e1f98058660593fd6bb067f1d2aec80f8af24300))
+
 ## [0.8.1-beta.0](https://github.com/Michsior14/ha-venta/compare/v0.8.0...v0.8.1-beta.0) (2024-10-26)
 
 
@@ -31,20 +38,4 @@
 ### Bug Fixes
 
 * update translations ([#34](https://github.com/Michsior14/ha-venta/issues/34)) ([60e335a](https://github.com/Michsior14/ha-venta/commit/60e335a646dd763f2bcba86c426b19775aea621d))
-
-## [0.7.0](https://github.com/Michsior14/ha-venta/compare/v0.6.5...v0.7.0) (2024-03-31)
-
-
-### ⚠ BREAKING CHANGES
-
-* model levels values no longer contains spaces
-
-### Features
-
-* **LW60:** support more modes ([#29](https://github.com/Michsior14/ha-venta/issues/29)) ([2d6ad60](https://github.com/Michsior14/ha-venta/commit/2d6ad602f3f08f807e519967ce178429b460a351)), closes [#28](https://github.com/Michsior14/ha-venta/issues/28)
-
-
-### Bug Fixes
-
-* improve translations handling and icons ([#30](https://github.com/Michsior14/ha-venta/issues/30)) ([29a472e](https://github.com/Michsior14/ha-venta/commit/29a472e50e075c9e7ff20bfe80413a3661cb8d9e))
 
