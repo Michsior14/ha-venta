@@ -8,15 +8,14 @@ from re import Pattern
 from typing import Any, Generator
 
 
-class RawJSONDecoder(JSONDecoder):
+class _RawJSONDecoder(JSONDecoder):
     """JSON decoder that stops at the first valid JSON object."""
 
-    end: int | None = None
     index: int
+    end_hook: Callable[[int], None] | None
 
     def __init__(  # noqa: PLR0913
         self,
-        index: int,
         *,
         object_hook: Callable[[dict[str, Any]], Any] | None = None,
         parse_float: Callable[[str], Any] | None = None,
@@ -24,6 +23,8 @@ class RawJSONDecoder(JSONDecoder):
         parse_constant: Callable[[str], Any] | None = None,
         strict: bool = True,
         object_pairs_hook: Callable[[list[tuple[str, Any]]], Any] | None = None,
+        index: int = 0,
+        end_hook: Callable[[int], None] | None = None,
     ) -> None:
         """Initialize the decoder."""
         super().__init__(
@@ -35,19 +36,27 @@ class RawJSONDecoder(JSONDecoder):
             object_pairs_hook=object_pairs_hook,
         )
         self.index = index
+        self.end_hook = end_hook
 
     def decode(self, s: str, *_: type[Pattern.match]) -> dict[str, Any]:
         """Decode the JSON string."""
-        data, self.__class__.end = self.raw_decode(s, self.index)
+        data, end = self.raw_decode(s, self.index)
+        if self.end_hook:
+            self.end_hook(end)
         return data
 
 
 def extract_json(value: str, index: int = 0) -> Generator[dict[str, Any]]:
     """Extract JSON from any string."""
+    context = {"end": len(value)}
     while (index := value.find("{", index)) != -1:
         try:
-            decoder = RawJSONDecoder(index)
-            yield loads(value, cls=decoder)
-            index = decoder.end
+            yield loads(
+                value,
+                cls=_RawJSONDecoder,
+                index=index,
+                end_hook=lambda end: context.update(end=end),
+            )
+            index = context["end"]
         except JSONDecodeError:
             index += 1
