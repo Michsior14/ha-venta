@@ -251,15 +251,14 @@ class VentaDataUpdateCoordinator(DataUpdateCoordinator[VentaData]):
     """Define an object to hold Venta data."""
 
     api: VentaApi
-    data: VentaData = VentaData()
 
     def __init__(self, hass: HomeAssistant, api: VentaApi) -> None:
         """Initialize data coordinator."""
-        self.api = api
-
         super().__init__(
             hass, _LOGGER, name=DOMAIN, update_interval=api.device.update_interval
         )
+        self.api = api
+        self.data = VentaData()
 
     async def _async_update_data(self) -> VentaData:
         """Update data via library."""
