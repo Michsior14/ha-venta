@@ -1,8 +1,16 @@
 """The utility functions for the Venta components."""
 
 from __future__ import annotations
+from enum import Enum
 
 from .venta import VentaDataUpdateCoordinator, VentaDeviceType
+
+
+class VentaTimeResolution(Enum):
+    """Known Venta resolution times."""
+
+    COMMON = 5
+    SERVICE_TIME = 10
 
 
 def skip_zeros(
@@ -16,22 +24,24 @@ def skip_zeros(
     return None if value == 0 else value
 
 
-def venta_time_to_minutes(value: int | None) -> int | None:
+def venta_time_to_minutes(
+    value: int | None, resolution: VentaTimeResolution = VentaTimeResolution.COMMON
+) -> int | None:
     """Convert Venta time to minutes."""
     if value is None:
         return None
 
-    # It appears that Venta uses 10 minute intervals for time
-    to_minutes = 10
-    return value * to_minutes
+    return value * resolution.value
 
 
-def venta_time_to_days_left(value: int | None, max_days: int) -> int | None:
+def venta_time_to_days_left(
+    value: int | None, max_days: int, resolution=VentaTimeResolution.COMMON
+) -> int | None:
     """Convert Venta time to days left."""
     if value is None:
         return None
 
-    to_days = 6 * 24
+    to_days = (60 / resolution.value) * 24
     return round(max_days - (value / to_days))
 
 

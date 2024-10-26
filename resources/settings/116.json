@@ -1,0 +1,105 @@
+{
+  "Action": [
+    {
+      "name": "Power",
+      "type": "boolean",
+      "description": "Power state of device"
+    },
+    {
+      "name": "FanSpeed",
+      "type": "integer",
+      "description": "Fan speed of device",
+      "minimum": 1,
+      "maximum": 4,
+      "increment": 1,
+      "default": 0
+    },
+    {
+      "name": "SleepMode",
+      "type": "boolean",
+      "description": "All automatic modes swtiched off. Fan to state 1 and reduction of display background light"
+    },
+    {
+      "name": "Automatic",
+      "type": "boolean",
+      "description": "Automatic mode (fan control)."
+    },
+    {
+      "name": "BaLiNormal",
+      "type": "integer",
+      "description": "Background Light Normal",
+      "minimum": 0,
+      "maximum": 32767,
+      "increment": 1,
+      "default": 32767
+    },
+    {
+      "name": "BaLiStandby",
+      "type": "integer",
+      "description": "Background Light Standby",
+      "minimum": 0,
+      "maximum": 32767,
+      "increment": 1,
+      "default": 32767
+    },
+    {
+      "name": "BaLiSleep",
+      "type": "integer",
+      "description": "Background light in sleep mode",
+      "minimum": 0,
+      "maximum": 655,
+      "increment": 1,
+      "default": 655
+    },
+    {
+      "name": "LEDStripActive",
+      "type": "boolean",
+      "description": "LED Strip Active"
+    },
+    {
+      "name": "LEDStrip",
+      "type": "string",
+      "description": "LED Strip color in HTML Notation."
+    },
+    {
+      "name": "TargetHum",
+      "type": "integer",
+      "description": "Humidity in percentage",
+      "minimum": 30,
+      "maximum": 70,
+      "increment": 5
+    },
+    {
+      "name": "LEDStripMode",
+      "type": "integer",
+      "description": "LED Strip Mode",
+      "values": [
+        {
+          "value": 0,
+          "type": "integer",
+          "description": "Full integerernal Control (like without Option Module)"
+        },
+        {
+          "value": 1,
+          "type": "integer",
+          "description": "Water Warning integerernal, rest External (default if this value is not set, but color given)"
+        },
+        {
+          "value": 2,
+          "type": "integer",
+          "description": "Water Warning External, rest integerernal"
+        },
+        {
+          "value": 3,
+          "type": "integer",
+          "description": "Full External Control"
+        }
+      ]
+    },
+    {
+      "name": "Update",
+      "type": "string",
+      "description": "Update."
+    }
+  ]
+}

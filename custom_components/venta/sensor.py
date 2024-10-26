@@ -59,7 +59,12 @@ from .const import (
     ION_DISC_REPLACE_TIME_DAYS,
     SERVICE_TIME_DAYS,
 )
-from .utils import skip_zeros, venta_time_to_days_left, venta_time_to_minutes
+from .utils import (
+    VentaTimeResolution,
+    skip_zeros,
+    venta_time_to_days_left,
+    venta_time_to_minutes,
+)
 from .venta import VentaDataUpdateCoordinator, VentaDeviceType
 
 
@@ -134,7 +139,9 @@ SENSOR_TYPES: list[VentaSensorEntityDescription] = (
             coordinator.data.info.get("ServiceT") is not None
         ),
         value_func=lambda coordinator: venta_time_to_days_left(
-            coordinator.data.info.get("ServiceT"), SERVICE_TIME_DAYS
+            coordinator.data.info.get("ServiceT"),
+            SERVICE_TIME_DAYS,
+            VentaTimeResolution.SERVICE_TIME,
         ),
     ),
     # All other sensors
@@ -226,7 +233,8 @@ SENSOR_TYPES: list[VentaSensorEntityDescription] = (
         exists_func=lambda coordinator: coordinator.data.info.get("ServiceT")
         is not None,
         value_func=lambda coordinator: venta_time_to_minutes(
-            coordinator.data.info.get("ServiceT")
+            coordinator.data.info.get("ServiceT"),
+            VentaTimeResolution.SERVICE_TIME,
         ),
     ),
     VentaSensorEntityDescription(
@@ -238,7 +246,8 @@ SENSOR_TYPES: list[VentaSensorEntityDescription] = (
         exists_func=lambda coordinator: coordinator.data.info.get("ServiceMax")
         is not None,
         value_func=lambda coordinator: venta_time_to_minutes(
-            coordinator.data.info.get("ServiceMax")
+            coordinator.data.info.get("ServiceMax"),
+            VentaTimeResolution.SERVICE_TIME,
         ),
     ),
     VentaSensorEntityDescription(

@@ -1,0 +1,206 @@
+{
+  "Header": [
+    {
+      "name": "DeviceType",
+      "type": "integer",
+      "description": "device type of model",
+      "values": [
+        {
+          "value": 11,
+          "type": "integer",
+          "description": "AP902"
+        }
+      ]
+    },
+    {
+      "name": "MacAdress",
+      "type": "string",
+      "description": "Mac address of WIFI-Module for unique identification."
+    },
+    {
+      "name": "Error",
+      "type": "integer",
+      "description": "Error in JSON-Object (Action). Value description doted in bits.",
+      "values": [
+        {
+          "name": "b0",
+          "type": "integer",
+          "description": "Power"
+        },
+        {
+          "name": "b1",
+          "type": "integer",
+          "description": "FanSpeed"
+        },
+        {
+          "name": "b3",
+          "type": "integer",
+          "description": "Timer"
+        },
+        {
+          "name": "b4",
+          "type": "integer",
+          "description": "Boost"
+        },
+        {
+          "name": "b5",
+          "type": "integer",
+          "description": "SleepMode"
+        },
+        {
+          "name": "b6",
+          "type": "integer",
+          "description": "ChildLock"
+        },
+        {
+          "name": "b7",
+          "type": "integer",
+          "description": "Automatic"
+        },
+        {
+          "name": "b8",
+          "type": "integer",
+          "description": "SysLanguage"
+        },
+        {
+          "name": "b9",
+          "type": "integer",
+          "description": "CleanLanguage"
+        },
+        {
+          "name": "b10",
+          "type": "integer",
+          "description": "TempUnit"
+        },
+        {
+          "name": "b11",
+          "type": "integer",
+          "description": "DisplayLeft"
+        },
+        {
+          "name": "b12",
+          "type": "integer",
+          "description": "DisplayRight"
+        },
+        {
+          "name": "b13",
+          "type": "integer",
+          "description": "Reset"
+        },
+        {
+          "name": "b14",
+          "type": "integer",
+          "description": "ConINet"
+        },
+        {
+          "name": "b15",
+          "type": "integer",
+          "description": "DelUser"
+        }
+      ]
+    },
+    {
+      "name": "DeviceName",
+      "type": "string",
+      "description": "Max 32 chars. Name of accessed device."
+    }
+  ],
+  "Info": [
+    {
+      "name": "SWDisplay",
+      "type": "string",
+      "description": "Software version of display board."
+    },
+    {
+      "name": "SWPower",
+      "type": "string",
+      "description": "Software version of power board."
+    },
+    {
+      "name": "SWTouch",
+      "type": "string",
+      "description": "Software version of touch controller"
+    },
+    {
+      "name": "SWWifi",
+      "type": "string",
+      "description": "Software version of WIFI-Module"
+    },
+    {
+      "name": "TimerT",
+      "type": "integer",
+      "description": "Elapsed timer time in 1min resolution.",
+      "minimum": 0,
+      "maximum": 540,
+      "increment": 1
+    },
+    {
+      "name": "OperationT",
+      "type": "long",
+      "description": "Total operating time in 5min resolution e.g. 1 = 5min, 12 = 60min",
+      "minimum": 0,
+      "maximum": 4294967295,
+      "increment": 1
+    },
+    {
+      "name": "FilterT",
+      "type": "integer",
+      "description": "Operating time since the last change of the filter in 10min resolution. e.g. 1 = 10min, 12 = 120min.",
+      "minimum": 0,
+      "maximum": 65535,
+      "increment": 1
+    },
+    {
+      "name": "Warnings",
+      "type": "integer",
+      "description": "Displayed warnings on the display. Values are bit coded. Several Values can be displayed at once.",
+      "values": [
+        {
+          "value": 0,
+          "type": "integer",
+          "description": "No warning"
+        },
+        {
+          "value": 16,
+          "type": "integer",
+          "description": "Change filter",
+          "parameter_ref": "FilterT"
+        }
+      ]
+    }
+  ],
+  "Measure": [
+    {
+      "name": "Temperature",
+      "type": "BigDecimal",
+      "description": "Measured temperature in Celsius or Fahrenheit depending on the Units parameter in State",
+      "minimum": -40,
+      "maximum": 248.9,
+      "increment": 0.1
+    },
+    {
+      "name": "Humidity",
+      "type": "BigDecimal",
+      "description": "Measured relative humidity in percentage.",
+      "minimum": 0,
+      "maximum": 99.9,
+      "increment": 0.1
+    },
+    {
+      "name": "Dust",
+      "type": "integer",
+      "description": "Measure of particle sensor.",
+      "minimum": 0,
+      "maximum": 65535,
+      "increment": 1
+    },
+    {
+      "name": "FanRpm",
+      "type": "integer",
+      "description": "Fan speed in RPM",
+      "minimum": 0,
+      "maximum": 2800,
+      "increment": 1
+    }
+  ]
+}

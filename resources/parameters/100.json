@@ -1,0 +1,110 @@
+{
+  "Header": [
+    {
+      "name": "DeviceId",
+      "type": "string",
+      "description": "Unique identifier of device. Typically its mac address."
+    },
+    {
+      "name": "DeviceType",
+      "type": "integer",
+      "description": "Unique identifier of device model",
+      "values": [
+        {
+          "value": "100",
+          "type": "integer",
+          "description": "AS100"
+        }
+      ]
+    },
+    {
+      "name": "ProtocolV",
+      "type": "string",
+      "description": "Protocol version"
+    }
+  ],
+  "Info": [
+    {
+      "name": "FirmwareVersion",
+      "type": "string",
+      "description": "Current applied and running firmware version."
+    },
+    {
+      "name": "CertificateSHA1",
+      "type": "string",
+      "description": "Certificate checksum"
+    }
+  ],
+  "Measure": [
+    {
+      "name": "Time",
+      "type": "long",
+      "description": "Current unix timestamp",
+      "increment": 1
+    },
+    {
+      "name": "Temperature",
+      "type": "BigDecimal",
+      "description": "Measured temperature",
+      "minimum": -40,
+      "maximum": 125,
+      "increment": 0.01
+    },
+    {
+      "name": "Humidity",
+      "type": "BigDecimal",
+      "description": "Measured relative humidity in percentage.",
+      "minimum": 0,
+      "maximum": 100,
+      "increment": 0.01
+    },
+    {
+      "name": "Voc",
+      "type": "integer",
+      "description": "VOC Index",
+      "minimum": 0,
+      "maximum": 500,
+      "increment": 1
+    },
+    {
+      "name": "Toluene",
+      "type": "BigDecimal",
+      "description": "VOC Index",
+      "minimum": 0.0,
+      "maximum": 100.0,
+      "increment": 0.01
+    },
+    {
+      "name": "SensorStatus",
+      "type": "string",
+      "description": "bit by bit the detected and functioning sensors",
+      "values": [
+        {
+          "value": "0",
+          "type": "string",
+          "description": "RHT (Humidity/Temperature)r"
+        },
+        {
+          "value": "1",
+          "type": "string",
+          "description": "CO2"
+        },
+        {
+          "value": "2",
+          "type": "string",
+          "description": "VOC"
+        },
+        {
+          "value": "3",
+          "type": "string",
+          "description": "HCHO"
+        },
+        {
+          "value": "4",
+          "type": "string",
+          "description": "PM"
+        }
+      ]
+    }
+  ]
+}
