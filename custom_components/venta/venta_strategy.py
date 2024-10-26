@@ -2,9 +2,8 @@
 
 from __future__ import annotations
 
+import asyncio
 import logging
-import select
-import socket
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from json import JSONDecodeError, dumps
@@ -149,22 +148,14 @@ class VentaTcpStrategy(VentaProtocolStrategy):
 
     async def _send_request(self, message: str) -> dict[str, Any] | None:
         """Request data from the Venta device using TCP protocol."""
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-            sock.settimeout(self._host_definition.timeout)
+        try:
+            reader, writer = await asyncio.open_connection(
+                self._host_definition.host, self._host_definition.port
+            )
 
             try:
-                sock.connect((self._host_definition.host, self._host_definition.port))
-            except OSError as err:
-                # Ignore the error for now.
-                _LOGGER.error(
-                    "Socket error while connection to %s on port %s: %s",
-                    self._host_definition.host,
-                    self._host_definition.port,
-                    err,
-                )
-
-            try:
-                sock.sendall(message.encode())
+                writer.write(message.encode())
+                await writer.drain()
             except OSError as err:
                 _LOGGER.error(
                     "Unable to send payload %r to %s on port %s: %s",
@@ -175,31 +166,8 @@ class VentaTcpStrategy(VentaProtocolStrategy):
                 )
                 return
 
-            readable, _, _ = select.select(
-                [sock], [], [], self._host_definition.timeout
-            )
-            if not readable:
-                _LOGGER.warning(
-                    (
-                        "Timeout (%s second(s)) waiting for a response after "
-                        "sending %r to %s on port %s"
-                    ),
-                    self._host_definition.timeout,
-                    message,
-                    self._host_definition.host,
-                    self._host_definition.port,
-                )
-                return
-
             try:
-                fragments = []
-                while True:
-                    chunk = sock.recv(self._buffer_size)
-                    if not chunk:
-                        break
-                    fragments.append(chunk)
-                payload = b"".join(fragments).decode().strip()
-
+                payload = (await reader.read()).decode().strip()
                 _LOGGER.debug(
                     "Receive payload from %s on port %s: %s",
                     self._host_definition.host,
@@ -240,3 +208,15 @@ class VentaTcpStrategy(VentaProtocolStrategy):
                     self._host_definition.port,
                     err,
                 )
+
+        except OSError as err:
+            _LOGGER.error(
+                "Socket error while connection to %s on port %s: %s",
+                self._host_definition.host,
+                self._host_definition.port,
+                err,
+            )
+        finally:
+            if writer is not None:
+                writer.close()
+                await writer.wait_closed()
