@@ -17,6 +17,9 @@ from homeassistant.components.humidifier import (
     HumidifierEntityDescription,
     HumidifierEntityFeature,
 )
+from homeassistant.components.select import SelectEntity, SelectEntityDescription
+from homeassistant.components.sensor import SensorEntity, SensorEntityDescription
+from homeassistant.components.switch import SwitchEntity, SwitchEntityDescription
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import MODE_SLEEP, MODES_3, MODES_4, MODES_5
@@ -78,7 +81,7 @@ DEVICE_MODES: dict[VentaDeviceType, list[str]] = {
 
 HUMIDIFIER_ENTITY_DESCRIPTION = VentaHumidifierEntityDescription(
     key=HumidifierDeviceClass.HUMIDIFIER,
-    translation_key="humidifier",
+    translation_key=HumidifierDeviceClass.HUMIDIFIER,
     device_class=HumidifierDeviceClass.HUMIDIFIER,
 )
 
@@ -257,3 +260,145 @@ class VentaV3HumidifierEntity(VentaBaseHumidifierEntity):
             )
 
         await self._send_action(action)
+
+
+@dataclass
+class VentaSensorRequiredKeysMixin:
+    """Mixin for required keys."""
+
+    exists_func: Callable[[VentaDataUpdateCoordinator], bool]
+    value_func: Callable[[VentaDataUpdateCoordinator], int | None]
+
+
+@dataclass
+class VentaSensorEntityDescription(
+    SensorEntityDescription, VentaSensorRequiredKeysMixin
+):
+    """Describes Venta sensor entity."""
+
+    suggested_display_precision = 0
+
+
+class VentaSensor(CoordinatorEntity[VentaDataUpdateCoordinator], SensorEntity):
+    """Representation of a Sensor."""
+
+    _attr_has_entity_name = True
+    entity_description: VentaSensorEntityDescription
+
+    def __init__(
+        self,
+        coordinator: VentaDataUpdateCoordinator,
+        description: VentaSensorEntityDescription,
+    ) -> None:
+        """Initialize the sensor."""
+        super().__init__(coordinator)
+        self.entity_description = description
+        self._attr_device_info = coordinator.device_info
+        self._attr_unique_id = f"{coordinator.api.device.mac}-{description.key}"
+
+    @property
+    def native_value(self) -> int | None:
+        """Return the state of the sensor."""
+        return self.entity_description.value_func(self.coordinator)
+
+
+@dataclass
+class VentaSwitchRequiredKeysMixin:
+    """Mixin for required keys."""
+
+    exists_func: Callable[[VentaDataUpdateCoordinator], bool]
+    value_func: Callable[[VentaData], str | None]
+    action_func: Callable[[VentaData, bool], dict | None]
+
+
+@dataclass
+class VentaSwitchEntityDescription(
+    SwitchEntityDescription, VentaSwitchRequiredKeysMixin
+):
+    """Describes Venta switch entity."""
+
+
+class VentaSwitch(CoordinatorEntity[VentaDataUpdateCoordinator], SwitchEntity):
+    """Representation of a switch."""
+
+    _attr_has_entity_name = True
+    entity_description: VentaSwitchEntityDescription
+
+    def __init__(
+        self,
+        coordinator: VentaDataUpdateCoordinator,
+        description: VentaSwitchEntityDescription,
+    ) -> None:
+        """Initialize the switch."""
+        super().__init__(coordinator)
+        self.entity_description = description
+        self._attr_device_info = coordinator.device_info
+        self._attr_unique_id = f"{coordinator.api.device.mac}-{description.key}"
+        self._device = coordinator.api.device
+
+    @property
+    def is_on(self) -> str | None:
+        """Return if switch is on."""
+        return self.entity_description.value_func(self.coordinator.data)
+
+    async def async_turn_on(self, **kwargs: dict[str, Any]) -> None:
+        """Turn the switch on."""
+        await self._send_action(True)
+
+    async def async_turn_off(self, **kwargs: dict[str, Any]) -> None:
+        """Turn the switch off."""
+        await self._send_action(False)
+
+    async def _send_action(self, on: bool) -> None:
+        self.coordinator.async_set_updated_data(
+            await self._device.action(
+                self.entity_description.action_func(self.coordinator.data, on)
+            )
+        )
+
+
+@dataclass
+class VentaSelectRequiredKeysMixin:
+    """Mixin for required keys."""
+
+    exists_func: Callable[[VentaDataUpdateCoordinator], bool]
+    value_func: Callable[[VentaData], str | None]
+    action_func: Callable[[str], dict | None]
+
+
+@dataclass
+class VentaSelectEntityDescription(
+    SelectEntityDescription, VentaSelectRequiredKeysMixin
+):
+    """Describes Venta select entity."""
+
+
+class VentaSelect(CoordinatorEntity[VentaDataUpdateCoordinator], SelectEntity):
+    """Representation of a select."""
+
+    _attr_has_entity_name = True
+    entity_description: VentaSelectEntityDescription
+
+    def __init__(
+        self,
+        coordinator: VentaDataUpdateCoordinator,
+        description: VentaSelectEntityDescription,
+    ) -> None:
+        """Initialize the sensor."""
+        super().__init__(coordinator)
+        self.entity_description = description
+        self._attr_device_info = coordinator.device_info
+        self._attr_unique_id = f"{coordinator.api.device.mac}-{description.key}"
+        self._attr_options = description.options
+
+    @property
+    def current_option(self) -> str | None:
+        """Return the selected entity option to represent the entity state."""
+        return self.entity_description.value_func(self.coordinator.data)
+
+    async def async_select_option(self, option: str) -> None:
+        """Change the selected option."""
+        await self.coordinator.api.device.status(
+            self.entity_description.action_func(option)
+        )
+        await self.coordinator.async_request_refresh()

@@ -2,15 +2,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
-from dataclasses import dataclass
-
-from homeassistant.components.sensor import (
-    SensorDeviceClass,
-    SensorEntity,
-    SensorEntityDescription,
-    SensorStateClass,
-)
+from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
     ATTR_TEMPERATURE,
@@ -25,7 +17,6 @@ from homeassistant.const import (
 )
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import (
     ATTR_CLEANING_TIME,
@@ -66,24 +57,7 @@ from .utils import (
     venta_time_to_minutes,
 )
 from .venta import VentaDataUpdateCoordinator, VentaDeviceType
-
-
-@dataclass
-class VentaSensorRequiredKeysMixin:
-    """Mixin for required keys."""
-
-    exists_func: Callable[[VentaDataUpdateCoordinator], bool]
-    value_func: Callable[[VentaDataUpdateCoordinator], int | None]
-
-
-@dataclass
-class VentaSensorEntityDescription(
-    SensorEntityDescription, VentaSensorRequiredKeysMixin
-):
-    """Describes Venta sensor entity."""
-
-    suggested_display_precision = 0
-
+from .venta_entity import VentaSensor, VentaSensorEntityDescription
 
 SENSOR_TYPES: list[VentaSensorEntityDescription] = (
     # Time sensors
@@ -407,26 +381,3 @@ async def async_setup_entry(
         if description.exists_func(coordinator)
     ]
     async_add_entities(entities)
-
-
-class VentaSensor(CoordinatorEntity[VentaDataUpdateCoordinator], SensorEntity):
-    """Representation of a Sensor."""
-
-    _attr_has_entity_name = True
-    entity_description: VentaSensorEntityDescription
-
-    def __init__(
-        self,
-        coordinator: VentaDataUpdateCoordinator,
-        description: VentaSensorEntityDescription,
-    ) -> None:
-        """Initialize the sensor."""
-        super().__init__(coordinator)
-        self.entity_description = description
-        self._attr_device_info = coordinator.device_info
-        self._attr_unique_id = f"{coordinator.api.device.mac}-{description.key}"
-
-    @property
-    def native_value(self) -> int | None:
-        """Return the state of the sensor."""
-        return self.entity_description.value_func(self.coordinator)

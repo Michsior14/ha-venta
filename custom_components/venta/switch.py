@@ -2,41 +2,14 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
-from dataclasses import dataclass
-from typing import Any
-
-from homeassistant.components.switch import (
-    SwitchEntity,
-    SwitchEntityDescription,
-)
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import (
-    EntityCategory,
-)
+from homeassistant.const import EntityCategory
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import ATTR_SLEEP_MODE, DOMAIN
-from .venta import VentaData, VentaDataUpdateCoordinator, VentaDeviceType
-
-
-@dataclass
-class VentaSwitchRequiredKeysMixin:
-    """Mixin for required keys."""
-
-    exists_func: Callable[[VentaDataUpdateCoordinator], bool]
-    value_func: Callable[[VentaData], str | None]
-    action_func: Callable[[VentaData, bool], dict | None]
-
-
-@dataclass
-class VentaSwitchEntityDescription(
-    SwitchEntityDescription, VentaSwitchRequiredKeysMixin
-):
-    """Describes Venta switch entity."""
-
+from .venta import VentaDataUpdateCoordinator, VentaDeviceType
+from .venta_entity import VentaSwitch, VentaSwitchEntityDescription
 
 SENSOR_TYPES: list[VentaSwitchEntityDescription] = (
     VentaSwitchEntityDescription(
@@ -77,42 +50,3 @@ async def async_setup_entry(
         if description.exists_func(coordinator)
     ]
     async_add_entities(entities)
-
-
-class VentaSwitch(CoordinatorEntity[VentaDataUpdateCoordinator], SwitchEntity):
-    """Representation of a switch."""
-
-    _attr_has_entity_name = True
-    entity_description: VentaSwitchEntityDescription
-
-    def __init__(
-        self,
-        coordinator: VentaDataUpdateCoordinator,
-        description: VentaSwitchEntityDescription,
-    ) -> None:
-        """Initialize the switch."""
-        super().__init__(coordinator)
-        self.entity_description = description
-        self._attr_device_info = coordinator.device_info
-        self._attr_unique_id = f"{coordinator.api.device.mac}-{description.key}"
-        self._device = coordinator.api.device
-
-    @property
-    def is_on(self) -> str | None:
-        """Return if switch is on."""
-        return self.entity_description.value_func(self.coordinator.data)
-
-    async def async_turn_on(self, **kwargs: dict[str, Any]) -> None:
-        """Turn the switch on."""
-        await self._send_action(True)
-
-    async def async_turn_off(self, **kwargs: dict[str, Any]) -> None:
-        """Turn the switch off."""
-        await self._send_action(False)
-
-    async def _send_action(self, on: bool) -> None:
-        self.coordinator.async_set_updated_data(
-            await self._device.action(
-                self.entity_description.action_func(self.coordinator.data, on)
-            )
-        )
