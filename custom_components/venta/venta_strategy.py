@@ -1,5 +1,7 @@
 """Venta API strategies definitions."""
 
+from __future__ import annotations
+
 import logging
 import select
 import socket
@@ -10,7 +12,7 @@ from typing import Any
 
 from aiohttp import ClientSession
 
-from .utils import extract_json
+from .json import extract_json
 
 _LOGGER = logging.getLogger(__name__)
 
