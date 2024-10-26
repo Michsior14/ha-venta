@@ -30,13 +30,13 @@ class VentaProtocolStrategy(ABC):
     """Abstract class for Venta API strategy."""
 
     @abstractmethod
-    async def get_status(self, method: str, url: str) -> dict[str, Any]:
+    async def get_status(self, method: str, url: str) -> dict[str, Any] | None:
         """Request status of the Venta device using proper protocol."""
 
     @abstractmethod
     async def send_action(
         self, method: str, url: str, json: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
+    ) -> dict[str, Any] | None:
         """Send action to the Venta device using proper protocol."""
 
 
@@ -53,19 +53,19 @@ class VentaHttpStrategy(VentaProtocolStrategy):
         self._url = f"http://{host_definition.host}:{host_definition.port}"
         self._session = session
 
-    async def get_status(self, method: str, url: str) -> dict[str, Any]:
+    async def get_status(self, method: str, url: str) -> dict[str, Any] | None:
         """Request status of the Venta device using HTTP protocol."""
         return await self._send_request(method, url)
 
     async def send_action(
         self, method: str, url: str, json: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
+    ) -> dict[str, Any] | None:
         """Send action to the Venta device using HTTP protocol."""
         return await self._send_request(method, url, json)
 
     async def _send_request(
         self, method: str, url: str, json_action: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
+    ) -> dict[str, Any] | None:
         """Send request to Venta device using HTTP protocol."""
 
         async def _send() -> dict[str, Any]:
@@ -74,8 +74,7 @@ class VentaHttpStrategy(VentaProtocolStrategy):
             async with self._session.request(
                 method, f"{self._url}/{url}", json=json_action
             ) as resp:
-                body = await resp.json(content_type=None)
-                return body if body is not None else {}
+                return await resp.json(content_type=None)
 
         if self._session and not self._session.closed:
             return await _send()
@@ -109,14 +108,14 @@ class VentaTcpStrategy(VentaProtocolStrategy):
         """Set the header information."""
         self._header = header
 
-    async def get_status(self, method: str, url: str) -> dict[str, Any]:
+    async def get_status(self, method: str, url: str) -> dict[str, Any] | None:
         """Request status of the Venta device using TCP protocol."""
         message = self._build_message(method, url)
         return await self._send_request(message)
 
     async def send_action(
         self, method: str, url: str, json: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
+    ) -> dict[str, Any] | None:
         """Send action to the Venta device using TCP protocol."""
         message = self._build_message(method, url, json)
         return await self._send_request(message)
@@ -148,13 +147,8 @@ class VentaTcpStrategy(VentaProtocolStrategy):
         )
         return f"{method} /{url}\nContent-Length: {len(body)}\n{body}"
 
-    async def _send_request(self, message: str) -> dict[str, Any]:
+    async def _send_request(self, message: str) -> dict[str, Any] | None:
         """Request data from the Venta device using TCP protocol."""
-        response = await self._raw_request(message)
-        return response if response is not None else {}
-
-    async def _raw_request(self, message: str) -> dict[str, Any]:
-        """Make the TCP request."""
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
             sock.settimeout(self._host_definition.timeout)
 
@@ -204,7 +198,7 @@ class VentaTcpStrategy(VentaProtocolStrategy):
                     if not chunk:
                         break
                     fragments.append(chunk)
-                payload = b"".join(fragments).decode()
+                payload = b"".join(fragments).decode().strip()
 
                 _LOGGER.debug(
                     "Receive payload from %s on port %s: %s",
@@ -212,6 +206,15 @@ class VentaTcpStrategy(VentaProtocolStrategy):
                     self._host_definition.port,
                     payload,
                 )
+
+                if not payload:
+                    _LOGGER.debug(
+                        "Empty response from %s on port %s: %s",
+                        self._host_definition.host,
+                        self._host_definition.port,
+                        payload,
+                    )
+                    return
 
                 try:
                     return next(extract_json(payload))
