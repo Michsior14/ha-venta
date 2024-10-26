@@ -1,3 +1,10 @@
+## [0.8.1-beta.2](https://github.com/Michsior14/ha-venta/compare/v0.8.1-beta.1...v0.8.1-beta.2) (2024-10-26)
+
+
+### Bug Fixes
+
+* extract json syntax ([c036055](https://github.com/Michsior14/ha-venta/commit/c0360556c9618c09e48bf6c38e70f8925774c581))
+
 ## [0.8.1-beta.1](https://github.com/Michsior14/ha-venta/compare/v0.8.1-beta.0...v0.8.1-beta.1) (2024-10-26)
 
 
@@ -31,11 +38,4 @@
 ### Bug Fixes
 
 * update translations ([53583b6](https://github.com/Michsior14/ha-venta/commit/53583b6232367a7af78333e571d1f8d82fb09095))
-
-## [0.7.1](https://github.com/Michsior14/ha-venta/compare/v0.7.0...v0.7.1) (2024-03-31)
-
-
-### Bug Fixes
-
-* update translations ([#34](https://github.com/Michsior14/ha-venta/issues/34)) ([60e335a](https://github.com/Michsior14/ha-venta/commit/60e335a646dd763f2bcba86c426b19775aea621d))
 
