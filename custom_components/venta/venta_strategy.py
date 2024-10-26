@@ -1,19 +1,20 @@
 """Venta API strategies definitions."""
 
+from __future__ import annotations
+
 import logging
-import re
 import select
 import socket
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from json import JSONDecodeError, dumps, loads
+from json import JSONDecodeError, dumps
 from typing import Any
 
 from aiohttp import ClientSession
 
-_LOGGER = logging.getLogger(__name__)
+from .json import extract_json
 
-JSON_REGEX = re.compile(r"\{.*\}")
+_LOGGER = logging.getLogger(__name__)
 
 
 @dataclass
@@ -73,7 +74,8 @@ class VentaHttpStrategy(VentaProtocolStrategy):
             async with self._session.request(
                 method, f"{self._url}/{url}", json=json_action
             ) as resp:
-                return await resp.json(content_type=None)
+                body = await resp.json(content_type=None)
+                return body if body is not None else {}
 
         if self._session and not self._session.closed:
             return await _send()
@@ -148,6 +150,11 @@ class VentaTcpStrategy(VentaProtocolStrategy):
 
     async def _send_request(self, message: str) -> dict[str, Any]:
         """Request data from the Venta device using TCP protocol."""
+        response = await self._raw_request(message)
+        return response if response is not None else {}
+
+    async def _raw_request(self, message: str) -> dict[str, Any]:
+        """Make the TCP request."""
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
             sock.settimeout(self._host_definition.timeout)
 
@@ -206,16 +213,16 @@ class VentaTcpStrategy(VentaProtocolStrategy):
                     payload,
                 )
 
-                json_part = JSON_REGEX.search(payload)
-                if json_part:
-                    return loads(json_part.group())
+                try:
+                    return next(extract_json(payload))
+                except StopIteration:
+                    _LOGGER.error(
+                        "Malformed response from %s on port %s: %s",
+                        self._host_definition.host,
+                        self._host_definition.port,
+                        payload,
+                    )
 
-                _LOGGER.error(
-                    "Malformed response from %s on port %s: %s",
-                    self._host_definition.host,
-                    self._host_definition.port,
-                    json_part,
-                )
             except OSError as err:
                 _LOGGER.error(
                     "Unable to receive payload from %s on port %s: %s",
