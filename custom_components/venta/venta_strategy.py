@@ -72,7 +72,13 @@ class VentaHttpStrategy(VentaProtocolStrategy):
             async with self._session.request(
                 method, f"{self._url}/{url}", json=json_action
             ) as resp:
-                return await resp.json(content_type=None)
+                json = await resp.json(content_type=None)
+                _LOGGER.debug(
+                    "Received response from %s: %s",
+                    url,
+                    str(json),
+                )
+                return json
 
         if self._session and not self._session.closed:
             return await _send()

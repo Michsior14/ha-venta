@@ -194,18 +194,27 @@ class VentaDevice:
             )
         )
 
-    async def action(self, action: dict[str, str | int | bool]) -> VentaData:
+    async def action(
+        self,
+        action: dict[str, str | int | bool],
+        coordinator: "VentaDataUpdateCoordinator",
+    ) -> VentaData:
         """Send action to the Venta device."""
         if self.api_definition.action is None:
             raise ValueError("Action is not supported for this device.")
 
-        return await self._map_data(
+        data = await self._map_data(
             await self._strategy.send_action(
                 self.api_definition.action.method,
                 self.api_definition.action.url,
                 action,
             )
         )
+
+        await asyncio.sleep(0.2)  # Wait for the device to process the action
+        await coordinator.async_request_refresh()
+
+        return data
 
     def _set_api_definition(self, api_definition: VentaApiDefinition) -> None:
         """Set the api definition defaults."""

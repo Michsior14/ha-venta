@@ -17,13 +17,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import (
-    DOMAIN,
-    MODE_SLEEP,
-    MODES_3,
-    MODES_4,
-    MODES_5,
-)
+from .const import DOMAIN, MODE_SLEEP, MODES_3, MODES_4, MODES_5
 from .venta import VentaApiVersion, VentaDataUpdateCoordinator, VentaDeviceType
 
 DEFAULT_MODES: list[str] = [MODE_SLEEP, *MODES_3]
@@ -152,9 +146,7 @@ class VentaBaseHumidifierEntity(
 
     async def _send_action(self, data: dict[str, Any]) -> None:
         """Send action to device."""
-        self.coordinator.async_set_updated_data(
-            await self._device.action(self._map_to_action(data))
-        )
+        await self._device.action(self._map_to_action(data), self.coordinator)
 
 
 class VentaV0HumidifierEntity(VentaBaseHumidifierEntity):
