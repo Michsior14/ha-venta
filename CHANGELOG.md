@@ -1,3 +1,10 @@
+## [0.8.1](https://github.com/Michsior14/ha-venta/compare/v0.8.1-beta.2...v0.8.1) (2024-10-26)
+
+
+### Bug Fixes
+
+* don't block main thread on TCP strategy ([#46](https://github.com/Michsior14/ha-venta/issues/46)) ([9c8ed7c](https://github.com/Michsior14/ha-venta/commit/9c8ed7c7a99dba1ba2e1b943a37566f48b7d037f)), closes [#44](https://github.com/Michsior14/ha-venta/issues/44)
+
 ## [0.8.1-beta.2](https://github.com/Michsior14/ha-venta/compare/v0.8.1-beta.1...v0.8.1-beta.2) (2024-10-26)
 
 
@@ -31,11 +38,4 @@
 
 * add humidity sensor unit ([5c02ba8](https://github.com/Michsior14/ha-venta/commit/5c02ba8918cc9da43a1600100be7583f8b180ff3))
 * update translations ([#37](https://github.com/Michsior14/ha-venta/issues/37)) ([5771264](https://github.com/Michsior14/ha-venta/commit/57712640098fb8703cba63282b58f76c1a7ad216))
-
-## [0.7.2](https://github.com/Michsior14/ha-venta/compare/v0.7.1...v0.7.2) (2024-04-01)
-
-
-### Bug Fixes
-
-* update translations ([53583b6](https://github.com/Michsior14/ha-venta/commit/53583b6232367a7af78333e571d1f8d82fb09095))
 
