@@ -22,7 +22,6 @@ class VentaApiHostDefinition:
 
     host: str
     port: int
-    timeout: int = 30
 
 
 class VentaProtocolStrategy(ABC):
