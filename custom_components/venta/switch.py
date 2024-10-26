@@ -111,8 +111,8 @@ class VentaSwitch(CoordinatorEntity[VentaDataUpdateCoordinator], SwitchEntity):
         await self._send_action(False)
 
     async def _send_action(self, on: bool) -> None:
-        self.coordinator.async_set_updated_data(
-            await self._device.action(
-                self.entity_description.action_func(self.coordinator.data, on)
-            )
+        """Send action to the device."""
+        await self._device.action(
+            self.entity_description.action_func(self.coordinator.data, on),
+            self.coordinator,
         )

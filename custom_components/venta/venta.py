@@ -2,7 +2,7 @@
 
 import asyncio
 import logging
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import timedelta
 from enum import Enum
 
@@ -104,10 +104,11 @@ API_DEFINITIONS: list[VentaApiDefinition] = [
 class VentaData:
     """Class for holding the Venta data."""
 
-    header: dict[str, str | int | bool]
-    action: dict[str, str | int | bool]
-    info: dict[str, str | int | bool]
-    measure: dict[str, str | int | bool]
+    header: dict[str, str | int | bool] = field(default_factory=dict)
+    action: dict[str, str | int | bool] = field(default_factory=dict)
+    info: dict[str, str | int | bool] = field(default_factory=dict)
+    measure: dict[str, str | int | bool] = field(default_factory=dict)
+    is_empty: bool = field(default=False)
 
 
 class VentaDevice:
@@ -193,18 +194,27 @@ class VentaDevice:
             )
         )
 
-    async def action(self, action: dict[str, str | int | bool]) -> VentaData:
+    async def action(
+        self,
+        action: dict[str, str | int | bool],
+        coordinator: "VentaDataUpdateCoordinator",
+    ) -> VentaData:
         """Send action to the Venta device."""
         if self.api_definition.action is None:
             raise ValueError("Action is not supported for this device.")
 
-        return await self._map_data(
+        data = await self._map_data(
             await self._strategy.send_action(
                 self.api_definition.action.method,
                 self.api_definition.action.url,
                 action,
             )
         )
+
+        await asyncio.sleep(0.2)  # Wait for the device to process the action
+        await coordinator.async_request_refresh()
+
+        return data
 
     def _set_api_definition(self, api_definition: VentaApiDefinition) -> None:
         """Set the api definition defaults."""
@@ -217,10 +227,11 @@ class VentaDevice:
         else:
             self._strategy = VentaHttpStrategy(host_definition, self._session)
 
-    async def _map_data(
-        self, data: dict[str, str | int | bool]
-    ) -> dict[str, str | int | bool] | None:
+    async def _map_data(self, data: dict[str, str | int | bool] | None) -> VentaData:
         """Map device response to data."""
+        if data is None:
+            return VentaData(is_empty=True)
+
         return VentaData(
             header=data.get("Header", {}),
             action=data.get("Action", {}),
@@ -252,18 +263,22 @@ class VentaDataUpdateCoordinator(DataUpdateCoordinator[VentaData]):
 
     def __init__(self, hass: HomeAssistant, api: VentaApi) -> None:
         """Initialize data coordinator."""
-        self.api = api
-
         super().__init__(
             hass, _LOGGER, name=DOMAIN, update_interval=api.device.update_interval
         )
+        self.api = api
+        self.data = VentaData()
 
     async def _async_update_data(self) -> VentaData:
         """Update data via library."""
         _LOGGER.debug("Polling Venta device: %s", self.api.device.host)
         try:
-            async with asyncio.timeout(30):
-                return await self.api.async_update()
+            data = await self.api.async_update()
+            if data.is_empty:
+                _LOGGER.debug("Venta device: %s not updated", self.api.device.host)
+            else:
+                self.data = data
+            return self.data
         except ClientConnectionError as error:
             _LOGGER.warning(
                 "Connection failed for %s", self.api.device.host, exc_info=error
