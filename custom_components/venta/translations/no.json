@@ -54,11 +54,11 @@
       "water_level": {
         "name": "Vannstand",
         "state": {
-          "water_level_no_value": "Ingen verdi",
-          "water_level_yellow": "Gul",
-          "water_level_red": "Rød",
-          "water_level_ok": "Ok",
-          "water_level_overflow": "Flyte"
+          "0": "Ingen verdi",
+          "1": "Gul",
+          "2": "Rød",
+          "3": "Ok",
+          "4": "Flyte"
         }
       },
       "fan_speed": {

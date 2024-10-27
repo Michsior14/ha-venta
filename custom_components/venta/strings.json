@@ -67,11 +67,11 @@
       "water_level": {
         "name": "Water level",
         "state": {
-          "water_level_no_value": "No value",
-          "water_level_yellow": "Yellow",
-          "water_level_red": "Red",
-          "water_level_ok": "Ok",
-          "water_level_overflow": "Overflow"
+          "0": "No value",
+          "1": "Yellow",
+          "2": "Red",
+          "3": "Ok",
+          "4": "Overflow"
         }
       },
       "fan_speed": {

@@ -6,6 +6,7 @@ from homeassistant.components.humidifier.const import MODE_SLEEP
 from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
 from homeassistant.const import (
     ATTR_TEMPERATURE,
+    CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
     PERCENTAGE,
     REVOLUTIONS_PER_MINUTE,
     EntityCategory,
@@ -29,6 +30,7 @@ from ..const import (
     ATTR_NEEDS_REFILL_SOON,
     ATTR_NEEDS_SERVICE,
     ATTR_OPERATION_TIME,
+    ATTR_PM_2_5,
     ATTR_REMAINING_CLEANING_TIME,
     ATTR_SERVICE_TIME,
     ATTR_TIME_TO_CLEAN,
@@ -274,6 +276,14 @@ async def async_setup_sensor(
                 WATER_LEVEL_OK,
             ],
             value_func=lambda coordinator: coordinator.data.measure.get("WaterLevel"),
+        ),
+        VentaSensorEntityDescription(
+            key=ATTR_PM_2_5,
+            translation_key=ATTR_PM_2_5,
+            device_class=SensorDeviceClass.PM25,
+            native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+            state_class=SensorStateClass.MEASUREMENT,
+            value_func=lambda coordinator: coordinator.data.measure.get("Dust"),
         ),
         VentaSensorEntityDescription(
             key=ATTR_FAN_SPEED,

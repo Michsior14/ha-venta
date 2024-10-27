@@ -54,11 +54,11 @@
       "water_level": {
         "name": "Waterstand",
         "state": {
-          "water_level_no_value": "Geen waarde",
-          "water_level_yellow": "Geel",
-          "water_level_red": "Rood",
-          "water_level_ok": "OK",
-          "water_level_overflow": "Overloop"
+          "0": "Geen waarde",
+          "1": "Geel",
+          "2": "Rood",
+          "3": "OK",
+          "4": "Overloop"
         }
       },
       "fan_speed": {
