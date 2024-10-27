@@ -1,0 +1,163 @@
+{
+  "Header": [
+    {
+      "name": "DeviceType",
+      "type": "integer",
+      "description": "device type of model",
+      "values": [
+        {
+          "value": 106,
+          "type": "integer",
+          "description": "LW73"
+        }
+      ]
+    },
+    {
+      "name": "MacAdress",
+      "type": "string",
+      "description": "Mac address of WIFI-Module for unique identification."
+    },
+    {
+      "name": "ProtocolV",
+      "type": "string",
+      "description": "Protocol Version. Constantly 'V2'. Can be changed for new versions"
+    },
+    {
+      "name": "Status",
+      "type": "string",
+      "description": "Reserved for status informations like LW6/9. Constantly empty ''"
+    }
+  ],
+  "Info": [
+    {
+      "name": "SWMain",
+      "type": "string",
+      "description": "SW version of Mainboard."
+    },
+    {
+      "name": "SWWIFI",
+      "type": "string",
+      "description": "Software version of Option board."
+    },
+    {
+      "name": "OperationT",
+      "type": "long",
+      "description": "Total operating time in 5min resolution e.g. 1 = 5min, 12 = 60min",
+      "minimum": 0,
+      "maximum": 4294967295,
+      "increment": 1
+    },
+    {
+      "name": "DiscIonT",
+      "type": "integer",
+      "description": "Operation time since last change of Silber-Ionen-Rades in 5min resolution.",
+      "minimum": 0,
+      "maximum": 65535,
+      "increment": 1
+    },
+    {
+      "name": "CleaningT",
+      "type": "integer",
+      "description": "Operation time since last cleaning in 5min resolution.",
+      "minimum": 0,
+      "maximum": 65535,
+      "increment": 1
+    },
+    {
+      "name": "ServiceT",
+      "type": "integer",
+      "description": "Counter of Operation hours since last Service reset, 10min resolution.",
+      "minimum": 0,
+      "maximum": 65535,
+      "increment": 1
+    },
+    {
+      "name": "HWIndexMB",
+      "type": "integer",
+      "description": "Hardware index of Mainboard."
+    },
+    {
+      "name": "HwIndexOption",
+      "type": "integer",
+      "description": "Hardware Index of Option"
+    },
+    {
+      "name": "Warnings",
+      "type": "integer",
+      "description": "Displayed warnings on the display. Values are bit coded. Several Values can be displayed at once.",
+      "values": [
+        {
+          "value": 0,
+          "type": "integer",
+          "description": "No warning"
+        },
+        {
+          "value": 1,
+          "type": "integer",
+          "description": "Water"
+        },
+        {
+          "value": 2,
+          "type": "integer",
+          "description": "Disk",
+          "parameter_ref": "DiscIonT"
+        },
+        {
+          "value": 4,
+          "type": "integer",
+          "description": "Cleaning",
+          "parameter_ref": "CleaningT"
+        },
+        {
+          "value": 8,
+          "type": "integer",
+          "description": "Filter",
+          "parameter_ref": "FilterT"
+        },
+        {
+          "value": 16,
+          "type": "integer",
+          "description": "Service",
+          "parameter_ref": "ServiceT"
+        }
+      ]
+    }
+  ],
+  "Measure": [
+    {
+      "name": "Temperature",
+      "type": "BigDecimal",
+      "description": "Measured temperature in Celsius or Fahrenheit depending on the Units parameter in State",
+      "minimum": -40,
+      "maximum": 248.9,
+      "increment": 0.1
+    },
+    {
+      "name": "Humidity",
+      "type": "BigDecimal",
+      "description": "Measured relative humidity in percentage.",
+      "minimum": 0,
+      "maximum": 99.9,
+      "increment": 0.1
+    },
+    {
+      "name": "WaterLevel",
+      "type": "integer",
+      "description": "Water level in the tank. 0=No measured value",
+      "value": 0
+    },
+    {
+      "name": "_waterThreashold",
+      "type": "integer",
+      "description": "Water Threashold Value. No App/Cloud unit."
+    },
+    {
+      "name": "FanRpm",
+      "type": "integer",
+      "description": "RPM of Fan",
+      "minimum": 0,
+      "maximum": 2800,
+      "increment": 1
+    }
+  ]
+}

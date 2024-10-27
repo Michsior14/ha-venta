@@ -1,0 +1,45 @@
+{
+  "Action": [
+    {
+      "name": "Power",
+      "type": "boolean",
+      "description": "Power state of device"
+    },
+    {
+      "name": "FanSpeed",
+      "type": "integer",
+      "description": "Fan speed of device",
+      "minimum": 1,
+      "maximum": 3,
+      "increment": 1,
+      "default": 1
+    },
+    {
+      "name": "TargetHum",
+      "type": "integer",
+      "description": "Humidity in percentage",
+      "minimum": 30,
+      "maximum": 70,
+      "increment": 5
+    },
+    {
+      "name": "SleepMode",
+      "type": "boolean",
+      "description": "All automatic modes switched off. Fan to state 1 and reduction of display background light"
+    },
+    {
+      "name": "Automatic",
+      "type": "boolean",
+      "description": "Automatic mode (fan control)."
+    },
+    {
+      "name": "BaLi",
+      "type": "integer",
+      "description": "Background Light Normal",
+      "minimum": 0,
+      "maximum": 10,
+      "increment": 1,
+      "default": 5
+    }
+  ]
+}

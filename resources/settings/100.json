@@ -1,0 +1,149 @@
+{
+  "Settings": [
+    {
+      "name": "RemoteMac1",
+      "type": "string",
+      "description": "Remote Mac 1"
+    },
+    {
+      "name": "RemoteMac2",
+      "type": "string",
+      "description": "Remote Mac 2"
+    },
+    {
+      "name": "RemoteMac3",
+      "type": "string",
+      "description": "Remote Mac 3"
+    },
+    {
+      "name": "RemoteMac4",
+      "type": "string",
+      "description": "Remote Mac 4"
+    },
+    {
+      "name": "RemoteMac5",
+      "type": "string",
+      "description": "Remote Mac 5"
+    },
+    {
+      "name": "LedBrightness",
+      "type": "string",
+      "description": "Led Brightness",
+      "default": "35"
+    },
+    {
+      "name":  "LedColor0",
+      "type": "string",
+      "description": "Led Color 0",
+      "default": "00FFFF"
+    },
+    {
+      "name":  "LedColor1",
+      "type": "string",
+      "description": "Led Color 1",
+      "default": "FFFFFF"
+    },
+    {
+      "name":  "LedColor2",
+      "type": "string",
+      "description": "Led Color 2",
+      "default": "FF00FF"
+    },
+    {
+      "name":  "LedColor3",
+      "type": "string",
+      "description": "Led Color 3",
+      "default": "00FF00"
+    },
+    {
+      "name":  "LedColor4",
+      "type": "string",
+      "description": "Led Color 4",
+      "default":  "FF00FF"
+    },
+    {
+      "name":  "LedColor5",
+      "type": "string",
+      "description": "Led Color 5",
+      "default":  "00FF00"
+    },
+    {
+      "name":  "LedColor6",
+      "type": "string",
+      "description": "Led Color 6",
+      "default":  "FF0000"
+    },
+    {
+      "name":  "LedColor7",
+      "type": "string",
+      "description": "Led Color 7",
+      "default":  "00FF00"
+    },
+    {
+      "name":  "LedColor8",
+      "type": "string",
+      "description": "Led Color 8",
+      "default":  "0000FF"
+    },
+    {
+      "name":  "LedColor9",
+      "type": "string",
+      "description": "Led Color 9",
+      "default":  "FFFF00"
+    },
+    {
+      "name":  "LedColor10",
+      "type": "string",
+      "description": "Led Color 10",
+      "default":  "35FF17"
+    },
+    {
+      "name":  "LedColor11",
+      "type": "string",
+      "description": "Led Color 11",
+      "default":  "FFCC00"
+    },
+    {
+      "name":  "LedColor12",
+      "type": "string",
+      "description": "Led Color 12",
+      "default":  "FF6400"
+    },
+    {
+      "name":  "LedColor13",
+      "type": "string",
+      "description": "Led Color 13",
+      "default":  "FF0000"
+    },
+    {
+      "name":  "LedColor14",
+      "type": "string",
+      "description": "Led Color 14",
+      "default":  "FF0064"
+    },
+    {
+      "name":  "LedColor15",
+      "type": "string",
+      "description": "Led Color 15",
+      "default":  "FF009B"
+    },
+    {
+      "name":  "ColorThresholdsRH",
+      "type": "string",
+      "description": "ColorThresholdsRH as pair",
+      "default":  "0.00,3; 30.90,3; 31.00,1; 39.90,1; 40.00,0; 60.90,0; 61.00,1; 69.90,1; 70.00,3"
+    },
+    {
+      "name":  "ColorThresholdsVOC",
+      "type": "string",
+      "description": "ColorThresholdsVOC as pair",
+      "default":  "0.00,0; 400.00,0; 401.00,1; 1200.00,1; 1201.00,2; 4000.00,2; 4001.00,3"
+    },
+    {
+      "name":  "ColorThresholdsToluene",
+      "type": "string",
+      "description": "ColorThresholdsToluene as pair",
+      "default":  "0.00,0; 400.00,0; 401.00,1; 1200.00,1; 1201.00,2; 4000.00,2; 4001.00,3"
+    }
+  ]
+}

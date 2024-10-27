@@ -1,0 +1,308 @@
+{
+  "Header": [
+    {
+      "name": "DeviceType",
+      "type": "integer",
+      "description": "device type of model",
+      "values": [
+        {
+          "value": 13,
+          "type": "integer",
+          "description": "AW902"
+        }
+      ]
+    },
+    {
+      "name": "MacAdress",
+      "type": "string",
+      "description": "Mac address of WIFI-Module for unique identification."
+    },
+    {
+      "name": "Error",
+      "type": "integer",
+      "description": "Error in JSON-Object (Action). Value description doted in bits.",
+      "values": [
+        {
+          "name": "b0",
+          "type": "integer",
+          "description": "Power"
+        },
+        {
+          "name": "b1",
+          "type": "integer",
+          "description": "FanSpeed"
+        },
+        {
+          "name": "b2",
+          "type": "integer",
+          "description": "TargetHum"
+        },
+        {
+          "name": "b3",
+          "type": "integer",
+          "description": "Timer"
+        },
+        {
+          "name": "b5",
+          "type": "integer",
+          "description": "SleepMode"
+        },
+        {
+          "name": "b6",
+          "type": "integer",
+          "description": "ChildLock"
+        },
+        {
+          "name": "b7",
+          "type": "integer",
+          "description": "Automatic"
+        },
+        {
+          "name": "b8",
+          "type": "integer",
+          "description": "SysLanguage"
+        },
+        {
+          "name": "b9",
+          "type": "integer",
+          "description": "CleanLanguage"
+        },
+        {
+          "name": "b10",
+          "type": "integer",
+          "description": "TempUnit"
+        },
+        {
+          "name": "b11",
+          "type": "integer",
+          "description": "DisplayLeft"
+        },
+        {
+          "name": "b12",
+          "type": "integer",
+          "description": "DisplayRight"
+        },
+        {
+          "name": "b13",
+          "type": "integer",
+          "description": "Reset"
+        },
+        {
+          "name": "b14",
+          "type": "integer",
+          "description": "ConINet"
+        },
+        {
+          "name": "b15",
+          "type": "integer",
+          "description": "DelUser"
+        }
+      ]
+    },
+    {
+      "name": "DeviceName",
+      "type": "string",
+      "description": "Max 32 chars. Name of accessed device."
+    }
+  ],
+  "Info": [
+    {
+      "name": "SWDisplay",
+      "type": "string",
+      "description": "Software version of display board."
+    },
+    {
+      "name": "SWPower",
+      "type": "string",
+      "description": "Software version of power board."
+    },
+    {
+      "name": "SWTouch",
+      "type": "string",
+      "description": "Software version of touch controller"
+    },
+    {
+      "name": "SWWifi",
+      "type": "string",
+      "description": "Software version of WIFI-Module"
+    },
+    {
+      "name": "CleanMode",
+      "type": "boolean",
+      "description": "Cleaning process. If the device is in cleaning mode, no external action will allowed besided: Power, Reset, ConINet and DelUser.",
+      "values": [
+        {
+          "name": "true",
+          "type": "boolean",
+          "description": "Cleaning in progress."
+        },
+        {
+          "name": "false",
+          "type": "boolean",
+          "description": "Cleaning finished."
+        }
+      ]
+    },
+    {
+      "name": "RelState",
+      "type": "array",
+      "description": "States of Relais (4 states: Lüfter, Plattenstapel, UVC, Ventil). True if on and False if off."
+    },
+    {
+      "name": "TimerT",
+      "type": "integer",
+      "description": "Elapsed timer time in 1min resolution.",
+      "minimum": 0,
+      "maximum": 540,
+      "increment": 1
+    },
+    {
+      "name": "OperationT",
+      "type": "long",
+      "description": "Total operating time in 5min resolution e.g. 1 = 5min, 12 = 60min",
+      "minimum": 0,
+      "maximum": 4294967295,
+      "increment": 1
+    },
+    {
+      "name": "CleaningT",
+      "type": "integer",
+      "description": "Operation time since last cleaning in 5min resolution.",
+      "minimum": 0,
+      "maximum": 65535,
+      "increment": 1
+    },
+    {
+      "name": "ServiceT",
+      "type": "integer",
+      "description": "Operation time since last service in 5min resolution.",
+      "minimum": 0,
+      "maximum": 65535,
+      "increment": 1
+    },
+    {
+      "name": "UVCOnT",
+      "type": "integer",
+      "description": "Time how long UVC lamp is switched on in 1min resolution (norm. 2h)",
+      "minimum": 0,
+      "maximum": 65535,
+      "increment": 1
+    },
+    {
+      "name": "UVCOffT",
+      "type": "integer",
+      "description": "Time how long UVC lamp is switched off in 1min resolution (norm. 2h)",
+      "minimum": 0,
+      "maximum": 65535,
+      "increment": 1
+    },
+    {
+      "name": "CleaningR",
+      "type": "integer",
+      "description": "Remaining time of the cleaning process in 1 min Resolution.",
+      "minimum": 1,
+      "maximum": 240,
+      "increment": 1,
+      "default": 0,
+      "default2": 255
+    },
+    {
+      "name": "Warnings",
+      "type": "integer",
+      "description": "Displayed warnings on the display. Values are bit coded. Several Values can be displayed at once.",
+      "values": [
+        {
+          "value": 0,
+          "type": "integer",
+          "description": "No warning"
+        },
+        {
+          "value": 1,
+          "type": "integer",
+          "description": "Fill tank (red)"
+        },
+        {
+          "value": 2,
+          "type": "integer",
+          "description": "Fill tank (yellow)"
+        },
+        {
+          "value": 4,
+          "type": "integer",
+          "description": "Close door"
+        },
+        {
+          "value": 32,
+          "type": "integer",
+          "description": "Change hygiene-disc",
+          "parameter_ref": "DiscIonT"
+        },
+        {
+          "value": 64,
+          "type": "integer",
+          "description": "Cleaning (required)",
+          "parameter_ref": "CleaningT"
+        },
+        {
+          "value": 256,
+          "type": "integer",
+          "description": "Service",
+          "parameter_ref": "ServiceT"
+        }
+      ]
+    }
+  ],
+  "Measure": [
+    {
+      "name": "Temperature",
+      "type": "BigDecimal",
+      "description": "Measured temperature in Celsius or Fahrenheit depending on the Units parameter in State",
+      "minimum": -40,
+      "maximum": 248.9,
+      "increment": 0.1
+    },
+    {
+      "name": "Humidity",
+      "type": "BigDecimal",
+      "description": "Measured relative humidity in percentage.",
+      "minimum": 0,
+      "maximum": 99.9,
+      "increment": 0.1
+    },
+    {
+      "name": "WaterLevel",
+      "type": "integer",
+      "description": "water level in tub",
+      "values": [
+        {
+          "value": 0,
+          "type": "integer",
+          "description": "No measure value"
+        },
+        {
+          "value": 1,
+          "type": "integer",
+          "description": "Water level yellow"
+        },
+        {
+          "value": 2,
+          "type": "integer",
+          "description": "Water level red"
+        },
+        {
+          "value": 3,
+          "type": "integer",
+          "description": "Water level OK"
+        }
+      ]
+    },
+    {
+      "name": "FanRpm",
+      "type": "integer",
+      "description": "Fan speed in RPM",
+      "minimum": 0,
+      "maximum": 2800,
+      "increment": 1
+    }
+  ]
+}

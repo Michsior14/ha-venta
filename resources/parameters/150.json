@@ -1,0 +1,174 @@
+{
+  "Header": [
+    {
+      "name": "DeviceId",
+      "type": "string",
+      "description": "Unique identifier of device. Typically its mac address."
+    },
+    {
+      "name": "DeviceType",
+      "type": "integer",
+      "description": "Unique identifier of device model",
+      "values": [
+        {
+          "value": "150",
+          "type": "integer",
+          "description": "AS150"
+        }
+      ]
+    },
+    {
+      "name": "ProtocolV",
+      "type": "string",
+      "description": "Protocol version"
+    }
+  ],
+  "Info": [
+    {
+      "name": "FirmwareVersion",
+      "type": "string",
+      "description": "Current applied and running firmware version."
+    },
+    {
+      "name": "CertificateSHA1",
+      "type": "string",
+      "description": "Certificate checksum"
+    }
+  ],
+  "Measure": [
+    {
+      "name": "Time",
+      "type": "long",
+      "description": "Current unix timestamp",
+      "increment": 1
+    },
+    {
+      "name": "Temperature",
+      "type": "BigDecimal",
+      "description": "Measured temperature",
+      "minimum": -40,
+      "maximum": 125,
+      "increment": 0.01
+    },
+    {
+      "name": "Humidity",
+      "type": "BigDecimal",
+      "description": "Measured relative humidity in percentage.",
+      "minimum": 0,
+      "maximum": 100,
+      "increment": 0.01
+    },
+    {
+      "name": "Co2",
+      "type": "integer",
+      "description": "CO2 in ppm",
+      "minimum": 0,
+      "maximum": 40000,
+      "increment": 1
+    },
+    {
+      "name": "Voc",
+      "type": "integer",
+      "description": "VOC Index",
+      "minimum": 0,
+      "maximum": 500,
+      "increment": 1
+    },
+    {
+      "name": "Toluene",
+      "type": "BigDecimal",
+      "description": "VOC Index",
+      "minimum": 0.0,
+      "maximum": 100.0,
+      "increment": 0.01
+    },
+    {
+      "name": "Hcho",
+      "type": "integer",
+      "description": "Formaldehyde in ppb",
+      "minimum": 0,
+      "maximum": 5000,
+      "increment": 1
+    },
+    {
+      "name": "Pm1u0",
+      "type": "integer",
+      "description": "Particle mass 1.0µm",
+      "minimum": 0,
+      "maximum": 65535,
+      "increment": 1
+    },
+    {
+      "name": "Pm2u5",
+      "type": "integer",
+      "description": "Particle mass 2.5µm",
+      "minimum": 0,
+      "maximum": 65535,
+      "increment": 1
+    },
+    {
+      "name": "Pm10u",
+      "type": "integer",
+      "description": "Particle mass 10µm",
+      "minimum": 0,
+      "maximum": 65535,
+      "increment": 1
+    },
+    {
+      "name": "PmCalc1u0",
+      "type": "BigDecimal",
+      "description": "Particle mass 1.0µm in µg/m³",
+      "minimum": 0.0,
+      "maximum": 65535.0,
+      "increment": 0.01
+    },
+    {
+      "name": "PmCalc2u5",
+      "type": "BigDecimal",
+      "description": "Particle mass 2.5µm in µg/m³",
+      "minimum": 0.0,
+      "maximum": 65535.0,
+      "increment": 0.01
+    },
+    {
+      "name": "PmCalc10u",
+      "type": "BigDecimal",
+      "description": "Particle mass 10.0µm in µg/m³",
+      "minimum": 0.0,
+      "maximum": 65535.0,
+      "increment": 0.01
+    },
+    {
+      "name": "SensorStatus",
+      "type": "string",
+      "description": "bit by bit the detected and functioning sensors",
+      "values": [
+        {
+          "value": "0",
+          "type": "string",
+          "description": "RHT (Humidity/Temperature)r"
+        },
+        {
+          "value": "1",
+          "type": "string",
+          "description": "CO2"
+        },
+        {
+          "value": "2",
+          "type": "string",
+          "description": "VOC"
+        },
+        {
+          "value": "3",
+          "type": "string",
+          "description": "HCHO"
+        },
+        {
+          "value": "4",
+          "type": "string",
+          "description": "PM"
+        }
+      ]
+    }
+  ]
+}

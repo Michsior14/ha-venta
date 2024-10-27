@@ -12,10 +12,11 @@ The following Venta device are currently tested and supported:
 
 - **Protocol v2:**
   - LW73/LW74
+  - LP73/LP74
 
 - **Protocol v3:**
+  - AS100/AS150
   - AH510/AH515/AH530/AH535/AH550/AH555
-  - AirSense 150 Pro
 
 ## Features
 

@@ -1,0 +1,274 @@
+{
+  "Action": [
+    {
+      "name": "Power",
+      "type": "boolean",
+      "description": "Power state of device"
+    },
+    {
+      "name": "FanSpeed",
+      "type": "integer",
+      "description": "Fan speed of device",
+      "minimum": 1,
+      "maximum": 5,
+      "increment": 1
+    },
+    {
+      "name": "TargetHum",
+      "type": "integer",
+      "description": "Humidity in percentage",
+      "values": [
+        {
+          "value": 30,
+          "type": "integer",
+          "description": ""
+        },
+        {
+          "value": 35,
+          "type": "integer",
+          "description": ""
+        },
+        {
+          "value": 40,
+          "type": "integer",
+          "description": ""
+        },
+        {
+          "value": 45,
+          "type": "integer",
+          "description": ""
+        },
+        {
+          "value": 50,
+          "type": "integer",
+          "description": ""
+        },
+        {
+          "value": 55,
+          "type": "integer",
+          "description": ""
+        },
+        {
+          "value": 60,
+          "type": "integer",
+          "description": ""
+        },
+        {
+          "value": 65,
+          "type": "integer",
+          "description": ""
+        },
+        {
+          "value": 70,
+          "type": "integer",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "name": "Timer",
+      "type": "integer",
+      "description": "Shutdown timer in hours.",
+      "default": 0,
+      "values": [
+        {
+          "value": 0,
+          "type": "integer",
+          "description": "Timer OFF."
+        },
+        {
+          "value": 1,
+          "type": "integer",
+          "description": "Shutdown in 1 hour."
+        },
+        {
+          "value": 3,
+          "type": "integer",
+          "description": "Shutdown in 3 hour."
+        },
+        {
+          "value": 5,
+          "type": "integer",
+          "description": "Shutdown in 5 hour."
+        },
+        {
+          "value": 7,
+          "type": "integer",
+          "description": "Shutdown in 7 hour."
+        },
+        {
+          "value": 9,
+          "type": "integer",
+          "description": "Shutdown in 9 hour."
+        }
+      ]
+    },
+    {
+      "name": "SleepMode",
+      "type": "boolean",
+      "description": "All automatic modes swtiched off. Fan to state 1 and reduction of display background light"
+    },
+    {
+      "name": "ChildLock",
+      "type": "boolean",
+      "description": "Child lock (keyboard lock)."
+    },
+    {
+      "name": "Automatic",
+      "type": "boolean",
+      "description": "Automatic mode (fan control)."
+    },
+    {
+      "name": "SysLanguage",
+      "type": "integer",
+      "description": "System region election. Changes are applied after the restart.",
+      "values": [
+        {
+          "value": 0,
+          "type": "integer",
+          "description": "Default system region."
+        }
+      ]
+    },
+    {
+      "name": "CleanLanguage",
+      "type": "integer",
+      "description": "Display language of cleaning process. Changes are applied after the restart.",
+      "values": [
+        {
+          "value": 0,
+          "type": "integer",
+          "description": "English"
+        },
+        {
+          "value": 1,
+          "type": "integer",
+          "description": "German"
+        },
+        {
+          "value": 2,
+          "type": "integer",
+          "description": "Russian"
+        },
+        {
+          "value": 3,
+          "type": "integer",
+          "description": "Korean"
+        },
+        {
+          "value": 4,
+          "type": "integer",
+          "description": "French"
+        },
+        {
+          "value": 5,
+          "type": "integer",
+          "description": "Chinese"
+        },
+        {
+          "value": 6,
+          "type": "integer",
+          "description": "Polish"
+        },
+        {
+          "value": 7,
+          "type": "integer",
+          "description": "Spanish"
+        }
+      ]
+    },
+    {
+      "name": "TempUnit",
+      "type": "integer",
+      "description": "Display unit of temperature.",
+      "values": [
+        {
+          "value": 0,
+          "type": "integer",
+          "description": "Metric"
+        },
+        {
+          "value": 1,
+          "type": "integer",
+          "description": "Imperical"
+        }
+      ]
+    },
+    {
+      "name": "DisplayRight",
+      "type": "integer",
+      "description": "Which value is shown on the display (top right).",
+      "values": [
+        {
+          "value": 0,
+          "type": "integer",
+          "description": "Comfort zone diagram"
+        },
+        {
+          "value": 1,
+          "type": "integer",
+          "description": "Temperature"
+        }
+      ]
+    },
+    {
+      "name": "Reset",
+      "type": "integer",
+      "description": "Resetting the operating times.",
+      "values": [
+        {
+          "value": 0,
+          "type": "integer",
+          "description": "Default. No reset."
+        },
+        {
+          "value": 3,
+          "type": "integer",
+          "description": "Silber-Ionen-Rad"
+        },
+        {
+          "value": 4,
+          "type": "integer",
+          "description": "Cleaning"
+        },
+        {
+          "value": 5,
+          "type": "integer",
+          "description": "Service"
+        }
+      ]
+    },
+    {
+      "name": "ConINet",
+      "type": "integer",
+      "description": "Cloud server access rights.",
+      "values": [
+        {
+          "value": 0,
+          "type": "integer",
+          "description": "read and write on cloud server"
+        },
+        {
+          "value": 1,
+          "type": "integer",
+          "description": "only write on cloud server (stati)"
+        },
+        {
+          "value": 2,
+          "type": "integer",
+          "description": "only read from cloud server (action)"
+        },
+        {
+          "value": 3,
+          "type": "integer",
+          "description": "Access on Cloud is blocked (read and write)."
+        }
+      ]
+    },
+    {
+      "name": "DelUser",
+      "type": "boolean",
+      "description": "Deletes all user hashes (tokens for access authorization) except Mobile Device, which sends the command."
+    }
+  ]
+}

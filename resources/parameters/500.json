@@ -1,0 +1,113 @@
+{
+  "Header": [
+    {
+      "name": "DeviceType",
+      "type": "integer",
+      "description": "device type of model",
+      "values": [
+        {
+          "value": 500,
+          "type": "integer",
+          "description": "AH500"
+        }
+      ]
+    },
+    {
+      "name": "MacAdress",
+      "type": "string",
+      "description": "Mac address of WIFI-Module for unique identification."
+    },
+    {
+      "name": "ProtocolV",
+      "type": "string",
+      "description": "Protocol Version. Constantly 'V3'. Can be changed for new versions"
+    }
+  ],
+  "Info": [
+    {
+      "name": "OperationT",
+      "type": "long",
+      "description": "Total operating time in 10min resolution e.g. 1 = 10min, 6 = 60min",
+      "minimum": 0,
+      "maximum": 4294967295,
+      "increment": 1
+    },
+    {
+      "name": "ServiceT",
+      "type": "integer",
+      "description": "Service timer in 10min resolution. Can be reset by cleaning if serviceMax is reached. e.g. 1=10min, 6=60min",
+      "minimum": 0,
+      "maximum": 65535,
+      "increment": 1
+    },
+    {
+      "name": "ServiceMax",
+      "type": "integer",
+      "description": "???",
+      "minimum": 0,
+      "maximum": 65535,
+      "increment": 1
+    },
+    {
+      "name": "SWMain",
+      "type": "string",
+      "description": "SW version of Mainboard."
+    },
+    {
+      "name": "HWIndexMB",
+      "type": "integer",
+      "description": "Hardware index of Mainboard."
+    },
+    {
+      "name": "Warnings",
+      "type": "integer",
+      "description": "Displayed warnings on the display. Values are bit coded. Several Values can be displayed at once.",
+      "values": [
+        {
+          "value": 0,
+          "type": "integer",
+          "description": "No warning"
+        },
+        {
+          "value": 1,
+          "type": "integer",
+          "description": "Water"
+        },
+        {
+          "value": 2,
+          "type": "integer",
+          "description": "ServiceT reached ServiceMax",
+          "parameter_ref": "ServiceT"
+        },
+        {
+          "value": 4,
+          "type": "integer",
+          "description": "E1 (Box open)"
+        },
+        {
+          "value": 8,
+          "type": "integer",
+          "description": "E2 (Fan blocked)"
+        }
+      ]
+    }
+  ],
+  "Measure": [
+    {
+      "name": "Temperature",
+      "type": "BigDecimal",
+      "description": "Measured temperature in Celsius or Fahrenheit depending on the Units parameter in State",
+      "minimum": -40,
+      "maximum": 248.9,
+      "increment": 0.1
+    },
+    {
+      "name": "Humidity",
+      "type": "BigDecimal",
+      "description": "Measured relative humidity in percentage.",
+      "minimum": 0,
+      "maximum": 99.9,
+      "increment": 0.1
+    }
+  ]
+}

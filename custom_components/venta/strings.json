@@ -65,10 +65,23 @@
         "name": "Temperature"
       },
       "water_level": {
-        "name": "Water level"
+        "name": "Water level",
+        "state": {
+          "water_level_no_value": "No value",
+          "water_level_yellow": "Yellow",
+          "water_level_red": "Red",
+          "water_level_ok": "Ok",
+          "water_level_overflow": "Overflow"
+        }
       },
       "fan_speed": {
         "name": "Fan speed"
+      },
+      "fan_2_speed": {
+        "name": "Fan 2 speed"
+      },
+      "timer_time": {
+        "name": "Timer time"
       },
       "operation_time": {
         "name": "Operation time"
@@ -78,6 +91,15 @@
       },
       "cleaning_time": {
         "name": "Cleaning time"
+      },
+      "remaining_cleaning_time": {
+        "name": "Remaining cleaning time"
+      },
+      "uvc_lap_on_time": {
+        "name": "UVC lamp on time"
+      },
+      "uvc_lap_off_time": {
+        "name": "UVC lamp off time"
       },
       "service_time": {
         "name": "Service time"
@@ -136,6 +158,9 @@
       "voc": {
         "name": "VOC Index"
       },
+      "toluene": {
+        "name": "Toluene"
+      },
       "hcho": {
         "name": "Formaldehyde"
       }
@@ -143,6 +168,9 @@
     "binary_sensor": {
       "needs_refill": {
         "name": "Needs refill"
+      },
+      "needs_refill_soon": {
+        "name": "Needs refill soon"
       },
       "needs_service": {
         "name": "Needs service"
@@ -156,8 +184,26 @@
       "needs_filter_cleaning": {
         "name": "Needs filter cleaning"
       },
+      "needs_water_inlet_check": {
+        "name": "Check water inlet"
+      },
+      "cleaning_error": {
+        "name": "Cleaning error"
+      },
+      "disc_ion_error": {
+        "name": "Ionization disc error"
+      },
+      "door_open": {
+        "name": "Door open"
+      },
       "clean_mode": {
         "name": "Clean mode"
+      },
+      "box_open": {
+        "name": "Box open"
+      },
+      "fan_blocked": {
+        "name": "Fan blocked"
       }
     },
     "light": {
@@ -173,6 +219,9 @@
     "switch": {
       "sleep_mode": {
         "name": "Sleep mode"
+      },
+      "child_lock": {
+        "name": "Child lock"
       }
     }
   }
