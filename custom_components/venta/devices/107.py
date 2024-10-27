@@ -1,4 +1,4 @@
-"""Venta LW73 setup functions."""
+"""Venta LW74 setup functions."""
 
 from __future__ import annotations
 
@@ -64,7 +64,7 @@ SERVICE_WARNING = 16
 async def async_setup_humidifier(
     coordinator: VentaDataUpdateCoordinator, async_add_entities: AddEntitiesCallback
 ) -> None:
-    """Set up humidifiers for Venta LW73."""
+    """Set up humidifiers for Venta LW74."""
     async_add_entities(
         [VentaV2HumidifierEntity(coordinator, modes=[MODE_SLEEP, *MODES_4])]
     )
@@ -73,7 +73,7 @@ async def async_setup_humidifier(
 async def async_setup_binary_sensor(
     coordinator: VentaDataUpdateCoordinator, async_add_entities: AddEntitiesCallback
 ) -> None:
-    """Set up binary sensors for Venta LW73."""
+    """Set up binary sensors for Venta LW74."""
     descriptions = [
         VentaBinarySensorEntityDescription(
             key=ATTR_NEEDS_REFILL,
@@ -108,7 +108,7 @@ async def async_setup_binary_sensor(
 async def async_setup_sensor(
     coordinator: VentaDataUpdateCoordinator, async_add_entities: AddEntitiesCallback
 ) -> None:
-    """Set up sensors for Venta LW73."""
+    """Set up sensors for Venta LW74."""
     descriptions = [
         VentaSensorEntityDescription(
             key=ATTR_DISC_ION_TIME_TO_REPLACE,
@@ -237,21 +237,21 @@ async def async_setup_sensor(
 async def async_setup_switch(
     coordinator: VentaDataUpdateCoordinator, async_add_entities: AddEntitiesCallback
 ) -> None:
-    """Set up switches for Venta LW73."""
+    """Set up switches for Venta LW74."""
     pass
 
 
 async def async_setup_light(
     coordinator: VentaDataUpdateCoordinator, async_add_entities: AddEntitiesCallback
 ) -> None:
-    """Set up lights for Venta LW73."""
+    """Set up lights for Venta LW74."""
     async_add_entities([VentaLight(coordinator)])
 
 
 async def async_setup_select(
     coordinator: VentaDataUpdateCoordinator, async_add_entities: AddEntitiesCallback
 ) -> None:
-    """Set up selects for Venta LW73."""
+    """Set up selects for Venta LW74."""
     async_add_entities(
         [
             VentaSelect(

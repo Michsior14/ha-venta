@@ -11,7 +11,6 @@ AUTO_API_VERSION = "auto"
 DEFAULT_SCAN_INTERVAL = 10
 NO_WATER_THRESHOLD = 50000
 
-MODE_SLEEP = "sleep"
 MODE_TURBO = "turbo"
 MODE_LEVEL_1 = "level_1"
 MODE_LEVEL_2 = "level_2"
@@ -34,14 +33,28 @@ MODES_5: list[str] = [
     MODE_LEVEL_5,
 ]
 
+WATER_LEVEL_NO_VALUE = "water_level_no_value"
+WATER_LEVEL_YELLOW = "water_level_yellow"
+WATER_LEVEL_RED = "water_level_red"
+WATER_LEVEL_OK = "water_level_ok"
+WATER_LEVEL_OVERFLOW = "water_level_overflow"
+
 ATTR_HUMIDITY = "humidity"
 ATTR_WATER_LEVEL = "water_level"
 ATTR_FAN_SPEED = "fan_speed"
+ATTR_FAN_2_SPEED = "fan_2_speed"
+ATTR_TIMER_TIME = "timer_time"
 ATTR_OPERATION_TIME = "operation_time"
 ATTR_DISC_ION_TIME = "disc_ion_time"
 ATTR_DISC_ION_TIME_TO_REPLACE = "disc_ion_time_to_replace"
+ATTR_DISC_ION_ERROR = "disc_ion_error"
+ATTR_CHILD_LOCK = "child_lock"
 ATTR_CLEANING_TIME = "cleaning_time"
+ATTR_CLEANING_ERROR = "cleaning_error"
+ATTR_REMAINING_CLEANING_TIME = "remaining_cleaning_time"
 ATTR_TIME_TO_CLEAN = "time_to_clean"
+ATTR_UVC_LAMP_ON_TIME = "uvc_lap_on_time"
+ATTR_UVC_LAMP_OFF_TIME = "uvc_lap_off_time"
 ATTR_FILTER_TIME = "filter_time"
 ATTR_FILTER_TIME_TO_CLEAN = "filter_time_to_clean"
 ATTR_SERVICE_TIME = "service_time"
@@ -60,12 +73,18 @@ ATTR_PM_10 = "pm_10"
 ATTR_VOC = "voc"
 ATTR_HCHO = "hcho"
 ATTR_CO2 = "co2"
+ATTR_TOLUENE = "toluene"
 ATTR_NEEDS_REFILL = "needs_refill"
+ATTR_NEEDS_REFILL_SOON = "needs_refill_soon"
 ATTR_NEEDS_SERVICE = "needs_service"
 ATTR_NEEDS_DISC_REPLACEMENT = "needs_disc_replacement"
 ATTR_NEEDS_CLEANING = "needs_cleaning"
 ATTR_NEEDS_FILTER_CLEANING = "needs_filter_cleaning"
+ATTR_NEEDS_WATER_INLET_CHECK = "needs_water_inlet_check"
 ATTR_CLEAN_MODE = "clean_mode"
+ATTR_DOOR_OPEN = "door_open"
+ATTR_BOX_OPEN = "box_open"
+ATTR_FAN_BLOCKED = "fan_blocked"
 
 ATTR_LED_STRIP = "led_strip"
 ATTR_LED_STRIP_MODE = "led_strip_mode"
@@ -75,3 +94,16 @@ ION_DISC_REPLACE_TIME_DAYS = 121  # max seen value 17426 ~ 121 days
 CLEAN_TIME_DAYS = 182  # max seen value 26210 ~ 182 days
 SERVICE_TIME_DAYS = 14  # max seen value 2018 ~ 14 days
 FILTER_TIME_DAYS = 182  # max seen value 26210 ~ 182 days
+
+ONE_MINUTE_RESOLUTION = 1
+FIVE_MINUTES_RESOLUTION = 5
+TEN_MINUTES_RESOLUTION = 10
+
+LED_STRIP_MODES = {
+    0: "internal",
+    2: "internal - no water",
+    1: "external",
+    3: "external - no water",
+}
+LED_STRIP_MODES_KEYS = list(LED_STRIP_MODES.keys())
+LED_STRIP_MODES_VALUES = list(LED_STRIP_MODES.values())

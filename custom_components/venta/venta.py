@@ -39,9 +39,13 @@ class VentaDeviceType(Enum):
     AP902 = 11
     AH902 = 12
     AW902 = 13
-    LW73_LW74 = 106
+    AS100 = 100
+    LW73 = 106
+    LW74 = 107
+    LP73 = 116
+    LP74 = 117
     AS150 = 150
-    AH550_AH555 = 500
+    AH5XX = 500
 
 
 class VentaApiVersion(Enum):

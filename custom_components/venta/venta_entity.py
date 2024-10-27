@@ -2,28 +2,39 @@
 
 from __future__ import annotations
 
+import logging
 from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
 
+from homeassistant.components import light
 from homeassistant.components.binary_sensor import (
     BinarySensorEntity,
     BinarySensorEntityDescription,
 )
 from homeassistant.components.humidifier import (
     MODE_AUTO,
+    MODE_SLEEP,
     HumidifierDeviceClass,
     HumidifierEntity,
     HumidifierEntityDescription,
     HumidifierEntityFeature,
 )
+from homeassistant.components.light import (
+    ColorMode,
+    LightEntity,
+    LightEntityDescription,
+)
 from homeassistant.components.select import SelectEntity, SelectEntityDescription
 from homeassistant.components.sensor import SensorEntity, SensorEntityDescription
 from homeassistant.components.switch import SwitchEntity, SwitchEntityDescription
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
+from homeassistant.util.color import color_rgb_to_hex, rgb_hex_to_rgb_list
 
-from .const import MODE_SLEEP, MODES_3, MODES_4, MODES_5
-from .venta import VentaData, VentaDataUpdateCoordinator, VentaDeviceType
+from .const import ATTR_LED_STRIP
+from .venta import VentaData, VentaDataUpdateCoordinator
+
+_LOGGER = logging.getLogger(__name__)
 
 
 @dataclass
@@ -70,22 +81,6 @@ class VentaHumidifierEntityDescription(HumidifierEntityDescription):
     """Describe Venta humidifier entity."""
 
 
-DEFAULT_MODES: list[str] = [MODE_SLEEP, *MODES_3]
-
-DEVICE_MODES: dict[VentaDeviceType, list[str]] = {
-    VentaDeviceType.LW60: [MODE_SLEEP, *MODES_5],
-    # VentaDeviceType.LW62: [MODE_SLEEP, *MODES_5],
-    VentaDeviceType.LW73_LW74: [MODE_SLEEP, *MODES_4],
-    VentaDeviceType.AH550_AH555: MODES_3,
-}
-
-HUMIDIFIER_ENTITY_DESCRIPTION = VentaHumidifierEntityDescription(
-    key=HumidifierDeviceClass.HUMIDIFIER,
-    translation_key=HumidifierDeviceClass.HUMIDIFIER,
-    device_class=HumidifierDeviceClass.HUMIDIFIER,
-)
-
-
 class VentaBaseHumidifierEntity(
     CoordinatorEntity[VentaDataUpdateCoordinator], HumidifierEntity
 ):
@@ -94,22 +89,29 @@ class VentaBaseHumidifierEntity(
     _attr_has_entity_name = True
     _attr_device_class = HumidifierDeviceClass.HUMIDIFIER
     _attr_supported_features = HumidifierEntityFeature.MODES
-    entity_description: VentaHumidifierEntityDescription
+
+    entity_description = VentaHumidifierEntityDescription(
+        key=HumidifierDeviceClass.HUMIDIFIER,
+        translation_key=HumidifierDeviceClass.HUMIDIFIER,
+        device_class=HumidifierDeviceClass.HUMIDIFIER,
+    )
 
     def __init__(
         self,
         coordinator: VentaDataUpdateCoordinator,
-        description: VentaHumidifierEntityDescription,
+        modes: list[str],
+        *,
+        min_humidity: int = 30,
+        max_humidity: int = 70,
     ) -> None:
         """Initialize Venta humidifier."""
         super().__init__(coordinator)
-        self.entity_description = description
         self._device = coordinator.api.device
         self._attr_device_info = coordinator.device_info
-        self._attr_unique_id = f"{self._device.mac}-{description.key}"
-        self._attr_available_modes = DEVICE_MODES.get(
-            self._device.device_type, DEFAULT_MODES
-        )
+        self._attr_unique_id = f"{self._device.mac}-{self.entity_description.key}"
+        self._attr_available_modes = modes
+        self._attr_min_humidity = min_humidity
+        self._attr_max_humidity = max_humidity
 
     @property
     def is_on(self) -> bool:
@@ -264,7 +266,6 @@ class VentaV3HumidifierEntity(VentaBaseHumidifierEntity):
 class VentaSensorRequiredKeysMixin:
     """Mixin for required keys."""
 
-    exists_func: Callable[[VentaDataUpdateCoordinator], bool]
     value_func: Callable[[VentaDataUpdateCoordinator], int | None]
 
 
@@ -304,7 +305,6 @@ class VentaSensor(CoordinatorEntity[VentaDataUpdateCoordinator], SensorEntity):
 class VentaSwitchRequiredKeysMixin:
     """Mixin for required keys."""
 
-    exists_func: Callable[[VentaDataUpdateCoordinator], bool]
     value_func: Callable[[VentaData], str | None]
     action_func: Callable[[VentaData, bool], dict | None]
 
@@ -400,3 +400,68 @@ class VentaSelect(CoordinatorEntity[VentaDataUpdateCoordinator], SelectEntity):
             self.entity_description.action_func(option)
         )
         await self.coordinator.async_request_refresh()
+
+
+@dataclass
+class VentaLightEntityDescription(LightEntityDescription):
+    """Describe Venta light entity."""
+
+
+class VentaLight(CoordinatorEntity[VentaDataUpdateCoordinator], LightEntity):
+    """Venta light."""
+
+    _attr_has_entity_name = True
+    _attr_supported_color_modes = {ColorMode.RGB}
+    _attr_color_mode = ColorMode.RGB
+
+    entity_description = VentaLightEntityDescription(
+        key=ATTR_LED_STRIP, translation_key=ATTR_LED_STRIP
+    )
+
+    def __init__(
+        self,
+        coordinator: VentaDataUpdateCoordinator,
+    ) -> None:
+        """Initialize the Venta light."""
+        super().__init__(coordinator)
+        self._device = coordinator.api.device
+        self._attr_device_info = coordinator.device_info
+        self._attr_unique_id = f"{self._device.mac}-{self.entity_description.key}"
+        self._attr_brightness = 255
+
+    @property
+    def is_on(self) -> bool:
+        """Return if light is on."""
+        return self.coordinator.data.action.get("LEDStripActive")
+
+    @property
+    def rgb_color(self) -> tuple[int, int, int]:
+        """Return the rgb color value [int, int, int]."""
+        hex_string = self.coordinator.data.action.get("LEDStrip")
+        return rgb_hex_to_rgb_list(hex_string[1:])
+
+    async def async_turn_on(
+        self,
+        **kwargs: dict[str, Any],
+    ) -> None:
+        """Turn light on."""
+        _LOGGER.debug("Turn on called with: %s", str(kwargs))
+        if (rgb_color := kwargs.get(light.ATTR_RGB_COLOR)) is not None:
+            await self._device.action(
+                {
+                    "Action": {
+                        "LEDStrip": f"#{color_rgb_to_hex(rgb_color[0], rgb_color[1], rgb_color[2])}"
+                    }
+                },
+                self.coordinator,
+            )
+        else:
+            await self._device.action(
+                {"Action": {"LEDStripActive": True}}, self.coordinator
+            )
+
+    async def async_turn_off(self, **kwargs: dict[str, Any]) -> None:
+        """Turn light off."""
+        await self._device.action(
+            {"Action": {"LEDStripActive": False}}, self.coordinator
+        )

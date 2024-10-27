@@ -1,4 +1,4 @@
-"""Venta LW73 setup functions."""
+"""Venta LW60 setup functions."""
 
 from __future__ import annotations
 
@@ -6,6 +6,7 @@ from homeassistant.components.humidifier.const import MODE_SLEEP
 from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
 from homeassistant.const import (
     ATTR_TEMPERATURE,
+    CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
     PERCENTAGE,
     REVOLUTIONS_PER_MINUTE,
     EntityCategory,
@@ -15,71 +16,98 @@ from homeassistant.const import (
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from ..const import (
-    ATTR_CLEANING_TIME,
-    ATTR_DISC_ION_TIME,
+    ATTR_CHILD_LOCK,
+    ATTR_CLEAN_MODE,
+    ATTR_DOOR_OPEN,
     ATTR_DISC_ION_TIME_TO_REPLACE,
     ATTR_FAN_SPEED,
     ATTR_HUMIDITY,
-    ATTR_LED_STRIP_MODE,
     ATTR_NEEDS_CLEANING,
     ATTR_NEEDS_DISC_REPLACEMENT,
+    ATTR_NEEDS_FILTER_CLEANING,
     ATTR_NEEDS_REFILL,
-    ATTR_NEEDS_SERVICE,
+    ATTR_NEEDS_REFILL_SOON,
+    ATTR_NEEDS_WATER_INLET_CHECK,
     ATTR_OPERATION_TIME,
-    ATTR_SERVICE_TIME,
+    ATTR_PM_2_5,
+    ATTR_REMAINING_CLEANING_TIME,
     ATTR_TIME_TO_CLEAN,
-    ATTR_TIME_TO_SERVICE,
+    ATTR_TIMER_TIME,
     ATTR_WARNINGS,
-    ATTR_WATER_LEVEL,
     CLEAN_TIME_DAYS,
     FIVE_MINUTES_RESOLUTION,
     ION_DISC_REPLACE_TIME_DAYS,
-    LED_STRIP_MODES,
-    LED_STRIP_MODES_KEYS,
-    LED_STRIP_MODES_VALUES,
-    MODES_4,
-    SERVICE_TIME_DAYS,
-    TEN_MINUTES_RESOLUTION,
+    MODES_5,
+    ONE_MINUTE_RESOLUTION,
 )
 from ..utils import venta_time_to_days_left, venta_time_to_minutes
 from ..venta import VentaDataUpdateCoordinator
 from ..venta_entity import (
     VentaBinarySensor,
     VentaBinarySensorEntityDescription,
-    VentaLight,
-    VentaSelect,
-    VentaSelectEntityDescription,
     VentaSensor,
     VentaSensorEntityDescription,
-    VentaV2HumidifierEntity,
+    VentaSwitch,
+    VentaSwitchEntityDescription,
+    VentaV0HumidifierEntity,
 )
 
-WATER_WARNING = 1
-ION_DISC_WARNING = 2
-CLEANING_WARNING = 4
-FILTER_WARNING = 8
-SERVICE_WARNING = 16
+FILL_TANK_RED_WARNING = 1
+FILL_TANK_YELLOW_WARNING = 2
+CLOSE_DOOR_WARNING = 4
+FILTER_WARNING = 16
+ION_DISC_WARNING = 32
+CLEANING_WARNING = 64
+WATER_INLET_WARNING = 128
+
+# TODO:  Add timer selection
 
 
 async def async_setup_humidifier(
     coordinator: VentaDataUpdateCoordinator, async_add_entities: AddEntitiesCallback
 ) -> None:
-    """Set up humidifiers for Venta LW73."""
+    """Set up humidifiers for Venta LW60."""
     async_add_entities(
-        [VentaV2HumidifierEntity(coordinator, modes=[MODE_SLEEP, *MODES_4])]
+        [VentaV0HumidifierEntity(coordinator, modes=[MODE_SLEEP, *MODES_5])]
     )
 
 
 async def async_setup_binary_sensor(
     coordinator: VentaDataUpdateCoordinator, async_add_entities: AddEntitiesCallback
 ) -> None:
-    """Set up binary sensors for Venta LW73."""
+    """Set up binary sensors for Venta LW60."""
     descriptions = [
+        VentaBinarySensorEntityDescription(
+            key=ATTR_CLEAN_MODE,
+            translation_key=ATTR_CLEAN_MODE,
+            icon="mdi:silverware-clean",
+            value_func=(lambda data: data.info.get("CleanMode")),
+        ),
         VentaBinarySensorEntityDescription(
             key=ATTR_NEEDS_REFILL,
             translation_key=ATTR_NEEDS_REFILL,
             icon="mdi:water-alert",
-            value_func=(lambda data: data.info.get("Warnings") & WATER_WARNING),
+            value_func=(lambda data: data.info.get("Warnings") & FILL_TANK_RED_WARNING),
+        ),
+        VentaBinarySensorEntityDescription(
+            key=ATTR_NEEDS_REFILL_SOON,
+            translation_key=ATTR_NEEDS_REFILL_SOON,
+            icon="mdi:water-alert",
+            value_func=(
+                lambda data: data.info.get("Warnings") & FILL_TANK_YELLOW_WARNING
+            ),
+        ),
+        VentaBinarySensorEntityDescription(
+            key=ATTR_DOOR_OPEN,
+            translation_key=ATTR_DOOR_OPEN,
+            icon="mdi:door-closed",
+            value_func=(lambda data: data.info.get("Warnings") & CLOSE_DOOR_WARNING),
+        ),
+        VentaBinarySensorEntityDescription(
+            key=ATTR_NEEDS_FILTER_CLEANING,
+            translation_key=ATTR_NEEDS_FILTER_CLEANING,
+            icon="mdi:air-filter",
+            value_func=(lambda data: data.info.get("Warnings") & FILTER_WARNING),
         ),
         VentaBinarySensorEntityDescription(
             key=ATTR_NEEDS_DISC_REPLACEMENT,
@@ -94,10 +122,10 @@ async def async_setup_binary_sensor(
             value_func=lambda data: data.info.get("Warnings") & CLEANING_WARNING,
         ),
         VentaBinarySensorEntityDescription(
-            key=ATTR_NEEDS_SERVICE,
-            translation_key=ATTR_NEEDS_SERVICE,
-            icon="mdi:account-wrench",
-            value_func=(lambda data: data.info.get("Warnings") & SERVICE_WARNING),
+            key=ATTR_NEEDS_WATER_INLET_CHECK,
+            translation_key=ATTR_NEEDS_WATER_INLET_CHECK,
+            icon="mdi:valve",
+            value_func=lambda data: data.info.get("Warnings") & WATER_INLET_WARNING,
         ),
     ]
     async_add_entities(
@@ -108,8 +136,28 @@ async def async_setup_binary_sensor(
 async def async_setup_sensor(
     coordinator: VentaDataUpdateCoordinator, async_add_entities: AddEntitiesCallback
 ) -> None:
-    """Set up sensors for Venta LW73."""
+    """Set up sensors for Venta LW60."""
     descriptions = [
+        VentaSensorEntityDescription(
+            key=ATTR_TIMER_TIME,
+            translation_key=ATTR_TIMER_TIME,
+            icon="mdi:timer",
+            native_unit_of_measurement=UnitOfTime.MINUTES,
+            entity_category=EntityCategory.DIAGNOSTIC,
+            value_func=lambda coordinator: venta_time_to_minutes(
+                coordinator.data.info.get("TimerT"), ONE_MINUTE_RESOLUTION
+            ),
+        ),
+        VentaSensorEntityDescription(
+            key=ATTR_OPERATION_TIME,
+            translation_key=ATTR_OPERATION_TIME,
+            icon="mdi:timer",
+            native_unit_of_measurement=UnitOfTime.MINUTES,
+            entity_category=EntityCategory.DIAGNOSTIC,
+            value_func=lambda coordinator: venta_time_to_minutes(
+                coordinator.data.info.get("OperationT"), FIVE_MINUTES_RESOLUTION
+            ),
+        ),
         VentaSensorEntityDescription(
             key=ATTR_DISC_ION_TIME_TO_REPLACE,
             translation_key=ATTR_DISC_ION_TIME_TO_REPLACE,
@@ -135,15 +183,13 @@ async def async_setup_sensor(
             ),
         ),
         VentaSensorEntityDescription(
-            key=ATTR_TIME_TO_SERVICE,
-            translation_key=ATTR_TIME_TO_SERVICE,
-            icon="mdi:wrench-clock",
-            native_unit_of_measurement=UnitOfTime.DAYS,
+            key=ATTR_REMAINING_CLEANING_TIME,
+            translation_key=ATTR_REMAINING_CLEANING_TIME,
+            icon="mdi:timer",
+            native_unit_of_measurement=UnitOfTime.MINUTES,
             entity_category=EntityCategory.DIAGNOSTIC,
-            value_func=lambda coordinator: venta_time_to_days_left(
-                coordinator.data.info.get("ServiceT"),
-                SERVICE_TIME_DAYS,
-                TEN_MINUTES_RESOLUTION,
+            value_func=lambda coordinator: venta_time_to_minutes(
+                coordinator.data.info.get("CleaningR"), ONE_MINUTE_RESOLUTION
             ),
         ),
         VentaSensorEntityDescription(
@@ -165,12 +211,12 @@ async def async_setup_sensor(
             value_func=lambda coordinator: coordinator.data.measure.get("Humidity"),
         ),
         VentaSensorEntityDescription(
-            key=ATTR_WATER_LEVEL,
-            translation_key=ATTR_WATER_LEVEL,
-            icon="mdi:water",
+            key=ATTR_PM_2_5,
+            translation_key=ATTR_PM_2_5,
+            device_class=SensorDeviceClass.PM25,
+            native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
             state_class=SensorStateClass.MEASUREMENT,
-            entity_category=EntityCategory.DIAGNOSTIC,
-            value_func=lambda coordinator: coordinator.data.measure.get("WaterLevel"),
+            value_func=lambda coordinator: coordinator.data.measure.get("Dust"),
         ),
         VentaSensorEntityDescription(
             key=ATTR_FAN_SPEED,
@@ -180,46 +226,6 @@ async def async_setup_sensor(
             state_class=SensorStateClass.MEASUREMENT,
             entity_category=EntityCategory.DIAGNOSTIC,
             value_func=lambda coordinator: coordinator.data.measure.get("FanRpm"),
-        ),
-        VentaSensorEntityDescription(
-            key=ATTR_OPERATION_TIME,
-            translation_key=ATTR_OPERATION_TIME,
-            icon="mdi:timer",
-            native_unit_of_measurement=UnitOfTime.MINUTES,
-            entity_category=EntityCategory.DIAGNOSTIC,
-            value_func=lambda coordinator: venta_time_to_minutes(
-                coordinator.data.info.get("OperationT"), FIVE_MINUTES_RESOLUTION
-            ),
-        ),
-        VentaSensorEntityDescription(
-            key=ATTR_DISC_ION_TIME,
-            translation_key=ATTR_DISC_ION_TIME,
-            icon="mdi:timer",
-            native_unit_of_measurement=UnitOfTime.MINUTES,
-            entity_category=EntityCategory.DIAGNOSTIC,
-            value_func=lambda coordinator: venta_time_to_minutes(
-                coordinator.data.info.get("DiscIonT"), FIVE_MINUTES_RESOLUTION
-            ),
-        ),
-        VentaSensorEntityDescription(
-            key=ATTR_CLEANING_TIME,
-            translation_key=ATTR_CLEANING_TIME,
-            icon="mdi:timer",
-            native_unit_of_measurement=UnitOfTime.MINUTES,
-            entity_category=EntityCategory.DIAGNOSTIC,
-            value_func=lambda coordinator: venta_time_to_minutes(
-                coordinator.data.info.get("CleaningT"), FIVE_MINUTES_RESOLUTION
-            ),
-        ),
-        VentaSensorEntityDescription(
-            key=ATTR_SERVICE_TIME,
-            translation_key=ATTR_SERVICE_TIME,
-            icon="mdi:timer",
-            native_unit_of_measurement=UnitOfTime.MINUTES,
-            entity_category=EntityCategory.DIAGNOSTIC,
-            value_func=lambda coordinator: venta_time_to_minutes(
-                coordinator.data.info.get("ServiceT"), TEN_MINUTES_RESOLUTION
-            ),
         ),
         VentaSensorEntityDescription(
             key=ATTR_WARNINGS,
@@ -237,47 +243,37 @@ async def async_setup_sensor(
 async def async_setup_switch(
     coordinator: VentaDataUpdateCoordinator, async_add_entities: AddEntitiesCallback
 ) -> None:
-    """Set up switches for Venta LW73."""
-    pass
+    """Set up switches for Venta LW60."""
+    descriptions = [
+        VentaSwitchEntityDescription(
+            key=ATTR_CHILD_LOCK,
+            translation_key=ATTR_CHILD_LOCK,
+            entity_category=EntityCategory.CONFIG,
+            value_func=lambda data: data.action.get("ChildLock"),
+            action_func=(
+                lambda _, is_on: (
+                    {
+                        "ChildLock": is_on,
+                        "Action": "control",
+                    }
+                )
+            ),
+        ),
+    ]
+    async_add_entities(
+        [VentaSwitch(coordinator, description) for description in descriptions]
+    )
 
 
 async def async_setup_light(
     coordinator: VentaDataUpdateCoordinator, async_add_entities: AddEntitiesCallback
 ) -> None:
-    """Set up lights for Venta LW73."""
-    async_add_entities([VentaLight(coordinator)])
+    """Set up lights for Venta LW60."""
+    pass
 
 
 async def async_setup_select(
     coordinator: VentaDataUpdateCoordinator, async_add_entities: AddEntitiesCallback
 ) -> None:
-    """Set up selects for Venta LW73."""
-    async_add_entities(
-        [
-            VentaSelect(
-                coordinator,
-                VentaSelectEntityDescription(
-                    key=ATTR_LED_STRIP_MODE,
-                    translation_key=ATTR_LED_STRIP_MODE,
-                    entity_category=EntityCategory.CONFIG,
-                    exists_func=lambda coordinator: coordinator.data.action.get(
-                        "LEDStripMode"
-                    )
-                    is not None,
-                    value_func=lambda data: LED_STRIP_MODES.get(
-                        data.action.get("LEDStripMode")
-                    ),
-                    action_func=(
-                        lambda option: {
-                            "Action": {
-                                "LEDStripMode": LED_STRIP_MODES_KEYS[
-                                    LED_STRIP_MODES_VALUES.index(option)
-                                ]
-                            }
-                        }
-                    ),
-                    options=LED_STRIP_MODES_VALUES,
-                ),
-            )
-        ]
-    )
+    """Set up selects for Venta LW60."""
+    pass
