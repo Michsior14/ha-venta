@@ -1,3 +1,10 @@
+## [0.9.1](https://github.com/Michsior14/ha-venta/compare/v0.9.0...v0.9.1) (2024-10-27)
+
+
+### Bug Fixes
+
+* add missing sensors for AH902/AP902 ([#49](https://github.com/Michsior14/ha-venta/issues/49)) ([7c68749](https://github.com/Michsior14/ha-venta/commit/7c68749007edc51a2e21c9f468010b24dacc69da))
+
 ## [0.9.0](https://github.com/Michsior14/ha-venta/compare/v0.8.1...v0.9.0) (2024-10-27)
 
 
@@ -26,11 +33,4 @@
 ### Bug Fixes
 
 * circular imports ([e1f9805](https://github.com/Michsior14/ha-venta/commit/e1f98058660593fd6bb067f1d2aec80f8af24300))
-
-## [0.8.1-beta.0](https://github.com/Michsior14/ha-venta/compare/v0.8.0...v0.8.1-beta.0) (2024-10-26)
-
-
-### Bug Fixes
-
-* empty response from the device ([#45](https://github.com/Michsior14/ha-venta/issues/45)) ([99deed0](https://github.com/Michsior14/ha-venta/commit/99deed0c39425092cc7edfdd787a45099dd74ada)), closes [#44](https://github.com/Michsior14/ha-venta/issues/44)
 
