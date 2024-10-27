@@ -11,7 +11,7 @@
     "step": {
       "user": {
         "data": {
-          "host": "Hostname \/ IP-Adresse",
+          "host": "Hostname / IP-Adresse",
           "scan_interval": "Aktualisierungsintervall (Sekunden)",
           "api_version": "API-Version (Automatische Erkennung, wenn unsicher)"
         }
@@ -54,11 +54,11 @@
       "water_level": {
         "name": "Wasserstand",
         "state": {
-          "water_level_no_value": "Kein Wert",
-          "water_level_yellow": "Gelb",
-          "water_level_red": "Rot",
-          "water_level_ok": "OK",
-          "water_level_overflow": "Überlauf"
+          "0": "Kein Wert",
+          "1": "Gelb",
+          "2": "Rot",
+          "3": "OK",
+          "4": "Überlauf"
         }
       },
       "fan_speed": {

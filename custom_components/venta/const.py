@@ -33,11 +33,11 @@ MODES_5: list[str] = [
     MODE_LEVEL_5,
 ]
 
-WATER_LEVEL_NO_VALUE = "water_level_no_value"
-WATER_LEVEL_YELLOW = "water_level_yellow"
-WATER_LEVEL_RED = "water_level_red"
-WATER_LEVEL_OK = "water_level_ok"
-WATER_LEVEL_OVERFLOW = "water_level_overflow"
+WATER_LEVEL_NO_VALUE = "0"
+WATER_LEVEL_YELLOW = "1"
+WATER_LEVEL_RED = "2"
+WATER_LEVEL_OK = "3"
+WATER_LEVEL_OVERFLOW = "4"
 
 ATTR_HUMIDITY = "humidity"
 ATTR_WATER_LEVEL = "water_level"

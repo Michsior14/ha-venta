@@ -54,11 +54,11 @@
       "water_level": {
         "name": "Livello dell'acqua",
         "state": {
-          "water_level_no_value": "Nessun valore",
-          "water_level_yellow": "Giallo",
-          "water_level_red": "Rosso",
-          "water_level_ok": "OK",
-          "water_level_overflow": "Traboccare"
+          "0": "Nessun valore",
+          "1": "Giallo",
+          "2": "Rosso",
+          "3": "OK",
+          "4": "Traboccare"
         }
       },
       "fan_speed": {

@@ -54,11 +54,11 @@
       "water_level": {
         "name": "Рівень води",
         "state": {
-          "water_level_no_value": "Жодного значення",
-          "water_level_yellow": "Жовтий",
-          "water_level_red": "Червоний",
-          "water_level_ok": "добре",
-          "water_level_overflow": "Перелив"
+          "0": "Жодного значення",
+          "1": "Жовтий",
+          "2": "Червоний",
+          "3": "добре",
+          "4": "Перелив"
         }
       },
       "fan_speed": {

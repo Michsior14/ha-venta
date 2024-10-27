@@ -54,11 +54,11 @@
       "water_level": {
         "name": "Hladina vody",
         "state": {
-          "water_level_no_value": "Žiadna hodnota",
-          "water_level_yellow": "Žltá",
-          "water_level_red": "Červená",
-          "water_level_ok": "Dobre",
-          "water_level_overflow": "Pretečenie"
+          "0": "Žiadna hodnota",
+          "1": "Žltá",
+          "2": "Červená",
+          "3": "Dobre",
+          "4": "Pretečenie"
         }
       },
       "fan_speed": {

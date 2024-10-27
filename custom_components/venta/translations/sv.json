@@ -54,11 +54,11 @@
       "water_level": {
         "name": "Vattennivå",
         "state": {
-          "water_level_no_value": "Inget värde",
-          "water_level_yellow": "Gul",
-          "water_level_red": "Röd",
-          "water_level_ok": "Ok",
-          "water_level_overflow": "Svämma över"
+          "0": "Inget värde",
+          "1": "Gul",
+          "2": "Röd",
+          "3": "Ok",
+          "4": "Svämma över"
         }
       },
       "fan_speed": {

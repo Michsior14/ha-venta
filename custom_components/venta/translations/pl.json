@@ -54,11 +54,11 @@
       "water_level": {
         "name": "Poziom wody",
         "state": {
-          "water_level_no_value": "Brak wartości",
-          "water_level_yellow": "Żółty",
-          "water_level_red": "Czerwony",
-          "water_level_ok": "OK",
-          "water_level_overflow": "Przelany"
+          "0": "Brak wartości",
+          "1": "Żółty",
+          "2": "Czerwony",
+          "3": "OK",
+          "4": "Przelany"
         }
       },
       "fan_speed": {
