@@ -52,7 +52,14 @@
         "name": "Teplota"
       },
       "water_level": {
-        "name": "Hladina vody"
+        "name": "Hladina vody",
+        "state": {
+          "water_level_no_value": "Žiadna hodnota",
+          "water_level_yellow": "Žltá",
+          "water_level_red": "Červená",
+          "water_level_ok": "Dobre",
+          "water_level_overflow": "Pretečenie"
+        }
       },
       "fan_speed": {
         "name": "Rýchlosť ventilátora"
@@ -128,6 +135,24 @@
       },
       "filter_time_to_clean": {
         "name": "Vyčistite filter"
+      },
+      "fan_2_speed": {
+        "name": "Ventilátor 2 rýchlosti"
+      },
+      "timer_time": {
+        "name": "Čas časovača"
+      },
+      "remaining_cleaning_time": {
+        "name": "Zostávajúci čas čistenia"
+      },
+      "uvc_lap_on_time": {
+        "name": "UVC lampa na čas"
+      },
+      "uvc_lap_off_time": {
+        "name": "Čas vypnutia UVC lampy"
+      },
+      "toluene": {
+        "name": "toluén"
       }
     },
     "binary_sensor": {
@@ -148,6 +173,27 @@
       },
       "clean_mode": {
         "name": "Čistý režim"
+      },
+      "needs_refill_soon": {
+        "name": "Čoskoro je potrebné doplniť"
+      },
+      "needs_water_inlet_check": {
+        "name": "Skontrolujte prívod vody"
+      },
+      "cleaning_error": {
+        "name": "Chyba čistenia"
+      },
+      "disc_ion_error": {
+        "name": "Chyba ionizačného disku"
+      },
+      "door_open": {
+        "name": "Dvere otvorené"
+      },
+      "box_open": {
+        "name": "Škatuľa otvorená"
+      },
+      "fan_blocked": {
+        "name": "Ventilátor je zablokovaný"
       }
     },
     "light": {
@@ -163,6 +209,9 @@
     "switch": {
       "sleep_mode": {
         "name": "Spánkový režim"
+      },
+      "child_lock": {
+        "name": "Detská poistka"
       }
     }
   },

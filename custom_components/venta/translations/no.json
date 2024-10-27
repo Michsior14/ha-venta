@@ -52,7 +52,14 @@
         "name": "Temperatur"
       },
       "water_level": {
-        "name": "Vannstand"
+        "name": "Vannstand",
+        "state": {
+          "water_level_no_value": "Ingen verdi",
+          "water_level_yellow": "Gul",
+          "water_level_red": "Rød",
+          "water_level_ok": "Ok",
+          "water_level_overflow": "Flyte"
+        }
       },
       "fan_speed": {
         "name": "Viftehastighet"
@@ -128,6 +135,24 @@
       },
       "filter_time_to_clean": {
         "name": "Rengjør filteret inn"
+      },
+      "fan_2_speed": {
+        "name": "Vifte 2 hastighet"
+      },
+      "timer_time": {
+        "name": "Timer tid"
+      },
+      "remaining_cleaning_time": {
+        "name": "Gjenstående rengjøringstid"
+      },
+      "uvc_lap_on_time": {
+        "name": "UVC-lampe i tide"
+      },
+      "uvc_lap_off_time": {
+        "name": "UVC-lampe slukketid"
+      },
+      "toluene": {
+        "name": "Toluen"
       }
     },
     "binary_sensor": {
@@ -148,6 +173,27 @@
       },
       "clean_mode": {
         "name": "Rengjøringsmodus"
+      },
+      "needs_refill_soon": {
+        "name": "Trenger påfyll snart"
+      },
+      "needs_water_inlet_check": {
+        "name": "Sjekk vanninntaket"
+      },
+      "cleaning_error": {
+        "name": "Rengjøringsfeil"
+      },
+      "disc_ion_error": {
+        "name": "Ioniseringsskivefeil"
+      },
+      "door_open": {
+        "name": "Dør åpen"
+      },
+      "box_open": {
+        "name": "Kassen åpen"
+      },
+      "fan_blocked": {
+        "name": "Vifte blokkert"
       }
     },
     "light": {
@@ -163,6 +209,9 @@
     "switch": {
       "sleep_mode": {
         "name": "Hvilemodus"
+      },
+      "child_lock": {
+        "name": "Barnelås"
       }
     }
   },
