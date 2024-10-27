@@ -52,7 +52,14 @@
         "name": "Temperatura"
       },
       "water_level": {
-        "name": "Nivel de agua"
+        "name": "Nivel de agua",
+        "state": {
+          "water_level_no_value": "Sin valor",
+          "water_level_yellow": "Amarillo",
+          "water_level_red": "Rojo",
+          "water_level_ok": "De acuerdo",
+          "water_level_overflow": "Rebosar"
+        }
       },
       "fan_speed": {
         "name": "Velocidad del ventilador"
@@ -128,6 +135,24 @@
       },
       "filter_time_to_clean": {
         "name": "Limpiar el filtro en"
+      },
+      "fan_2_speed": {
+        "name": "Ventilador de 2 velocidades"
+      },
+      "timer_time": {
+        "name": "Tiempo del temporizador"
+      },
+      "remaining_cleaning_time": {
+        "name": "Tiempo de limpieza restante"
+      },
+      "uvc_lap_on_time": {
+        "name": "Lámpara UVC encendida a tiempo"
+      },
+      "uvc_lap_off_time": {
+        "name": "Tiempo de apagado de la lámpara UVC"
+      },
+      "toluene": {
+        "name": "Tolueno"
       }
     },
     "binary_sensor": {
@@ -148,6 +173,27 @@
       },
       "clean_mode": {
         "name": "Modo limpio"
+      },
+      "needs_refill_soon": {
+        "name": "Necesita recargarse pronto"
+      },
+      "needs_water_inlet_check": {
+        "name": "Comprobar la entrada de agua"
+      },
+      "cleaning_error": {
+        "name": "Error de limpieza"
+      },
+      "disc_ion_error": {
+        "name": "Error del disco de ionización"
+      },
+      "door_open": {
+        "name": "Puerta abierta"
+      },
+      "box_open": {
+        "name": "Caja abierta"
+      },
+      "fan_blocked": {
+        "name": "Ventilador bloqueado"
       }
     },
     "light": {
@@ -163,6 +209,9 @@
     "switch": {
       "sleep_mode": {
         "name": "Modo de sueño"
+      },
+      "child_lock": {
+        "name": "Bloqueo para niños"
       }
     }
   },

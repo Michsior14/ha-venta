@@ -52,7 +52,14 @@
         "name": "Temperatur"
       },
       "water_level": {
-        "name": "Wasserstand"
+        "name": "Wasserstand",
+        "state": {
+          "water_level_no_value": "Kein Wert",
+          "water_level_yellow": "Gelb",
+          "water_level_red": "Rot",
+          "water_level_ok": "OK",
+          "water_level_overflow": "Überlauf"
+        }
       },
       "fan_speed": {
         "name": "Lüftergeschwindigkeit"
@@ -128,6 +135,24 @@
       },
       "filter_time_to_clean": {
         "name": "Filter reinigen"
+      },
+      "fan_2_speed": {
+        "name": "Lüfter 2 Geschwindigkeit"
+      },
+      "timer_time": {
+        "name": "Timerzeit"
+      },
+      "remaining_cleaning_time": {
+        "name": "Verbleibende Reinigungszeit"
+      },
+      "uvc_lap_on_time": {
+        "name": "UVC Lampe an"
+      },
+      "uvc_lap_off_time": {
+        "name": "Ausschaltzeit der UVC-Lampe"
+      },
+      "toluene": {
+        "name": "Toluol"
       }
     },
     "binary_sensor": {
@@ -148,6 +173,27 @@
       },
       "clean_mode": {
         "name": "Clean-Modus"
+      },
+      "needs_refill_soon": {
+        "name": "Muss bald aufgefüllt werden"
+      },
+      "needs_water_inlet_check": {
+        "name": "Wasserzulauf prüfen"
+      },
+      "cleaning_error": {
+        "name": "Reinigungsfehler"
+      },
+      "disc_ion_error": {
+        "name": "Fehler der Ionisationsscheibe"
+      },
+      "door_open": {
+        "name": "Tür offen"
+      },
+      "box_open": {
+        "name": "Kiste geöffnet"
+      },
+      "fan_blocked": {
+        "name": "Lüfter blockiert"
       }
     },
     "light": {
@@ -163,6 +209,9 @@
     "switch": {
       "sleep_mode": {
         "name": "Schlafmodus"
+      },
+      "child_lock": {
+        "name": "Kindersicherung"
       }
     }
   },

@@ -52,7 +52,14 @@
         "name": "Température"
       },
       "water_level": {
-        "name": "Niveau d'eau"
+        "name": "Niveau d'eau",
+        "state": {
+          "water_level_no_value": "Aucune valeur",
+          "water_level_yellow": "Jaune",
+          "water_level_red": "Rouge",
+          "water_level_ok": "D'accord",
+          "water_level_overflow": "Débordement"
+        }
       },
       "fan_speed": {
         "name": "Vitesse du ventilateur"
@@ -128,6 +135,24 @@
       },
       "filter_time_to_clean": {
         "name": "Nettoyer le filtre"
+      },
+      "fan_2_speed": {
+        "name": "Ventilateur 2 vitesses"
+      },
+      "timer_time": {
+        "name": "Heure de la minuterie"
+      },
+      "remaining_cleaning_time": {
+        "name": "Temps de nettoyage restant"
+      },
+      "uvc_lap_on_time": {
+        "name": "Lampe UVC à l'heure"
+      },
+      "uvc_lap_off_time": {
+        "name": "Temps d'arrêt de la lampe UVC"
+      },
+      "toluene": {
+        "name": "Toluène"
       }
     },
     "binary_sensor": {
@@ -148,6 +173,27 @@
       },
       "clean_mode": {
         "name": "Mode nettoyage"
+      },
+      "needs_refill_soon": {
+        "name": "Besoin d'être rempli bientôt"
+      },
+      "needs_water_inlet_check": {
+        "name": "Vérifier l'arrivée d'eau"
+      },
+      "cleaning_error": {
+        "name": "Erreur de nettoyage"
+      },
+      "disc_ion_error": {
+        "name": "Erreur du disque d'ionisation"
+      },
+      "door_open": {
+        "name": "Porte ouverte"
+      },
+      "box_open": {
+        "name": "Boîte ouverte"
+      },
+      "fan_blocked": {
+        "name": "Ventilateur bloqué"
       }
     },
     "light": {
@@ -163,6 +209,9 @@
     "switch": {
       "sleep_mode": {
         "name": "Mode sommeil"
+      },
+      "child_lock": {
+        "name": "Sécurité enfant"
       }
     }
   },

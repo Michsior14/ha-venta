@@ -52,7 +52,14 @@
         "name": "Температура"
       },
       "water_level": {
-        "name": "Рівень води"
+        "name": "Рівень води",
+        "state": {
+          "water_level_no_value": "Жодного значення",
+          "water_level_yellow": "Жовтий",
+          "water_level_red": "Червоний",
+          "water_level_ok": "добре",
+          "water_level_overflow": "Перелив"
+        }
       },
       "fan_speed": {
         "name": "Швидкість вентилятора"
@@ -128,6 +135,24 @@
       },
       "filter_time_to_clean": {
         "name": "Очистіть фільтр"
+      },
+      "fan_2_speed": {
+        "name": "Вентилятор 2 швидкість"
+      },
+      "timer_time": {
+        "name": "Час таймера"
+      },
+      "remaining_cleaning_time": {
+        "name": "Залишок часу прибирання"
+      },
+      "uvc_lap_on_time": {
+        "name": "UVC лампа вчасно"
+      },
+      "uvc_lap_off_time": {
+        "name": "Час вимкнення УФ-лампи"
+      },
+      "toluene": {
+        "name": "Толуол"
       }
     },
     "binary_sensor": {
@@ -148,6 +173,27 @@
       },
       "clean_mode": {
         "name": "Чистий режим"
+      },
+      "needs_refill_soon": {
+        "name": "Незабаром потребує поповнення"
+      },
+      "needs_water_inlet_check": {
+        "name": "Перевірте вхід води"
+      },
+      "cleaning_error": {
+        "name": "Помилка очищення"
+      },
+      "disc_ion_error": {
+        "name": "Помилка диска іонізації"
+      },
+      "door_open": {
+        "name": "Двері відкриті"
+      },
+      "box_open": {
+        "name": "Коробка відкрита"
+      },
+      "fan_blocked": {
+        "name": "Вентилятор заблоковано"
       }
     },
     "light": {
@@ -163,6 +209,9 @@
     "switch": {
       "sleep_mode": {
         "name": "Сплячий режим"
+      },
+      "child_lock": {
+        "name": "Блокування від дітей"
       }
     }
   },
