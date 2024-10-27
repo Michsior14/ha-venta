@@ -1,0 +1,27 @@
+name: Pull from Lokalise
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * 0" # Every Sunday at 00:00
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Pull from Lokalise
+        uses: lokalise/lokalise-pull-action@v1.0.0
+        with:
+          api_token: ${{ secrets.LOKALISE_API_TOKEN }}
+          project_id: 2728010065b52d190d6247.58782749
+          translations_path: custom_components/venta/translations
+          always_pull_base: true
+          file_format: json
+          base_lang: en
+          additional_params: --bundle-structure=custom_components/venta/translations/%LANG_ISO%.%FORMAT% --original-filenames=false
