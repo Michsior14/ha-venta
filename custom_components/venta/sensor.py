@@ -18,4 +18,4 @@ async def async_setup_entry(
 ) -> None:
     """Set up Venta sensors on config_entry."""
     coordinator: VentaDataUpdateCoordinator = hass.data[DOMAIN].get(entry.entry_id)
-    await async_setup_device("humidifier", hass, coordinator, async_add_entities)
+    await async_setup_device("sensor", hass, coordinator, async_add_entities)
