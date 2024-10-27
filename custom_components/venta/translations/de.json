@@ -11,7 +11,7 @@
     "step": {
       "user": {
         "data": {
-          "host": "Hostname / IP-Adresse",
+          "host": "Hostname \/ IP-Adresse",
           "scan_interval": "Aktualisierungsintervall (Sekunden)",
           "api_version": "API-Version (Automatische Erkennung, wenn unsicher)"
         }
