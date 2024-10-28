@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import _T, List
+from typing import List, TypeVar
 
 from homeassistant.const import (
     UnitOfTemperature,
@@ -42,6 +42,9 @@ def needs_maintenance(value: int | None, max_days: int, resolution: int) -> bool
     if value is None:
         return None
     return venta_time_to_days_left(value, max_days, resolution) <= 0
+
+
+_T = TypeVar("_T")
 
 
 def get_from_list(list: List[_T] | None, index: int, default: _T = None) -> _T:

@@ -37,5 +37,5 @@ async def async_setup_device(
             return
 
         await getattr(module, function_name)(coordinator, async_add_entities)
-    except ImportError:
-        _LOGGER.error("Unable to import module %s", module_path)
+    except ImportError as error:
+        _LOGGER.error("Unable to import module %s\n%s", module_path, error)

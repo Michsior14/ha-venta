@@ -270,7 +270,6 @@ class VentaSensorRequiredKeysMixin:
     """Mixin for required keys."""
 
     value_func: Callable[[VentaDataUpdateCoordinator], int | None]
-    unit_func: Callable[[VentaDataUpdateCoordinator], str | None] | None = None
 
 
 @dataclass
@@ -280,6 +279,7 @@ class VentaSensorEntityDescription(
     """Describes Venta sensor entity."""
 
     suggested_display_precision = 0
+    unit_func: Callable[[VentaDataUpdateCoordinator], str | None] | None = None
 
 
 class VentaSensor(CoordinatorEntity[VentaDataUpdateCoordinator], SensorEntity):
