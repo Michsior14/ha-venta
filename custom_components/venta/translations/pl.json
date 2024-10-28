@@ -36,12 +36,12 @@
             "state": {
               "sleep": "Nocny",
               "auto": "Automatyczny",
-              "turbo": "Turbo",
               "level_1": "Poziom 1",
               "level_2": "Poziom 2",
               "level_3": "Poziom 3",
               "level_4": "Poziom 4",
-              "level_5": "Poziom 5"
+              "level_5": "Poziom 5",
+              "boost": "Boost"
             }
           }
         }
@@ -153,6 +153,9 @@
       },
       "toluene": {
         "name": "Toluen"
+      },
+      "hepa_filter_lifetime": {
+        "name": "Żywotność filtra HEPA"
       }
     },
     "binary_sensor": {
@@ -194,6 +197,18 @@
       },
       "fan_blocked": {
         "name": "Zablokowany wentylator"
+      },
+      "fan_relay": {
+        "name": "Przekaźnik wentylatora"
+      },
+      "disc_relay": {
+        "name": "Przekaźnik tarczowy"
+      },
+      "uvc_relay": {
+        "name": "przekaźnik UVC"
+      },
+      "valve_relay": {
+        "name": "Przekaźnik zaworu"
       }
     },
     "light": {
@@ -203,7 +218,24 @@
     },
     "select": {
       "led_strip_mode": {
-        "name": "Tryb taśmy LED"
+        "name": "Tryb taśmy LED",
+        "state": {
+          "0": "Całkowicie wewnętrzny",
+          "1": "Ostrzeżenie przed wodą wewnątrz, odpoczynek na zewnątrz",
+          "2": "Ostrzeżenie przed wodą na zewnątrz, reszta wewnątrz",
+          "3": "Całkowicie zewnętrzny"
+        }
+      },
+      "timer": {
+        "name": "Wyłącznik czasowy",
+        "state": {
+          "0": "Timer wyłączony",
+          "1": "Wyłączenie za 1 godzinę",
+          "3": "Wyłączenie za 3 godziny",
+          "5": "Wyłączenie za 5 godzin",
+          "7": "Wyłączenie za 7 godzin",
+          "9": "Wyłączenie za 9 godzin"
+        }
       }
     },
     "switch": {

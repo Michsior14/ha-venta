@@ -36,12 +36,12 @@
             "state": {
               "sleep": "Sove",
               "auto": "Auto",
-              "turbo": "Turbo",
               "level_1": "Nivå 1",
               "level_2": "Nivå 2",
               "level_3": "Nivå 3",
               "level_4": "Nivå 4",
-              "level_5": "Nivå 5"
+              "level_5": "Nivå 5",
+              "boost": "Øke"
             }
           }
         }
@@ -153,6 +153,9 @@
       },
       "toluene": {
         "name": "Toluen"
+      },
+      "hepa_filter_lifetime": {
+        "name": "HEPA-filterets levetid"
       }
     },
     "binary_sensor": {
@@ -194,6 +197,18 @@
       },
       "fan_blocked": {
         "name": "Vifte blokkert"
+      },
+      "fan_relay": {
+        "name": "Vifte relé"
+      },
+      "disc_relay": {
+        "name": "Skive relé"
+      },
+      "uvc_relay": {
+        "name": "UVC relé"
+      },
+      "valve_relay": {
+        "name": "Ventilrelé"
       }
     },
     "light": {
@@ -203,7 +218,24 @@
     },
     "select": {
       "led_strip_mode": {
-        "name": "LED stripe modus"
+        "name": "LED stripe modus",
+        "state": {
+          "0": "Helt internt",
+          "1": "Vannvarsling intern, hvile ekstern",
+          "2": "Vannvarsling ekstern, hvile intern",
+          "3": "Helt eksternt"
+        }
+      },
+      "timer": {
+        "name": "Nedkoblingstidtaker",
+        "state": {
+          "0": "Timer av",
+          "1": "Slår av om 1 time",
+          "3": "Slår av om 3 timer",
+          "5": "Avstengning om 5 timer",
+          "7": "Avstengning om 7 timer",
+          "9": "Avstengning om 9 timer"
+        }
       }
     },
     "switch": {

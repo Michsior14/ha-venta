@@ -36,12 +36,12 @@
             "state": {
               "sleep": "Sova",
               "auto": "Bil",
-              "turbo": "Turbo",
               "level_1": "Nivå 1",
               "level_2": "Nivå 2",
               "level_3": "Nivå 3",
               "level_4": "Nivå 4",
-              "level_5": "Nivå 5"
+              "level_5": "Nivå 5",
+              "boost": "Lyft"
             }
           }
         }
@@ -153,6 +153,9 @@
       },
       "toluene": {
         "name": "Toluen"
+      },
+      "hepa_filter_lifetime": {
+        "name": "HEPA-filtrets livslängd"
       }
     },
     "binary_sensor": {
@@ -194,6 +197,18 @@
       },
       "fan_blocked": {
         "name": "Fläkt blockerad"
+      },
+      "fan_relay": {
+        "name": "Fläktrelä"
+      },
+      "disc_relay": {
+        "name": "Skivrelä"
+      },
+      "uvc_relay": {
+        "name": "UVC-relä"
+      },
+      "valve_relay": {
+        "name": "Ventilrelä"
       }
     },
     "light": {
@@ -203,7 +218,24 @@
     },
     "select": {
       "led_strip_mode": {
-        "name": "Läge för LED-remsa"
+        "name": "Läge för LED-remsa",
+        "state": {
+          "0": "Helt internt",
+          "1": "Vattenvarning internt, vila externt",
+          "2": "Vattenvarning extern, vila intern",
+          "3": "Helt extern"
+        }
+      },
+      "timer": {
+        "name": "Avstängningstimer",
+        "state": {
+          "0": "Timern avstängd",
+          "1": "Avstängning om 1 timme",
+          "3": "Avstängning om 3 timmar",
+          "5": "Avstängning om 5 timmar",
+          "7": "Avstängning om 7 timmar",
+          "9": "Avstängning om 9 timmar"
+        }
       }
     },
     "switch": {
