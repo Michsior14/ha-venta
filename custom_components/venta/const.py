@@ -89,6 +89,7 @@ ATTR_FAN_RELAY = "fan_relay"
 ATTR_DISC_RELAY = "disc_relay"
 ATTR_UVC_RELAY = "uvc_relay"
 ATTR_VALVE_RELAY = "valve_relay"
+ATTR_HEPA_FILTER_LIFETIME = "hepa_filter_lifetime"
 
 ATTR_LED_STRIP = "led_strip"
 ATTR_LED_STRIP_MODE = "led_strip_mode"

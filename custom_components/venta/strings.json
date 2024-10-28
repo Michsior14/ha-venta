@@ -163,6 +163,9 @@
       },
       "hcho": {
         "name": "Formaldehyde"
+      },
+      "hepa_filter_lifetime": {
+        "name": "HEPA filter lifetime"
       }
     },
     "binary_sensor": {
