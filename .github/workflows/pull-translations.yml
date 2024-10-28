@@ -22,7 +22,7 @@ jobs:
           project_id: 2728010065b52d190d6247.58782749
           translations_path: custom_components/venta/translations
           always_pull_base: true
-          additional_params: --export-sort=first_added --indentation=2sp --bundle-structure=custom_components/venta/translations/%LANG_ISO%.%FORMAT% --original-filenames=false
+          additional_params: --export-sort=first_added --indentation=2sp
 
       - name: See changes
         run: git status
