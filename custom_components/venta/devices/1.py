@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from homeassistant.components.humidifier.const import MODE_SLEEP, MODE_BOOST
+from homeassistant.components.humidifier.const import MODE_BOOST, MODE_SLEEP
 from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
 from homeassistant.const import (
     ATTR_TEMPERATURE,
@@ -10,7 +10,6 @@ from homeassistant.const import (
     PERCENTAGE,
     REVOLUTIONS_PER_MINUTE,
     EntityCategory,
-    UnitOfTemperature,
     UnitOfTime,
 )
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -36,7 +35,7 @@ from ..const import (
     TIMER_MODES_9H,
     TIMER_MODES_OFF,
 )
-from ..utils import venta_time_to_minutes
+from ..utils import venta_temperature_unit, venta_time_to_minutes
 from ..venta import VentaDataUpdateCoordinator
 from ..venta_entity import (
     VentaBinarySensor,
@@ -117,9 +116,11 @@ async def async_setup_sensor(
             translation_key=ATTR_TEMPERATURE,
             device_class=SensorDeviceClass.TEMPERATURE,
             state_class=SensorStateClass.MEASUREMENT,
-            native_unit_of_measurement=UnitOfTemperature.CELSIUS,
             suggested_display_precision=1,
             value_func=lambda coordinator: coordinator.data.measure.get("Temperature"),
+            unit_func=lambda coordinator: venta_temperature_unit(
+                coordinator.data.measure.get("TempUnit")
+            ),
         ),
         VentaSensorEntityDescription(
             key=ATTR_HUMIDITY,

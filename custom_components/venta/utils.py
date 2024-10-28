@@ -4,6 +4,10 @@ from __future__ import annotations
 
 from typing import _T, List
 
+from homeassistant.const import (
+    UnitOfTemperature,
+)
+
 
 def skip_zeros(
     value: str | int | bool | None,
@@ -48,3 +52,10 @@ def get_from_list(list: List[_T] | None, index: int, default: _T = None) -> _T:
         return list[index]
     except IndexError:
         return default
+
+
+def venta_temperature_unit(value: int | None) -> str | None:
+    """Return the temperature unit for Venta devices that supports TempUnit field."""
+    if value is None:
+        return None
+    return UnitOfTemperature.CELSIUS if value == 0 else UnitOfTemperature.FAHRENHEIT

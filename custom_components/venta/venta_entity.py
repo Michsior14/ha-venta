@@ -270,6 +270,7 @@ class VentaSensorRequiredKeysMixin:
     """Mixin for required keys."""
 
     value_func: Callable[[VentaDataUpdateCoordinator], int | None]
+    unit_func: Callable[[VentaDataUpdateCoordinator], str | None] | None = None
 
 
 @dataclass
@@ -302,6 +303,13 @@ class VentaSensor(CoordinatorEntity[VentaDataUpdateCoordinator], SensorEntity):
     def native_value(self) -> int | None:
         """Return the state of the sensor."""
         return self.entity_description.value_func(self.coordinator)
+
+    @property
+    def native_unit_of_measurement(self) -> str | None:
+        """Return the unit of measurement."""
+        if self.entity_description.unit_func is not None:
+            return self.entity_description.unit_func(self.coordinator)
+        return super().native_unit_of_measurement
 
 
 @dataclass
