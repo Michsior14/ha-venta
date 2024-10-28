@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from homeassistant.components.humidifier.const import MODE_SLEEP, MODE_BOOST
 from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
 from homeassistant.const import (
     ATTR_TEMPERATURE,
@@ -25,6 +26,7 @@ from ..const import (
     ATTR_TIMER_TIME,
     ATTR_WARNINGS,
     FIVE_MINUTES_RESOLUTION,
+    MODES_5,
     ONE_MINUTE_RESOLUTION,
     TEN_MINUTES_RESOLUTION,
     TIMER_MODES_1H,
@@ -43,6 +45,7 @@ from ..venta_entity import (
     VentaSelectEntityDescription,
     VentaSensor,
     VentaSensorEntityDescription,
+    VentaV0HumidifierEntity,
 )
 
 FILTER_WARNING = 16
@@ -52,7 +55,9 @@ async def async_setup_humidifier(
     coordinator: VentaDataUpdateCoordinator, async_add_entities: AddEntitiesCallback
 ) -> None:
     """Set up humidifiers for Venta LP60."""
-    pass
+    async_add_entities(
+        [VentaV0HumidifierEntity(coordinator, modes=[MODE_SLEEP, MODE_BOOST, *MODES_5])]
+    )
 
 
 async def async_setup_binary_sensor(

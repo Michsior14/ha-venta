@@ -14,6 +14,7 @@ from homeassistant.components.binary_sensor import (
 )
 from homeassistant.components.humidifier import (
     MODE_AUTO,
+    MODE_BOOST,
     MODE_SLEEP,
     HumidifierDeviceClass,
     HumidifierEntity,
@@ -185,6 +186,8 @@ class VentaV0HumidifierEntity(VentaBaseHumidifierEntity):
             action = {"Automatic": True}
         elif mode == MODE_SLEEP:
             action = {"SleepMode": True}
+        elif mode == MODE_BOOST:
+            action = {"Boost": True}
         else:
             action = {"FanSpeed": int(mode[-1])}
         await self._send_action(action)

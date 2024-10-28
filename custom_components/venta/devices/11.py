@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from homeassistant.components.humidifier.const import MODE_SLEEP
+from homeassistant.components.humidifier.const import MODE_SLEEP, MODE_BOOST
 from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
 from homeassistant.const import (
     ATTR_TEMPERATURE,
@@ -68,7 +68,7 @@ async def async_setup_humidifier(
 ) -> None:
     """Set up humidifiers for Venta AP902."""
     async_add_entities(
-        [VentaV0HumidifierEntity(coordinator, modes=[MODE_SLEEP, *MODES_5])]
+        [VentaV0HumidifierEntity(coordinator, modes=[MODE_SLEEP, MODE_BOOST, *MODES_5])]
     )
 
 
