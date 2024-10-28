@@ -21,17 +21,26 @@ from ..const import (
     ATTR_NEEDS_FILTER_CLEANING,
     ATTR_OPERATION_TIME,
     ATTR_PM_2_5,
+    ATTR_TIMER,
     ATTR_TIMER_TIME,
     ATTR_WARNINGS,
     FIVE_MINUTES_RESOLUTION,
     ONE_MINUTE_RESOLUTION,
     TEN_MINUTES_RESOLUTION,
+    TIMER_MODES_1H,
+    TIMER_MODES_3H,
+    TIMER_MODES_5H,
+    TIMER_MODES_7H,
+    TIMER_MODES_9H,
+    TIMER_MODES_OFF,
 )
 from ..utils import venta_time_to_minutes
 from ..venta import VentaDataUpdateCoordinator
 from ..venta_entity import (
     VentaBinarySensor,
     VentaBinarySensorEntityDescription,
+    VentaSelect,
+    VentaSelectEntityDescription,
     VentaSensor,
     VentaSensorEntityDescription,
 )
@@ -164,4 +173,29 @@ async def async_setup_select(
     coordinator: VentaDataUpdateCoordinator, async_add_entities: AddEntitiesCallback
 ) -> None:
     """Set up selects for Venta LP60."""
-    pass
+    async_add_entities(
+        [
+            VentaSelect(
+                coordinator,
+                VentaSelectEntityDescription(
+                    key=ATTR_TIMER,
+                    translation_key=ATTR_TIMER,
+                    entity_category=EntityCategory.CONFIG,
+                    value_func=lambda data: (
+                        str(data.action.get("Timer"))
+                        if data.action.get("Timer")
+                        else None
+                    ),
+                    action_func=(lambda option: {"Action": {"Timer": int(option)}}),
+                    options=[
+                        TIMER_MODES_OFF,
+                        TIMER_MODES_1H,
+                        TIMER_MODES_3H,
+                        TIMER_MODES_5H,
+                        TIMER_MODES_7H,
+                        TIMER_MODES_9H,
+                    ],
+                ),
+            )
+        ]
+    )

@@ -20,6 +20,7 @@ from ..const import (
     ATTR_DISC_ION_ERROR,
     ATTR_DISC_ION_TIME,
     ATTR_DISC_ION_TIME_TO_REPLACE,
+    ATTR_FAN_2_SPEED,
     ATTR_FAN_SPEED,
     ATTR_FILTER_TIME,
     ATTR_HUMIDITY,
@@ -30,7 +31,6 @@ from ..const import (
     ATTR_NEEDS_SERVICE,
     ATTR_NEEDS_WATER_INLET_CHECK,
     ATTR_OPERATION_TIME,
-    ATTR_FAN_2_SPEED,
     ATTR_SERVICE_TIME,
     ATTR_TIME_TO_CLEAN,
     ATTR_TIME_TO_SERVICE,
@@ -39,9 +39,10 @@ from ..const import (
     CLEAN_TIME_DAYS,
     FIVE_MINUTES_RESOLUTION,
     ION_DISC_REPLACE_TIME_DAYS,
-    LED_STRIP_MODES,
-    LED_STRIP_MODES_KEYS,
-    LED_STRIP_MODES_VALUES,
+    LED_STRIP_MODES_EXTERNAL,
+    LED_STRIP_MODES_EXTERNAL_NO_WATER,
+    LED_STRIP_MODES_INTERNAL,
+    LED_STRIP_MODES_INTERNAL_NO_WATER,
     MODES_4,
     SERVICE_TIME_DAYS,
     TEN_MINUTES_RESOLUTION,
@@ -309,23 +310,16 @@ async def async_setup_select(
                     key=ATTR_LED_STRIP_MODE,
                     translation_key=ATTR_LED_STRIP_MODE,
                     entity_category=EntityCategory.CONFIG,
-                    exists_func=lambda coordinator: coordinator.data.action.get(
-                        "LEDStripMode"
-                    )
-                    is not None,
-                    value_func=lambda data: LED_STRIP_MODES.get(
-                        data.action.get("LEDStripMode")
-                    ),
+                    value_func=lambda data: str(data.action.get("LEDStripMode")),
                     action_func=(
-                        lambda option: {
-                            "Action": {
-                                "LEDStripMode": LED_STRIP_MODES_KEYS[
-                                    LED_STRIP_MODES_VALUES.index(option)
-                                ]
-                            }
-                        }
+                        lambda option: {"Action": {"LEDStripMode": int(option)}}
                     ),
-                    options=LED_STRIP_MODES_VALUES,
+                    options=[
+                        LED_STRIP_MODES_INTERNAL,
+                        LED_STRIP_MODES_INTERNAL_NO_WATER,
+                        LED_STRIP_MODES_EXTERNAL,
+                        LED_STRIP_MODES_EXTERNAL_NO_WATER,
+                    ],
                 ),
             )
         ]
