@@ -36,12 +36,12 @@
             "state": {
               "sleep": "Schlafen",
               "auto": "Auto",
-              "turbo": "Turbo",
               "level_1": "Stufe 1",
               "level_2": "Stufe 2",
               "level_3": "Stufe 3",
               "level_4": "Stufe 4",
-              "level_5": "Stufe 5"
+              "level_5": "Stufe 5",
+              "boost": "Schub"
             }
           }
         }
@@ -153,6 +153,9 @@
       },
       "toluene": {
         "name": "Toluol"
+      },
+      "hepa_filter_lifetime": {
+        "name": "Lebensdauer des HEPA-Filters"
       }
     },
     "binary_sensor": {
@@ -194,6 +197,18 @@
       },
       "fan_blocked": {
         "name": "Lüfter blockiert"
+      },
+      "fan_relay": {
+        "name": "Lüfterrelais"
+      },
+      "disc_relay": {
+        "name": "Scheibenrelais"
+      },
+      "uvc_relay": {
+        "name": "UVC-Relais"
+      },
+      "valve_relay": {
+        "name": "Ventilrelais"
       }
     },
     "light": {
@@ -203,7 +218,24 @@
     },
     "select": {
       "led_strip_mode": {
-        "name": "LED-Streifenmodus"
+        "name": "LED-Streifenmodus",
+        "state": {
+          "0": "Vollständig intern",
+          "1": "Wasserwarnung intern, Rest extern",
+          "2": "Wasserwarnung extern, Rest intern",
+          "3": "Vollständig extern"
+        }
+      },
+      "timer": {
+        "name": "Abschalttimer",
+        "state": {
+          "0": "Timer aus",
+          "1": "Abschaltung in 1 Stunde",
+          "3": "Abschaltung in 3 Stunden",
+          "5": "Abschaltung in 5 Stunden",
+          "7": "Abschaltung in 7 Stunden",
+          "9": "Shutdown in 9 Stunden"
+        }
       }
     },
     "switch": {

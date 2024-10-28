@@ -36,12 +36,12 @@
             "state": {
               "sleep": "Veille",
               "auto": "Auto",
-              "turbo": "Turbo",
               "level_1": "Niveau 1",
               "level_2": "Niveau 2",
               "level_3": "Niveau 3",
               "level_4": "Niveau 4",
-              "level_5": "Niveau 5"
+              "level_5": "Niveau 5",
+              "boost": "Booster"
             }
           }
         }
@@ -153,6 +153,9 @@
       },
       "toluene": {
         "name": "Toluène"
+      },
+      "hepa_filter_lifetime": {
+        "name": "Durée de vie du filtre HEPA"
       }
     },
     "binary_sensor": {
@@ -194,6 +197,18 @@
       },
       "fan_blocked": {
         "name": "Ventilateur bloqué"
+      },
+      "fan_relay": {
+        "name": "Relais de ventilateur"
+      },
+      "disc_relay": {
+        "name": "Relais à disque"
+      },
+      "uvc_relay": {
+        "name": "Relais UVC"
+      },
+      "valve_relay": {
+        "name": "Relais de soupape"
       }
     },
     "light": {
@@ -203,7 +218,24 @@
     },
     "select": {
       "led_strip_mode": {
-        "name": "Mode bande LED"
+        "name": "Mode bande LED",
+        "state": {
+          "0": "Entièrement interne",
+          "1": "Avertissement d'eau interne, reste externe",
+          "2": "Avertissement d'eau externe, reste interne",
+          "3": "Entièrement externe"
+        }
+      },
+      "timer": {
+        "name": "Minuterie d'arrêt",
+        "state": {
+          "0": "Minuterie désactivée",
+          "1": "Arrêt dans 1 heure",
+          "3": "Arrêt dans 3 heures",
+          "5": "Arrêt dans 5 heures",
+          "7": "Arrêt dans 7 heures",
+          "9": "Arrêt dans 9 heures"
+        }
       }
     },
     "switch": {

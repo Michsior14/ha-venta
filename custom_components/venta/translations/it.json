@@ -36,12 +36,12 @@
             "state": {
               "sleep": "Sonno",
               "auto": "Auto",
-              "turbo": "Turbo",
               "level_1": "Livello 1",
               "level_2": "Livello 2",
               "level_3": "Livello 3",
               "level_4": "Livello 4",
-              "level_5": "Livello 5"
+              "level_5": "Livello 5",
+              "boost": "Aumento"
             }
           }
         }
@@ -153,6 +153,9 @@
       },
       "toluene": {
         "name": "Toluene"
+      },
+      "hepa_filter_lifetime": {
+        "name": "Durata del filtro HEPA"
       }
     },
     "binary_sensor": {
@@ -194,6 +197,18 @@
       },
       "fan_blocked": {
         "name": "Ventilatore bloccato"
+      },
+      "fan_relay": {
+        "name": "Relè ventola"
+      },
+      "disc_relay": {
+        "name": "Staffetta del disco"
+      },
+      "uvc_relay": {
+        "name": "Relè UVC"
+      },
+      "valve_relay": {
+        "name": "Relè valvola"
       }
     },
     "light": {
@@ -203,7 +218,24 @@
     },
     "select": {
       "led_strip_mode": {
-        "name": "Modalità striscia LED"
+        "name": "Modalità striscia LED",
+        "state": {
+          "0": "Completamente interno",
+          "1": "Avviso acqua interna, resto esterno",
+          "2": "Avviso acqua esterno, resto interno",
+          "3": "Completamente esterno"
+        }
+      },
+      "timer": {
+        "name": "Timer di spegnimento",
+        "state": {
+          "0": "Timer di spegnimento",
+          "1": "Spegnimento in 1 ora",
+          "3": "Spegnimento in 3 ore",
+          "5": "Spegnimento in 5 ore",
+          "7": "Spegnimento in 7 ore",
+          "9": "Spegnimento in 9 ore"
+        }
       }
     },
     "switch": {
