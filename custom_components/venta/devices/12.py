@@ -31,6 +31,10 @@ from ..const import (
     ATTR_NEEDS_SERVICE,
     ATTR_OPERATION_TIME,
     ATTR_PM_2_5,
+    ATTR_DISC_RELAY,
+    ATTR_FAN_RELAY,
+    ATTR_UVC_RELAY,
+    ATTR_VALVE_RELAY,
     ATTR_REMAINING_CLEANING_TIME,
     ATTR_SERVICE_TIME,
     ATTR_TIME_TO_CLEAN,
@@ -50,7 +54,7 @@ from ..const import (
     WATER_LEVEL_RED,
     WATER_LEVEL_YELLOW,
 )
-from ..utils import venta_time_to_days_left, venta_time_to_minutes
+from ..utils import get_from_list, venta_time_to_days_left, venta_time_to_minutes
 from ..venta import VentaDataUpdateCoordinator
 from ..venta_entity import (
     VentaBinarySensor,
@@ -92,6 +96,30 @@ async def async_setup_binary_sensor(
             translation_key=ATTR_CLEAN_MODE,
             icon="mdi:silverware-clean",
             value_func=(lambda data: data.info.get("CleanMode")),
+        ),
+        VentaBinarySensorEntityDescription(
+            key=ATTR_FAN_RELAY,
+            translation_key=ATTR_FAN_RELAY,
+            icon="mdi:electric-switch",
+            value_func=lambda data: get_from_list(data.info.get("RelState"), 0),
+        ),
+        VentaBinarySensorEntityDescription(
+            key=ATTR_DISC_RELAY,
+            translation_key=ATTR_DISC_RELAY,
+            icon="mdi:electric-switch",
+            value_func=lambda data: get_from_list(data.info.get("RelState"), 1),
+        ),
+        VentaBinarySensorEntityDescription(
+            key=ATTR_UVC_RELAY,
+            translation_key=ATTR_UVC_RELAY,
+            icon="mdi:electric-switch",
+            value_func=lambda data: get_from_list(data.info.get("RelState"), 2),
+        ),
+        VentaBinarySensorEntityDescription(
+            key=ATTR_VALVE_RELAY,
+            translation_key=ATTR_VALVE_RELAY,
+            icon="mdi:electric-switch",
+            value_func=lambda data: get_from_list(data.info.get("RelState"), 3),
         ),
         VentaBinarySensorEntityDescription(
             key=ATTR_NEEDS_REFILL,

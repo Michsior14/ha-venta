@@ -204,6 +204,18 @@
       },
       "fan_blocked": {
         "name": "Fan blocked"
+      },
+      "fan_relay": {
+        "name": "Fan relay"
+      },
+      "disc_relay": {
+        "name": "Disc relay"
+      },
+      "uvc_relay": {
+        "name": "UVC relay"
+      },
+      "valve_relay": {
+        "name": "Valve relay"
       }
     },
     "light": {

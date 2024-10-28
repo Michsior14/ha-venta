@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import _T, List
+
 
 def skip_zeros(
     value: str | int | bool | None,
@@ -36,3 +38,13 @@ def needs_maintenance(value: int | None, max_days: int, resolution: int) -> bool
     if value is None:
         return None
     return venta_time_to_days_left(value, max_days, resolution) <= 0
+
+
+def get_from_list(list: List[_T] | None, index: int, default: _T = None) -> _T:
+    """Get an item from a list or return a default value."""
+    if list is None:
+        return default
+    try:
+        return list[index]
+    except IndexError:
+        return default
