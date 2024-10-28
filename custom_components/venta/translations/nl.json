@@ -36,12 +36,12 @@
             "state": {
               "sleep": "Slaap",
               "auto": "Auto",
-              "turbo": "Turbo",
               "level_1": "Niveau 1",
               "level_2": "Niveau 2",
               "level_3": "Niveau 3",
               "level_4": "Niveau 4",
-              "level_5": "Niveau 5"
+              "level_5": "Niveau 5",
+              "boost": "Versterken"
             }
           }
         }
@@ -153,6 +153,9 @@
       },
       "toluene": {
         "name": "Tolueen"
+      },
+      "hepa_filter_lifetime": {
+        "name": "Levensduur HEPA-filter"
       }
     },
     "binary_sensor": {
@@ -194,6 +197,18 @@
       },
       "fan_blocked": {
         "name": "Ventilator geblokkeerd"
+      },
+      "fan_relay": {
+        "name": "Ventilator relais"
+      },
+      "disc_relay": {
+        "name": "Schijfrelais"
+      },
+      "uvc_relay": {
+        "name": "UVC-relais"
+      },
+      "valve_relay": {
+        "name": "Klep relais"
       }
     },
     "light": {
@@ -203,7 +218,24 @@
     },
     "select": {
       "led_strip_mode": {
-        "name": "LED-stripmodus"
+        "name": "LED-stripmodus",
+        "state": {
+          "0": "Volledig intern",
+          "1": "Waterwaarschuwing intern, rest extern",
+          "2": "Waterwaarschuwing extern, rust intern",
+          "3": "Volledig extern"
+        }
+      },
+      "timer": {
+        "name": "Uitschakeltimer",
+        "state": {
+          "0": "Timer uit",
+          "1": "Uitschakelen over 1 uur",
+          "3": "Uitschakeling over 3 uur",
+          "5": "Afsluiten over 5 uur",
+          "7": "Afsluiten over 7 uur",
+          "9": "Afsluiten over 9 uur"
+        }
       }
     },
     "switch": {

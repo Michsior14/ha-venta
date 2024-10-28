@@ -36,12 +36,12 @@
             "state": {
               "sleep": "Sleep",
               "auto": "Auto",
-              "turbo": "Turbo",
               "level_1": "Level 1",
               "level_2": "Level 2",
               "level_3": "Level 3",
               "level_4": "Level 4",
-              "level_5": "Level 5"
+              "level_5": "Level 5",
+              "boost": "Boost"
             }
           }
         }
@@ -153,6 +153,9 @@
       },
       "toluene": {
         "name": "Toluene"
+      },
+      "hepa_filter_lifetime": {
+        "name": "HEPA filter lifetime"
       }
     },
     "binary_sensor": {
@@ -194,6 +197,18 @@
       },
       "fan_blocked": {
         "name": "Fan blocked"
+      },
+      "fan_relay": {
+        "name": "Fan relay"
+      },
+      "disc_relay": {
+        "name": "Disc relay"
+      },
+      "uvc_relay": {
+        "name": "UVC relay"
+      },
+      "valve_relay": {
+        "name": "Valve relay"
       }
     },
     "light": {
@@ -203,7 +218,24 @@
     },
     "select": {
       "led_strip_mode": {
-        "name": "LED strip mode"
+        "name": "LED strip mode",
+        "state": {
+          "0": "Fully internal",
+          "1": "Water warning internal, rest external",
+          "2": "Water warning external, rest internal",
+          "3": "Fully external"
+        }
+      },
+      "timer": {
+        "name": "Shutdown timer",
+        "state": {
+          "0": "Timer off",
+          "1": "Shutdown in 1 hour",
+          "3": "Shutdown in 3 hours",
+          "5": "Shutdown in 5 hours",
+          "7": "Shutdown in 7 hours",
+          "9": "Shutdown in 9 hours"
+        }
       }
     },
     "switch": {
