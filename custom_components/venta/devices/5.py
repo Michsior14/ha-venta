@@ -18,7 +18,9 @@ from ..const import (
     ATTR_CHILD_LOCK,
     ATTR_CLEAN_MODE,
     ATTR_DISC_ION_TIME_TO_REPLACE,
+    ATTR_DISC_RELAY,
     ATTR_DOOR_OPEN,
+    ATTR_FAN_RELAY,
     ATTR_FAN_SPEED,
     ATTR_HUMIDITY,
     ATTR_NEEDS_CLEANING,
@@ -28,15 +30,14 @@ from ..const import (
     ATTR_NEEDS_REFILL_SOON,
     ATTR_NEEDS_WATER_INLET_CHECK,
     ATTR_OPERATION_TIME,
-    ATTR_DISC_RELAY,
-    ATTR_FAN_RELAY,
-    ATTR_UVC_RELAY,
-    ATTR_VALVE_RELAY,
     ATTR_REMAINING_CLEANING_TIME,
     ATTR_TIME_TO_CLEAN,
+    ATTR_TIMER,
     ATTR_TIMER_TIME,
     ATTR_UVC_LAMP_OFF_TIME,
     ATTR_UVC_LAMP_ON_TIME,
+    ATTR_UVC_RELAY,
+    ATTR_VALVE_RELAY,
     ATTR_WARNINGS,
     ATTR_WATER_LEVEL,
     CLEAN_TIME_DAYS,
@@ -44,6 +45,12 @@ from ..const import (
     ION_DISC_REPLACE_TIME_DAYS,
     MODES_5,
     ONE_MINUTE_RESOLUTION,
+    TIMER_MODES_1H,
+    TIMER_MODES_3H,
+    TIMER_MODES_5H,
+    TIMER_MODES_7H,
+    TIMER_MODES_9H,
+    TIMER_MODES_OFF,
     WATER_LEVEL_NO_VALUE,
     WATER_LEVEL_OK,
     WATER_LEVEL_OVERFLOW,
@@ -55,6 +62,8 @@ from ..venta import VentaDataUpdateCoordinator
 from ..venta_entity import (
     VentaBinarySensor,
     VentaBinarySensorEntityDescription,
+    VentaSelect,
+    VentaSelectEntityDescription,
     VentaSensor,
     VentaSensorEntityDescription,
     VentaSwitch,
@@ -343,4 +352,29 @@ async def async_setup_select(
     coordinator: VentaDataUpdateCoordinator, async_add_entities: AddEntitiesCallback
 ) -> None:
     """Set up selects for Venta LW62."""
-    pass
+    async_add_entities(
+        [
+            VentaSelect(
+                coordinator,
+                VentaSelectEntityDescription(
+                    key=ATTR_TIMER,
+                    translation_key=ATTR_TIMER,
+                    entity_category=EntityCategory.CONFIG,
+                    value_func=lambda data: (
+                        str(data.action.get("Timer"))
+                        if data.action.get("Timer")
+                        else None
+                    ),
+                    action_func=(lambda option: {"Action": {"Timer": int(option)}}),
+                    options=[
+                        TIMER_MODES_OFF,
+                        TIMER_MODES_1H,
+                        TIMER_MODES_3H,
+                        TIMER_MODES_5H,
+                        TIMER_MODES_7H,
+                        TIMER_MODES_9H,
+                    ],
+                ),
+            )
+        ]
+    )

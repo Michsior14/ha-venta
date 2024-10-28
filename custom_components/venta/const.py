@@ -90,7 +90,7 @@ ATTR_DISC_RELAY = "disc_relay"
 ATTR_UVC_RELAY = "uvc_relay"
 ATTR_VALVE_RELAY = "valve_relay"
 ATTR_HEPA_FILTER_LIFETIME = "hepa_filter_lifetime"
-
+ATTR_TIMER = "timer"
 ATTR_LED_STRIP = "led_strip"
 ATTR_LED_STRIP_MODE = "led_strip_mode"
 ATTR_SLEEP_MODE = "sleep_mode"
@@ -104,11 +104,14 @@ ONE_MINUTE_RESOLUTION = 1
 FIVE_MINUTES_RESOLUTION = 5
 TEN_MINUTES_RESOLUTION = 10
 
-LED_STRIP_MODES = {
-    0: "internal",
-    2: "internal - no water",
-    1: "external",
-    3: "external - no water",
-}
-LED_STRIP_MODES_KEYS = list(LED_STRIP_MODES.keys())
-LED_STRIP_MODES_VALUES = list(LED_STRIP_MODES.values())
+LED_STRIP_MODES_INTERNAL = "0"
+LED_STRIP_MODES_INTERNAL_NO_WATER = "2"
+LED_STRIP_MODES_EXTERNAL = "1"
+LED_STRIP_MODES_EXTERNAL_NO_WATER = "3"
+
+TIMER_MODES_OFF = "0"
+TIMER_MODES_1H = "1"
+TIMER_MODES_3H = "3"
+TIMER_MODES_5H = "5"
+TIMER_MODES_7H = "7"
+TIMER_MODES_9H = "9"

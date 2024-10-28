@@ -359,7 +359,6 @@ class VentaSwitch(CoordinatorEntity[VentaDataUpdateCoordinator], SwitchEntity):
 class VentaSelectRequiredKeysMixin:
     """Mixin for required keys."""
 
-    exists_func: Callable[[VentaDataUpdateCoordinator], bool]
     value_func: Callable[[VentaData], str | None]
     action_func: Callable[[str], dict | None]
 
