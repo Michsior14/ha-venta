@@ -19,6 +19,7 @@ from ..const import (
     ATTR_CHILD_LOCK,
     ATTR_FAN_SPEED,
     ATTR_FILTER_TIME,
+    ATTR_HEPA_FILTER_LIFETIME,
     ATTR_HUMIDITY,
     ATTR_NEEDS_FILTER_CLEANING,
     ATTR_OPERATION_TIME,
@@ -174,6 +175,17 @@ async def async_setup_sensor(
             icon="mdi:alert",
             entity_category=EntityCategory.DIAGNOSTIC,
             value_func=lambda coordinator: coordinator.data.info.get("Warnings"),
+        ),
+        VentaSensorEntityDescription(
+            key=ATTR_HEPA_FILTER_LIFETIME,
+            translation_key=ATTR_HEPA_FILTER_LIFETIME,
+            icon="mdi:air-filter",
+            state_class=SensorStateClass.MEASUREMENT,
+            entity_category=EntityCategory.DIAGNOSTIC,
+            value_func=lambda coordinator: venta_time_to_minutes(
+                coordinator.data.action.get("FiltLifetime"),
+                TEN_MINUTES_RESOLUTION,
+            ),
         ),
     ]
     async_add_entities(
