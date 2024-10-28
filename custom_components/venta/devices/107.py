@@ -80,7 +80,7 @@ async def async_setup_binary_sensor(
             key=ATTR_NEEDS_REFILL,
             translation_key=ATTR_NEEDS_REFILL,
             icon="mdi:water-alert",
-            value_func=(lambda data: data.info.get("Warnings") & WATER_WARNING),
+            value_func=lambda data: data.info.get("Warnings") & WATER_WARNING,
         ),
         VentaBinarySensorEntityDescription(
             key=ATTR_NEEDS_DISC_REPLACEMENT,
@@ -98,7 +98,7 @@ async def async_setup_binary_sensor(
             key=ATTR_NEEDS_SERVICE,
             translation_key=ATTR_NEEDS_SERVICE,
             icon="mdi:account-wrench",
-            value_func=(lambda data: data.info.get("Warnings") & SERVICE_WARNING),
+            value_func=lambda data: data.info.get("Warnings") & SERVICE_WARNING,
         ),
     ]
     async_add_entities(
@@ -262,9 +262,9 @@ async def async_setup_select(
                     translation_key=ATTR_LED_STRIP_MODE,
                     entity_category=EntityCategory.CONFIG,
                     value_func=lambda data: str(data.action.get("LEDStripMode")),
-                    action_func=(
-                        lambda option: {"Action": {"LEDStripMode": int(option)}}
-                    ),
+                    action_func=lambda option: {
+                        "Action": {"LEDStripMode": int(option)}
+                    },
                     options=[
                         LED_STRIP_MODES_INTERNAL,
                         LED_STRIP_MODES_INTERNAL_NO_WATER,

@@ -80,7 +80,7 @@ async def async_setup_binary_sensor(
             key=ATTR_NEEDS_FILTER_CLEANING,
             translation_key=ATTR_NEEDS_FILTER_CLEANING,
             icon="mdi:air-filter",
-            value_func=(lambda data: data.info.get("Warnings") & FILTER_WARNING),
+            value_func=lambda data: data.info.get("Warnings") & FILTER_WARNING,
         ),
     ]
     async_add_entities(
@@ -213,14 +213,10 @@ async def async_setup_switch(
             translation_key=ATTR_CHILD_LOCK,
             entity_category=EntityCategory.CONFIG,
             value_func=lambda data: data.action.get("ChildLock"),
-            action_func=(
-                lambda _, is_on: (
-                    {
-                        "ChildLock": is_on,
-                        "Action": "control",
-                    }
-                )
-            ),
+            action_func=lambda _, is_on: {
+                "ChildLock": is_on,
+                "Action": "control",
+            },
         ),
     ]
     async_add_entities(
@@ -252,7 +248,7 @@ async def async_setup_select(
                         if data.action.get("Timer")
                         else None
                     ),
-                    action_func=(lambda option: {"Action": {"Timer": int(option)}}),
+                    action_func=lambda option: {"Action": {"Timer": int(option)}},
                     options=[
                         TIMER_MODES_OFF,
                         TIMER_MODES_1H,
