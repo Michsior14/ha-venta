@@ -1,27 +1,37 @@
-name: Pull from Lokalise
+name: update translations
 
 on:
   workflow_dispatch:
   schedule:
     - cron: "0 0 * * 0" # Every Sunday at 00:00
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
-  build:
+  translations:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
+      - uses: actions/checkout@v4
+      - name: Setup Lokalise
+        uses: frenck/action-setup-lokalise@v1
       - name: Pull from Lokalise
-        uses: lokalise/lokalise-pull-action@v1.0.0
+        run: lokalise2 --token=${{secrets.LOKALISE_API_TOKEN}} \
+          --project-id=2728010065b52d190d6247.58782749 \
+          file download \
+          --format=json \
+          --export-sort=first_added \
+          --indentation=2sp \
+          --bundle-structure=custom_components/venta/translations/%LANG_ISO%.%FORMAT% \
+          --original-filenames=false
+      - name: Create translation PR
+        uses: peter-evans/create-pull-request@v7
         with:
-          api_token: ${{ secrets.LOKALISE_API_TOKEN }}
-          project_id: 2728010065b52d190d6247.58782749
-          translations_path: custom_components/venta/translations
-          always_pull_base: true
-          file_format: json
-          base_lang: en
-          additional_params: --export-sort="first_added" --indentation="2sp" --bundle-structure="custom_components/venta/translations/%LANG_ISO%.%FORMAT%" --original-filenames=false
+          commit-message: "feat: update translations"
+          title: "feat: update translations"
+          body: ""
+          branch: "github/auto-translations"
+          delete-branch: true
+          add-paths: |
+            custom_components/venta/translations/*.json
