@@ -1,3 +1,10 @@
+## [0.9.2](https://github.com/Michsior14/ha-venta/compare/v0.9.1...v0.9.2) (2024-10-28)
+
+
+### Bug Fixes
+
+* water level sensor definition errors for some devices ([f0fbe78](https://github.com/Michsior14/ha-venta/commit/f0fbe78c78ce51c1fcbe5a0779731b3e8f74eb98))
+
 ## [0.9.1](https://github.com/Michsior14/ha-venta/compare/v0.9.0...v0.9.1) (2024-10-27)
 
 
@@ -26,11 +33,4 @@
 ### Bug Fixes
 
 * extract json syntax ([c036055](https://github.com/Michsior14/ha-venta/commit/c0360556c9618c09e48bf6c38e70f8925774c581))
-
-## [0.8.1-beta.1](https://github.com/Michsior14/ha-venta/compare/v0.8.1-beta.0...v0.8.1-beta.1) (2024-10-26)
-
-
-### Bug Fixes
-
-* circular imports ([e1f9805](https://github.com/Michsior14/ha-venta/commit/e1f98058660593fd6bb067f1d2aec80f8af24300))
 
