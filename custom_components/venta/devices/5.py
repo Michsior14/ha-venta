@@ -243,7 +243,6 @@ async def async_setup_sensor(
             translation_key=ATTR_WATER_LEVEL,
             icon="mdi:water",
             device_class=SensorDeviceClass.ENUM,
-            state_class=SensorStateClass.MEASUREMENT,
             entity_category=EntityCategory.DIAGNOSTIC,
             options=[
                 WATER_LEVEL_NO_VALUE,
@@ -252,7 +251,11 @@ async def async_setup_sensor(
                 WATER_LEVEL_OK,
                 WATER_LEVEL_OVERFLOW,
             ],
-            value_func=lambda coordinator: coordinator.data.measure.get("WaterLevel"),
+            value_func=lambda coordinator: (
+                str(coordinator.data.measure.get("WaterLevel"))
+                if coordinator.data.measure.get("WaterLevel") is not None
+                else None
+            ),
         ),
         VentaSensorEntityDescription(
             key=ATTR_FAN_SPEED,
