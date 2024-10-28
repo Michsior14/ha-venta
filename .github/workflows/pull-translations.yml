@@ -17,7 +17,8 @@ jobs:
       - name: Setup Lokalise
         uses: frenck/action-setup-lokalise@v1
       - name: Pull from Lokalise
-        run: lokalise2 --token=${{secrets.LOKALISE_API_TOKEN}} \
+        run: |
+          lokalise2 --token=${{secrets.LOKALISE_API_TOKEN}} \
           --project-id=2728010065b52d190d6247.58782749 \
           file download \
           --format=json \
