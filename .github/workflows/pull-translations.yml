@@ -24,4 +24,4 @@ jobs:
           always_pull_base: true
           file_format: json
           base_lang: en
-          additional_params: --export-sort=\"first_added\" --indentation=\"2sp\" --bundle-structure=\"custom_components/venta/translations/%LANG_ISO%.%FORMAT%\" --original-filenames=false
+          additional_params: "--export-sort=first_added --indentation=2sp --bundle-structure=custom_components/venta/translations/%LANG_ISO%.%FORMAT% --original-filenames=false"
