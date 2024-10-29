@@ -1,3 +1,10 @@
+## [0.10.2](https://github.com/Michsior14/ha-venta/compare/v0.10.1...v0.10.2) (2024-10-29)
+
+
+### Bug Fixes
+
+* temp unit scope ([7fe2eb6](https://github.com/Michsior14/ha-venta/commit/7fe2eb6a0923ddc741c11ef883a0a809a8cd96ce))
+
 ## [0.10.1](https://github.com/Michsior14/ha-venta/compare/v0.10.0...v0.10.1) (2024-10-29)
 
 
@@ -34,12 +41,4 @@
 ### Bug Fixes
 
 * add missing sensors for AH902/AP902 ([#49](https://github.com/Michsior14/ha-venta/issues/49)) ([7c68749](https://github.com/Michsior14/ha-venta/commit/7c68749007edc51a2e21c9f468010b24dacc69da))
-
-## [0.9.0](https://github.com/Michsior14/ha-venta/compare/v0.8.1...v0.9.0) (2024-10-27)
-
-
-### Features
-
-* separate devices ([#47](https://github.com/Michsior14/ha-venta/issues/47)) ([31874eb](https://github.com/Michsior14/ha-venta/commit/31874eb89df3fd1abd92622b0f0af0403062f9fd)), closes [#43](https://github.com/Michsior14/ha-venta/issues/43)
-* translations update ([#48](https://github.com/Michsior14/ha-venta/issues/48)) ([209b535](https://github.com/Michsior14/ha-venta/commit/209b53506a3872b428b4496c1c30d6fe332744c7))
 
