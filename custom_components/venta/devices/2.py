@@ -245,7 +245,7 @@ async def async_setup_sensor(
             suggested_display_precision=1,
             value_func=lambda coordinator: coordinator.data.measure.get("Temperature"),
             unit_func=lambda coordinator: venta_temperature_unit(
-                coordinator.data.measure.get("TempUnit")
+                coordinator.data.action.get("TempUnit")
             ),
         ),
         VentaSensorEntityDescription(
