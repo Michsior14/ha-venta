@@ -62,13 +62,13 @@ async def async_setup_binary_sensor(
             key=ATTR_NEEDS_REFILL,
             translation_key=ATTR_NEEDS_REFILL,
             icon="mdi:water-alert",
-            value_func=(lambda data: data.info.get("Warnings") & WATER_WARNING),
+            value_func=lambda data: data.info.get("Warnings") & WATER_WARNING,
         ),
         VentaBinarySensorEntityDescription(
             key=ATTR_NEEDS_SERVICE,
             translation_key=ATTR_NEEDS_SERVICE,
             icon="mdi:account-wrench",
-            value_func=(lambda data: data.info.get("Warnings") & SERVICE_WARNING),
+            value_func=lambda data: data.info.get("Warnings") & SERVICE_WARNING,
         ),
         VentaBinarySensorEntityDescription(
             key=ATTR_BOX_OPEN,
@@ -176,21 +176,19 @@ async def async_setup_switch(
             translation_key=ATTR_SLEEP_MODE,
             entity_category=EntityCategory.CONFIG,
             value_func=lambda data: data.action.get("SleepMode"),
-            action_func=(
-                lambda data, is_on: (
-                    {
-                        "SleepMode": True,
-                        "Action": "control",
-                    }
-                    if is_on
-                    else {
-                        "Power": data.action.get("Power"),
-                        "SleepMode": False,
-                        "Automatic": data.action.get("Automatic"),
-                        "FanSpeed": data.action.get("FanSpeed"),
-                        "Action": "control",
-                    }
-                )
+            action_func=lambda data, is_on: (
+                {
+                    "SleepMode": True,
+                    "Action": "control",
+                }
+                if is_on
+                else {
+                    "Power": data.action.get("Power"),
+                    "SleepMode": False,
+                    "Automatic": data.action.get("Automatic"),
+                    "FanSpeed": data.action.get("FanSpeed"),
+                    "Action": "control",
+                }
             ),
         ),
     ]

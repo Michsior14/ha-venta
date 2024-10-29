@@ -94,7 +94,7 @@ async def async_setup_binary_sensor(
             key=ATTR_CLEAN_MODE,
             translation_key=ATTR_CLEAN_MODE,
             icon="mdi:silverware-clean",
-            value_func=(lambda data: data.info.get("CleanMode")),
+            value_func=lambda data: data.info.get("CleanMode"),
         ),
         VentaBinarySensorEntityDescription(
             key=ATTR_FAN_RELAY,
@@ -124,7 +124,7 @@ async def async_setup_binary_sensor(
             key=ATTR_NEEDS_REFILL,
             translation_key=ATTR_NEEDS_REFILL,
             icon="mdi:water-alert",
-            value_func=(lambda data: data.info.get("Warnings") & FILL_TANK_RED_WARNING),
+            value_func=lambda data: data.info.get("Warnings") & FILL_TANK_RED_WARNING,
         ),
         VentaBinarySensorEntityDescription(
             key=ATTR_NEEDS_REFILL_SOON,
@@ -138,13 +138,13 @@ async def async_setup_binary_sensor(
             key=ATTR_DOOR_OPEN,
             translation_key=ATTR_DOOR_OPEN,
             icon="mdi:door-closed",
-            value_func=(lambda data: data.info.get("Warnings") & CLOSE_DOOR_WARNING),
+            value_func=lambda data: data.info.get("Warnings") & CLOSE_DOOR_WARNING,
         ),
         VentaBinarySensorEntityDescription(
             key=ATTR_NEEDS_FILTER_CLEANING,
             translation_key=ATTR_NEEDS_FILTER_CLEANING,
             icon="mdi:air-filter",
-            value_func=(lambda data: data.info.get("Warnings") & FILTER_WARNING),
+            value_func=lambda data: data.info.get("Warnings") & FILTER_WARNING,
         ),
         VentaBinarySensorEntityDescription(
             key=ATTR_NEEDS_DISC_REPLACEMENT,
@@ -275,14 +275,10 @@ async def async_setup_switch(
             translation_key=ATTR_CHILD_LOCK,
             entity_category=EntityCategory.CONFIG,
             value_func=lambda data: data.action.get("ChildLock"),
-            action_func=(
-                lambda _, is_on: (
-                    {
-                        "ChildLock": is_on,
-                        "Action": "control",
-                    }
-                )
-            ),
+            action_func=lambda _, is_on: {
+                "ChildLock": is_on,
+                "Action": "control",
+            },
         ),
     ]
     async_add_entities(
@@ -314,7 +310,7 @@ async def async_setup_select(
                         if data.action.get("Timer")
                         else None
                     ),
-                    action_func=(lambda option: {"Action": {"Timer": int(option)}}),
+                    action_func=lambda option: ({"Action": {"Timer": int(option)}}),
                     options=[
                         TIMER_MODES_OFF,
                         TIMER_MODES_1H,
