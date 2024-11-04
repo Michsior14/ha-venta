@@ -53,6 +53,7 @@ from ..const import (
     WATER_LEVEL_OK,
     WATER_LEVEL_RED,
     WATER_LEVEL_YELLOW,
+    WATER_LEVEL_OVERFLOW,
 )
 from ..utils import (
     get_from_list,
@@ -283,6 +284,7 @@ async def async_setup_sensor(
                 WATER_LEVEL_YELLOW,
                 WATER_LEVEL_RED,
                 WATER_LEVEL_OK,
+                WATER_LEVEL_OVERFLOW,
             ],
             value_func=lambda coordinator: (
                 str(coordinator.data.measure.get("WaterLevel"))
