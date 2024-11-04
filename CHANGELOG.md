@@ -1,3 +1,10 @@
+## [0.10.3](https://github.com/Michsior14/ha-venta/compare/v0.10.2...v0.10.3) (2024-11-04)
+
+
+### Bug Fixes
+
+* add overflow water level to all devices ([#66](https://github.com/Michsior14/ha-venta/issues/66)) ([922a8f8](https://github.com/Michsior14/ha-venta/commit/922a8f89b614827a0a64abdbb5c9a9b6d8cd3b31)), closes [#65](https://github.com/Michsior14/ha-venta/issues/65)
+
 ## [0.10.2](https://github.com/Michsior14/ha-venta/compare/v0.10.1...v0.10.2) (2024-10-29)
 
 
@@ -34,11 +41,4 @@
 ### Bug Fixes
 
 * water level sensor definition errors for some devices ([f0fbe78](https://github.com/Michsior14/ha-venta/commit/f0fbe78c78ce51c1fcbe5a0779731b3e8f74eb98))
-
-## [0.9.1](https://github.com/Michsior14/ha-venta/compare/v0.9.0...v0.9.1) (2024-10-27)
-
-
-### Bug Fixes
-
-* add missing sensors for AH902/AP902 ([#49](https://github.com/Michsior14/ha-venta/issues/49)) ([7c68749](https://github.com/Michsior14/ha-venta/commit/7c68749007edc51a2e21c9f468010b24dacc69da))
 
