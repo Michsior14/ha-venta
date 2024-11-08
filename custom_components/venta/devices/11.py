@@ -59,8 +59,6 @@ from ..venta_entity import (
 
 FILTER_WARNING = 16
 
-# TODO:  Add timer selection
-
 
 async def async_setup_humidifier(
     coordinator: VentaDataUpdateCoordinator, async_add_entities: AddEntitiesCallback

@@ -73,8 +73,6 @@ FILTER_WARNING = 16
 ION_DISC_WARNING = 32
 CLEANING_WARNING = 64
 
-# TODO:  Add timer selection
-
 
 async def async_setup_humidifier(
     coordinator: VentaDataUpdateCoordinator, async_add_entities: AddEntitiesCallback
