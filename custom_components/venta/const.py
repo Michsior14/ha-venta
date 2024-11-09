@@ -11,6 +11,7 @@ AUTO_API_VERSION = "auto"
 DEFAULT_SCAN_INTERVAL = 10
 NO_WATER_THRESHOLD = 50000
 
+MODE_LEVEL_0 = "level_0"
 MODE_LEVEL_1 = "level_1"
 MODE_LEVEL_2 = "level_2"
 MODE_LEVEL_3 = "level_3"
@@ -19,6 +20,7 @@ MODE_LEVEL_5 = "level_5"
 
 MODES_3: list[str] = [
     MODE_AUTO,
+    MODE_LEVEL_0,
     MODE_LEVEL_1,
     MODE_LEVEL_2,
     MODE_LEVEL_3,
