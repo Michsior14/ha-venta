@@ -1,3 +1,15 @@
+## [0.11.0](https://github.com/Michsior14/ha-venta/compare/v0.10.3...v0.11.0) (2024-11-09)
+
+
+### Features
+
+* update translations ([#68](https://github.com/Michsior14/ha-venta/issues/68)) ([0d6d0d1](https://github.com/Michsior14/ha-venta/commit/0d6d0d17c148d31e7c59e0716914cd581bfc1656))
+
+
+### Bug Fixes
+
+* humidifiers level 0 handling ([#67](https://github.com/Michsior14/ha-venta/issues/67)) ([94b0040](https://github.com/Michsior14/ha-venta/commit/94b00400c205a820218492546178c11d10866dc2))
+
 ## [0.10.3](https://github.com/Michsior14/ha-venta/compare/v0.10.2...v0.10.3) (2024-11-04)
 
 
@@ -34,11 +46,4 @@
 ### Bug Fixes
 
 * temperature unit ([#60](https://github.com/Michsior14/ha-venta/issues/60)) ([e5e32bf](https://github.com/Michsior14/ha-venta/commit/e5e32bf75a010886db04a24ca5d86e0895fa1bc2)), closes [#57](https://github.com/Michsior14/ha-venta/issues/57)
-
-## [0.9.2](https://github.com/Michsior14/ha-venta/compare/v0.9.1...v0.9.2) (2024-10-28)
-
-
-### Bug Fixes
-
-* water level sensor definition errors for some devices ([f0fbe78](https://github.com/Michsior14/ha-venta/commit/f0fbe78c78ce51c1fcbe5a0779731b3e8f74eb98))
 
