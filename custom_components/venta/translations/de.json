@@ -41,7 +41,8 @@
               "level_3": "Stufe 3",
               "level_4": "Stufe 4",
               "level_5": "Stufe 5",
-              "boost": "Schub"
+              "boost": "Schub",
+              "level_0": "Keine"
             }
           }
         }
