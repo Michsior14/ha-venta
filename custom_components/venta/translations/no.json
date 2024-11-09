@@ -41,7 +41,8 @@
               "level_3": "Nivå 3",
               "level_4": "Nivå 4",
               "level_5": "Nivå 5",
-              "boost": "Øke"
+              "boost": "Øke",
+              "level_0": "Ingen"
             }
           }
         }

@@ -41,7 +41,8 @@
               "level_3": "Poziom 3",
               "level_4": "Poziom 4",
               "level_5": "Poziom 5",
-              "boost": "Boost"
+              "boost": "Boost",
+              "level_0": "Brak"
             }
           }
         }

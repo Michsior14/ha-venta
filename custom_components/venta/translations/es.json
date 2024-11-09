@@ -41,7 +41,8 @@
               "level_3": "Nivel 3",
               "level_4": "Nivel 4",
               "level_5": "Nivel 5",
-              "boost": "Aumentar"
+              "boost": "Aumentar",
+              "level_0": "Ninguno"
             }
           }
         }
