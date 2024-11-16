@@ -18,6 +18,8 @@ The following Venta device are currently tested and supported:
   - AS100/AS150
   - AH510/AH515/AH530/AH535/AH550/AH555
 
+The new Venta devices like AH730 are using tuya infrastructure exclusively and are **not supported** by this project. If you have such device, please use [local](https://github.com/rospogrigio/localtuya) or [official](https://www.home-assistant.io/integrations/tuya/) Tuya integration.
+
 ## Features
 
 - Humidifier control (fan speed, target humidity, and auto/sleep mode).
