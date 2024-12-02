@@ -83,7 +83,7 @@ async def async_setup_sensor(
             native_unit_of_measurement=CONCENTRATION_PARTS_PER_MILLION,
             state_class=SensorStateClass.MEASUREMENT,
             value_func=lambda coordinator: skip_zeros(
-                coordinator.data.measure.get("Co2"), coordinator
+                coordinator.data.measure.get("Co2")
             ),
         ),
         VentaSensorEntityDescription(
