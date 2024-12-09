@@ -31,9 +31,6 @@ from ..const import (
     ATTR_TIME_TO_SERVICE,
     ATTR_WARNINGS,
     ATTR_WATER_LEVEL,
-    CLEAN_TIME_DAYS,
-    FIVE_MINUTES_RESOLUTION,
-    ION_DISC_REPLACE_TIME_DAYS,
     LED_STRIP_MODES_EXTERNAL,
     LED_STRIP_MODES_EXTERNAL_NO_WATER,
     LED_STRIP_MODES_INTERNAL,
@@ -60,6 +57,9 @@ ION_DISC_WARNING = 2
 CLEANING_WARNING = 4
 FILTER_WARNING = 8
 SERVICE_WARNING = 16
+
+ION_DISC_REPLACE_TIME_DAYS = 122
+CLEAN_TIME_DAYS = 183
 
 
 async def async_setup_humidifier(
@@ -120,7 +120,7 @@ async def async_setup_sensor(
             value_func=lambda coordinator: venta_time_to_days_left(
                 coordinator.data.info.get("DiscIonT"),
                 ION_DISC_REPLACE_TIME_DAYS,
-                FIVE_MINUTES_RESOLUTION,
+                TEN_MINUTES_RESOLUTION,
             ),
         ),
         VentaSensorEntityDescription(
@@ -132,7 +132,7 @@ async def async_setup_sensor(
             value_func=lambda coordinator: venta_time_to_days_left(
                 coordinator.data.info.get("CleaningT"),
                 CLEAN_TIME_DAYS,
-                FIVE_MINUTES_RESOLUTION,
+                TEN_MINUTES_RESOLUTION,
             ),
         ),
         VentaSensorEntityDescription(
@@ -189,7 +189,7 @@ async def async_setup_sensor(
             native_unit_of_measurement=UnitOfTime.MINUTES,
             entity_category=EntityCategory.DIAGNOSTIC,
             value_func=lambda coordinator: venta_time_to_minutes(
-                coordinator.data.info.get("OperationT"), FIVE_MINUTES_RESOLUTION
+                coordinator.data.info.get("OperationT"), TEN_MINUTES_RESOLUTION
             ),
         ),
         VentaSensorEntityDescription(
@@ -199,7 +199,7 @@ async def async_setup_sensor(
             native_unit_of_measurement=UnitOfTime.MINUTES,
             entity_category=EntityCategory.DIAGNOSTIC,
             value_func=lambda coordinator: venta_time_to_minutes(
-                coordinator.data.info.get("DiscIonT"), FIVE_MINUTES_RESOLUTION
+                coordinator.data.info.get("DiscIonT"), TEN_MINUTES_RESOLUTION
             ),
         ),
         VentaSensorEntityDescription(
@@ -209,7 +209,7 @@ async def async_setup_sensor(
             native_unit_of_measurement=UnitOfTime.MINUTES,
             entity_category=EntityCategory.DIAGNOSTIC,
             value_func=lambda coordinator: venta_time_to_minutes(
-                coordinator.data.info.get("CleaningT"), FIVE_MINUTES_RESOLUTION
+                coordinator.data.info.get("CleaningT"), TEN_MINUTES_RESOLUTION
             ),
         ),
         VentaSensorEntityDescription(
