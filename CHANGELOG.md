@@ -1,3 +1,10 @@
+## [0.11.2](https://github.com/Michsior14/ha-venta/compare/v0.11.1...v0.11.2) (2024-12-09)
+
+
+### Bug Fixes
+
+* **LWxx:** resolution time for days sensors ([#74](https://github.com/Michsior14/ha-venta/issues/74)) ([570e8de](https://github.com/Michsior14/ha-venta/commit/570e8de534c75ca0355a5fba520dbcb96dace5da)), closes [#70](https://github.com/Michsior14/ha-venta/issues/70)
+
 ## [0.11.1](https://github.com/Michsior14/ha-venta/compare/v0.11.0...v0.11.1) (2024-12-02)
 
 
@@ -30,11 +37,4 @@
 ### Bug Fixes
 
 * temp unit scope ([7fe2eb6](https://github.com/Michsior14/ha-venta/commit/7fe2eb6a0923ddc741c11ef883a0a809a8cd96ce))
-
-## [0.10.1](https://github.com/Michsior14/ha-venta/compare/v0.10.0...v0.10.1) (2024-10-29)
-
-
-### Bug Fixes
-
-* action on select entity change ([#64](https://github.com/Michsior14/ha-venta/issues/64)) ([2534bcf](https://github.com/Michsior14/ha-venta/commit/2534bcfa1ebe38e56add7477c5f0801e991cd319))
 
