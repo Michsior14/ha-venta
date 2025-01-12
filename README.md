@@ -1,5 +1,7 @@
 # ha-venta
 
+>[Most devices](https://github.com/Michsior14/ha-venta/discussions/77) **produced** after 12/2024 (even old models) are using tuya infrastructure exclusively and are **not supported** by this project. It's safe to assume that in comming months the rest of the product line will switch too. If you have such device, please use [local](https://github.com/xZetsubou/hass-localtuya) or [official](https://www.home-assistant.io/integrations/tuya/) Tuya integration.
+
 A Home Assistant custom Integration for Venta devices (protocol: v0, v2, v3) with wifi module.
 
 The following Venta device are currently tested and supported:
@@ -17,8 +19,6 @@ The following Venta device are currently tested and supported:
 - **Protocol v3:**
   - AS100/AS150
   - AH510/AH515/AH530/AH535/AH550/AH555
-
-The new Venta devices like AH730 are using tuya infrastructure exclusively and are **not supported** by this project. If you have such device, please use [local](https://github.com/xZetsubou/hass-localtuya) or [official](https://www.home-assistant.io/integrations/tuya/) Tuya integration.
 
 ## Features
 
