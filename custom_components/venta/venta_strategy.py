@@ -153,6 +153,8 @@ class VentaTcpStrategy(VentaProtocolStrategy):
 
     async def _send_request(self, message: str) -> dict[str, Any] | None:
         """Request data from the Venta device using TCP protocol."""
+        writer = None
+
         try:
             reader, writer = await asyncio.open_connection(
                 self._host_definition.host, self._host_definition.port
