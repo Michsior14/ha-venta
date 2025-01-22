@@ -1,3 +1,10 @@
+## [0.11.3](https://github.com/Michsior14/ha-venta/compare/v0.11.2...v0.11.3) (2025-01-22)
+
+
+### Bug Fixes
+
+* writer close if connection does not open for tcp strategy  ([#80](https://github.com/Michsior14/ha-venta/issues/80)) ([e0f3cf2](https://github.com/Michsior14/ha-venta/commit/e0f3cf263e2e9946287d0e128a8d435313b57031)), closes [#79](https://github.com/Michsior14/ha-venta/issues/79)
+
 ## [0.11.2](https://github.com/Michsior14/ha-venta/compare/v0.11.1...v0.11.2) (2024-12-09)
 
 
@@ -30,11 +37,4 @@
 ### Bug Fixes
 
 * add overflow water level to all devices ([#66](https://github.com/Michsior14/ha-venta/issues/66)) ([922a8f8](https://github.com/Michsior14/ha-venta/commit/922a8f89b614827a0a64abdbb5c9a9b6d8cd3b31)), closes [#65](https://github.com/Michsior14/ha-venta/issues/65)
-
-## [0.10.2](https://github.com/Michsior14/ha-venta/compare/v0.10.1...v0.10.2) (2024-10-29)
-
-
-### Bug Fixes
-
-* temp unit scope ([7fe2eb6](https://github.com/Michsior14/ha-venta/commit/7fe2eb6a0923ddc741c11ef883a0a809a8cd96ce))
 
