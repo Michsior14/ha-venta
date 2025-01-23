@@ -68,6 +68,8 @@ def venta_temperature_unit(value: int | None) -> str | None:
 
 
 def retry_on_timeout(retries: int = 5, timeout: int = 10, delay: int = 0.5) -> Callable:
+    """Retry a function on timeout and with a delay."""
+
     def decorator(fun: Callable) -> Callable:
         @wraps(fun)
         async def wrapper(*args: Any, **kwargs: Any) -> Any:  # noqa: ANN401
