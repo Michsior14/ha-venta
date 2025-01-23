@@ -179,7 +179,7 @@ class VentaTcpStrategy(VentaProtocolStrategy):
                                 self._host_definition.port,
                                 err,
                             )
-                            return
+                            break
 
                         try:
                             writer.write(message.encode())
@@ -192,7 +192,7 @@ class VentaTcpStrategy(VentaProtocolStrategy):
                                 self._host_definition.port,
                                 err,
                             )
-                            return
+                            break
 
                         try:
                             payload = (await reader.read()).decode().strip()
@@ -210,7 +210,7 @@ class VentaTcpStrategy(VentaProtocolStrategy):
                                     self._host_definition.port,
                                     payload,
                                 )
-                                return
+                                break
 
                             try:
                                 return next(extract_json(payload))
@@ -221,7 +221,7 @@ class VentaTcpStrategy(VentaProtocolStrategy):
                                     self._host_definition.port,
                                     payload,
                                 )
-                                return
+                                break
 
                         except OSError as err:
                             _LOGGER.error(
@@ -230,7 +230,7 @@ class VentaTcpStrategy(VentaProtocolStrategy):
                                 self._host_definition.port,
                                 err,
                             )
-                            return
+                            break
                         except (JSONDecodeError, TypeError) as err:
                             _LOGGER.error(
                                 "Unable to parse payload from %s on port %s: %s",
@@ -238,7 +238,7 @@ class VentaTcpStrategy(VentaProtocolStrategy):
                                 self._host_definition.port,
                                 err,
                             )
-                            return
+                            break
 
                 except asyncio.TimeoutError:
                     _LOGGER.warning(
@@ -250,11 +250,12 @@ class VentaTcpStrategy(VentaProtocolStrategy):
                     )
                     attempt += 1
 
-            _LOGGER.error(
-                "Retries exhausted while sending request to %s on port %s",
-                self._host_definition.host,
-                self._host_definition.port,
-            )
+            if attempt > retries:
+                _LOGGER.error(
+                    "Retries exhausted while sending request to %s on port %s",
+                    self._host_definition.host,
+                    self._host_definition.port,
+                )
 
         finally:
             if writer is not None:
