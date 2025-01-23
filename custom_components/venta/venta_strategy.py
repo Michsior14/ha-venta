@@ -12,6 +12,7 @@ from typing import Any
 from aiohttp import ClientSession
 
 from .json import extract_json
+from .utils import retry_on_timeout
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -61,6 +62,7 @@ class VentaHttpStrategy(VentaProtocolStrategy):
         """Send action to the Venta device using HTTP protocol."""
         return await self._send_request(method, url, json)
 
+    @retry_on_timeout()
     async def _send_request(
         self, method: str, url: str, json_action: dict[str, Any] | None = None
     ) -> dict[str, Any] | None:
@@ -96,9 +98,6 @@ class VentaTcpHeader:
 
 class VentaTcpStrategy(VentaProtocolStrategy):
     """Venta raw TCP strategy."""
-
-    REQUEST_TIMEOUT = 5
-    MAX_ATTEMPTS = 5
 
     _header: VentaTcpHeader | None = None
 
@@ -154,109 +153,79 @@ class VentaTcpStrategy(VentaProtocolStrategy):
         )
         return f"{method} /{url}\nContent-Length: {len(body)}\n{body}"
 
-    async def _send_request(
-        self,
-        message: str,
-        timeout: int = REQUEST_TIMEOUT,
-        retries: int = MAX_ATTEMPTS,
-    ) -> dict[str, Any] | None:
+    @retry_on_timeout()
+    async def _send_request(self, message: str) -> dict[str, Any] | None:
         """Request data from the Venta device using TCP protocol."""
         writer = None
-        attempt = 1
 
         try:
-            while attempt <= retries:
-                try:
-                    async with asyncio.timeout(timeout):
-                        try:
-                            reader, writer = await asyncio.open_connection(
-                                self._host_definition.host, self._host_definition.port
-                            )
-                        except OSError as err:
-                            _LOGGER.error(
-                                "Socket error while connecting to %s on port %s: %s",
-                                self._host_definition.host,
-                                self._host_definition.port,
-                                err,
-                            )
-                            break
+            reader, writer = await asyncio.open_connection(
+                self._host_definition.host, self._host_definition.port
+            )
 
-                        try:
-                            writer.write(message.encode())
-                            await writer.drain()
-                        except OSError as err:
-                            _LOGGER.error(
-                                "Unable to send payload %r to %s on port %s: %s",
-                                message,
-                                self._host_definition.host,
-                                self._host_definition.port,
-                                err,
-                            )
-                            break
-
-                        try:
-                            payload = (await reader.read()).decode().strip()
-                            _LOGGER.debug(
-                                "Receive payload from %s on port %s: %s",
-                                self._host_definition.host,
-                                self._host_definition.port,
-                                payload,
-                            )
-
-                            if not payload:
-                                _LOGGER.debug(
-                                    "Empty response from %s on port %s: %s",
-                                    self._host_definition.host,
-                                    self._host_definition.port,
-                                    payload,
-                                )
-                                break
-
-                            try:
-                                return next(extract_json(payload))
-                            except StopIteration:
-                                _LOGGER.error(
-                                    "Malformed response from %s on port %s: %s",
-                                    self._host_definition.host,
-                                    self._host_definition.port,
-                                    payload,
-                                )
-                                break
-
-                        except OSError as err:
-                            _LOGGER.error(
-                                "Unable to receive payload from %s on port %s: %s",
-                                self._host_definition.host,
-                                self._host_definition.port,
-                                err,
-                            )
-                            break
-                        except (JSONDecodeError, TypeError) as err:
-                            _LOGGER.error(
-                                "Unable to parse payload from %s on port %s: %s",
-                                self._host_definition.host,
-                                self._host_definition.port,
-                                err,
-                            )
-                            break
-
-                except asyncio.TimeoutError:
-                    _LOGGER.warning(
-                        "Timeout sending request to %s on port %s (attempt %s of %s)",
-                        self._host_definition.host,
-                        self._host_definition.port,
-                        attempt,
-                        retries,
-                    )
-                    attempt += 1
-
-            if attempt > retries:
+            try:
+                writer.write(message.encode())
+                await writer.drain()
+            except OSError as err:
                 _LOGGER.error(
-                    "Retries exhausted while sending request to %s on port %s",
+                    "Unable to send payload %r to %s on port %s: %s",
+                    message,
                     self._host_definition.host,
                     self._host_definition.port,
+                    err,
+                )
+                return
+
+            try:
+                payload = (await reader.read()).decode().strip()
+                _LOGGER.debug(
+                    "Receive payload from %s on port %s: %s",
+                    self._host_definition.host,
+                    self._host_definition.port,
+                    payload,
                 )
 
+                if not payload:
+                    _LOGGER.debug(
+                        "Empty response from %s on port %s: %s",
+                        self._host_definition.host,
+                        self._host_definition.port,
+                        payload,
+                    )
+                    return
+
+                try:
+                    return next(extract_json(payload))
+                except StopIteration:
+                    _LOGGER.error(
+                        "Malformed response from %s on port %s: %s",
+                        self._host_definition.host,
+                        self._host_definition.port,
+                        payload,
+                    )
+
+            except OSError as err:
+                _LOGGER.error(
+                    "Unable to receive payload from %s on port %s: %s",
+                    self._host_definition.host,
+                    self._host_definition.port,
+                    err,
+                )
+            except (JSONDecodeError, TypeError) as err:
+                _LOGGER.error(
+                    "Unable to parse payload from %s on port %s: %s",
+                    self._host_definition.host,
+                    self._host_definition.port,
+                    err,
+                )
+
+        except OSError as err:
+            _LOGGER.error(
+                "Socket error while connection to %s on port %s: %s",
+                self._host_definition.host,
+                self._host_definition.port,
+                err,
+            )
         finally:
             if writer is not None:
                 writer.close()

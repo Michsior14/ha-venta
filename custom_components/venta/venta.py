@@ -169,7 +169,7 @@ class VentaDevice:
                         return
                 await asyncio.sleep(0.5)
             except (asyncio.TimeoutError, ClientError) as err:
-                _LOGGER.error("Error while detecting api: %s", err)
+                _LOGGER.debug("Error while detecting api: %s", err)
                 pass
         raise VentaApiVersionError()
 
