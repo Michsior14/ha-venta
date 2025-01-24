@@ -81,7 +81,7 @@ def retry_on_timeout(retries: int = 5, timeout: int = 10, delay: int = 0.5) -> C
                     _LOGGER.warning(
                         "Timeout calling %s, retrying... (attempt %d/%d)",
                         fun.__name__,
-                        attempt,
+                        attempt + 1,
                         retries,
                     )
                     await asyncio.sleep(delay)
