@@ -1,3 +1,10 @@
+## [0.11.4](https://github.com/Michsior14/ha-venta/compare/v0.11.3...v0.11.4) (2025-01-24)
+
+
+### Bug Fixes
+
+* gracefully retries on failed actions ([#81](https://github.com/Michsior14/ha-venta/issues/81)) ([09d6c53](https://github.com/Michsior14/ha-venta/commit/09d6c53d28da81293e06e4f3c9f17021425ca022)), closes [#79](https://github.com/Michsior14/ha-venta/issues/79)
+
 ## [0.11.3](https://github.com/Michsior14/ha-venta/compare/v0.11.2...v0.11.3) (2025-01-22)
 
 
@@ -30,11 +37,4 @@
 ### Bug Fixes
 
 * humidifiers level 0 handling ([#67](https://github.com/Michsior14/ha-venta/issues/67)) ([94b0040](https://github.com/Michsior14/ha-venta/commit/94b00400c205a820218492546178c11d10866dc2))
-
-## [0.10.3](https://github.com/Michsior14/ha-venta/compare/v0.10.2...v0.10.3) (2024-11-04)
-
-
-### Bug Fixes
-
-* add overflow water level to all devices ([#66](https://github.com/Michsior14/ha-venta/issues/66)) ([922a8f8](https://github.com/Michsior14/ha-venta/commit/922a8f89b614827a0a64abdbb5c9a9b6d8cd3b31)), closes [#65](https://github.com/Michsior14/ha-venta/issues/65)
 
