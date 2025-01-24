@@ -168,7 +168,8 @@ class VentaDevice:
                     if data is not None and data.get("Header") is not None:
                         return
                 await asyncio.sleep(0.5)
-            except (asyncio.TimeoutError, ClientError):
+            except (asyncio.TimeoutError, ClientError) as err:
+                _LOGGER.debug("Error while detecting api: %s", err)
                 pass
         raise VentaApiVersionError()
 

@@ -2,11 +2,14 @@
 
 from __future__ import annotations
 
-from typing import List, TypeVar
+import asyncio
+import logging
+from functools import wraps
+from typing import Any, Callable, List, TypeVar
 
-from homeassistant.const import (
-    UnitOfTemperature,
-)
+from homeassistant.const import UnitOfTemperature
+
+_LOGGER = logging.getLogger(__name__)
 
 
 def skip_zeros(
@@ -62,3 +65,29 @@ def venta_temperature_unit(value: int | None) -> str | None:
     if value is None:
         return None
     return UnitOfTemperature.CELSIUS if value == 0 else UnitOfTemperature.FAHRENHEIT
+
+
+def retry_on_timeout(retries: int = 5, timeout: int = 10, delay: int = 0.5) -> Callable:
+    """Retry a function on timeout and with a delay."""
+
+    def decorator(fun: Callable) -> Callable:
+        @wraps(fun)
+        async def wrapper(*args: Any, **kwargs: Any) -> Any:  # noqa: ANN401
+            for attempt in range(retries):
+                try:
+                    async with asyncio.timeout(timeout):
+                        return await fun(*args, **kwargs)
+                except asyncio.TimeoutError:
+                    _LOGGER.warning(
+                        "Timeout calling %s, retrying... (attempt %d/%d)",
+                        fun.__name__,
+                        attempt + 1,
+                        retries,
+                    )
+                    await asyncio.sleep(delay)
+            _LOGGER.error("Retries exhausted calling %s, giving up...", fun.__name__)
+            return None
+
+        return wrapper
+
+    return decorator

@@ -12,6 +12,7 @@ from typing import Any
 from aiohttp import ClientSession
 
 from .json import extract_json
+from .utils import retry_on_timeout
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -61,6 +62,7 @@ class VentaHttpStrategy(VentaProtocolStrategy):
         """Send action to the Venta device using HTTP protocol."""
         return await self._send_request(method, url, json)
 
+    @retry_on_timeout()
     async def _send_request(
         self, method: str, url: str, json_action: dict[str, Any] | None = None
     ) -> dict[str, Any] | None:
@@ -151,6 +153,7 @@ class VentaTcpStrategy(VentaProtocolStrategy):
         )
         return f"{method} /{url}\nContent-Length: {len(body)}\n{body}"
 
+    @retry_on_timeout()
     async def _send_request(self, message: str) -> dict[str, Any] | None:
         """Request data from the Venta device using TCP protocol."""
         writer = None
