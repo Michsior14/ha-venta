@@ -1,3 +1,11 @@
+## [0.11.5](https://github.com/Michsior14/ha-venta/compare/v0.11.4...v0.11.5) (2026-02-05)
+
+
+### Bug Fixes
+
+* properly support config flows on HA 2025.12+ ([ccac733](https://github.com/Michsior14/ha-venta/commit/ccac7335da700ecf98e2f3e7d839a91a93fb9c41))
+* update ha and python ([cc89525](https://github.com/Michsior14/ha-venta/commit/cc89525c9c4f93ac3f3d8fc84aa80ce7adcccacc))
+
 ## [0.11.4](https://github.com/Michsior14/ha-venta/compare/v0.11.3...v0.11.4) (2025-01-24)
 
 
@@ -25,16 +33,4 @@
 ### Bug Fixes
 
 * **AS150:** missing CO2 reports ([#72](https://github.com/Michsior14/ha-venta/issues/72)) ([8c6b936](https://github.com/Michsior14/ha-venta/commit/8c6b93688828faf1a671233dd6c0a25c2a21b23d)), closes [#71](https://github.com/Michsior14/ha-venta/issues/71)
-
-## [0.11.0](https://github.com/Michsior14/ha-venta/compare/v0.10.3...v0.11.0) (2024-11-09)
-
-
-### Features
-
-* update translations ([#68](https://github.com/Michsior14/ha-venta/issues/68)) ([0d6d0d1](https://github.com/Michsior14/ha-venta/commit/0d6d0d17c148d31e7c59e0716914cd581bfc1656))
-
-
-### Bug Fixes
-
-* humidifiers level 0 handling ([#67](https://github.com/Michsior14/ha-venta/issues/67)) ([94b0040](https://github.com/Michsior14/ha-venta/commit/94b00400c205a820218492546178c11d10866dc2))
 
