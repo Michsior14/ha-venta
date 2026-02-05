@@ -38,9 +38,9 @@ class TestConfigVersion:
     def test_versions_exist(self) -> None:
         """Test that config versions are defined."""
         assert ConfigVersion.V1 == 1
-        assert ConfigVersion.V2 == 2  # noqa: PLR2004
-        assert ConfigVersion.V3 == 3  # noqa: PLR2004
-        assert ConfigVersion.V4 == 4  # noqa: PLR2004
+        assert ConfigVersion.V2 == 2
+        assert ConfigVersion.V3 == 3
+        assert ConfigVersion.V4 == 4
 
     def test_max_version(self) -> None:
         """Test that max version is V4."""

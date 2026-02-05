@@ -29,7 +29,7 @@ class TestExtractJson:
     def test_multiple_json_objects(self) -> None:
         """Test extracting multiple JSON objects."""
         result = list(extract_json('{"first": 1} {"second": 2}'))
-        assert len(result) == 2  # noqa: PLR2004
+        assert len(result) == 2
         assert result[0] == {"first": 1}
         assert result[1] == {"second": 2}
 
@@ -72,7 +72,7 @@ Content-Type: application/json
         assert len(result) == 1
         assert result[0]["Header"]["MacAdress"] == "00:11:22:33:44:55"
         assert result[0]["Action"]["Power"] is True
-        assert result[0]["Measure"]["Temperature"] == 22.5  # noqa: PLR2004
+        assert result[0]["Measure"]["Temperature"] == 22.5
 
     def test_index_parameter(self) -> None:
         """Test starting extraction from specific index."""
@@ -119,7 +119,7 @@ class TestRawJSONDecoder:
 
         decoder = _RawJSONDecoder(end_hook=capture_end)
         decoder.decode('{"key": "value"} extra')
-        assert end_position == 16  # noqa: PLR2004
+        assert end_position == 16
 
     def test_decode_partial_string(self) -> None:
         """Test that decoder stops at first complete JSON object."""

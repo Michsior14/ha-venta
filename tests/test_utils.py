@@ -30,7 +30,7 @@ class TestSkipZeros:
 
     def test_skip_zeros_with_non_zero_int(self) -> None:
         """Test that non-zero integers are returned."""
-        assert skip_zeros(42) == 42  # noqa: PLR2004
+        assert skip_zeros(42) == 42
         assert skip_zeros(-1) == -1
 
     def test_skip_zeros_with_string(self) -> None:
@@ -55,18 +55,18 @@ class TestVentaTimeToMinutes:
 
     def test_with_one_minute_resolution(self) -> None:
         """Test conversion with 1 minute resolution."""
-        assert venta_time_to_minutes(60, 1) == 60  # noqa: PLR2004
+        assert venta_time_to_minutes(60, 1) == 60
         assert venta_time_to_minutes(0, 1) == 0
 
     def test_with_five_minute_resolution(self) -> None:
         """Test conversion with 5 minute resolution."""
-        assert venta_time_to_minutes(12, 5) == 60  # noqa: PLR2004
-        assert venta_time_to_minutes(24, 5) == 120  # noqa: PLR2004
+        assert venta_time_to_minutes(12, 5) == 60
+        assert venta_time_to_minutes(24, 5) == 120
 
     def test_with_ten_minute_resolution(self) -> None:
         """Test conversion with 10 minute resolution."""
-        assert venta_time_to_minutes(6, 10) == 60  # noqa: PLR2004
-        assert venta_time_to_minutes(12, 10) == 120  # noqa: PLR2004
+        assert venta_time_to_minutes(6, 10) == 60
+        assert venta_time_to_minutes(12, 10) == 120
 
 
 class TestVentaTimeToDaysLeft:
@@ -79,7 +79,7 @@ class TestVentaTimeToDaysLeft:
     def test_fresh_filter(self) -> None:
         """Test calculation with a fresh filter."""
         # 0 time used = full days left
-        assert venta_time_to_days_left(0, 182, 10) == 182  # noqa: PLR2004
+        assert venta_time_to_days_left(0, 182, 10) == 182
 
     def test_half_used_filter(self) -> None:
         """Test calculation with half-used filter."""
@@ -87,7 +87,7 @@ class TestVentaTimeToDaysLeft:
         # 182 days max, half = ~91 days left
         half_used = 144 * 91  # 91 days worth of ticks
         result = venta_time_to_days_left(half_used, 182, 10)
-        assert result == 91  # noqa: PLR2004
+        assert result == 91
 
     def test_fully_used_filter(self) -> None:
         """Test calculation when filter is fully used."""
@@ -188,7 +188,7 @@ class TestRetryOnTimeout:
 
         result = await always_timeout()
         assert result is None
-        assert call_count == 3  # noqa: PLR2004
+        assert call_count == 3
 
     async def test_retry_succeeds_eventually(self) -> None:
         """Test that function succeeds after initial failures."""
@@ -198,10 +198,10 @@ class TestRetryOnTimeout:
         async def succeed_on_third() -> str:
             nonlocal call_count
             call_count += 1
-            if call_count < 3:  # noqa: PLR2004
+            if call_count < 3:
                 await asyncio.sleep(1)  # Timeout on first two calls
             return "success"
 
         result = await succeed_on_third()
         assert result == "success"
-        assert call_count == 3  # noqa: PLR2004
+        assert call_count == 3

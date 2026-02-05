@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 from datetime import timedelta
-from unittest.mock import AsyncMock
+from unittest.mock import AsyncMock, MagicMock
+
+import pytest
 
 from custom_components.venta.venta import (
     API_DEFINITIONS,
@@ -40,7 +42,7 @@ class TestVentaData:
         assert data.header["MacAdress"] == "00:11:22:33:44:55"
         assert data.action["Power"] is True
         assert data.info["Warnings"] == 0
-        assert data.measure["Temperature"] == 22.5  # noqa: PLR2004
+        assert data.measure["Temperature"] == 22.5
 
     def test_is_empty_flag(self) -> None:
         """Test the is_empty flag."""
@@ -69,7 +71,7 @@ class TestVentaApiDefinition:
             VentaApiEndpointDefinition("POST", "datastructure"),
         )
         assert definition.version == VentaApiVersion.V2
-        assert definition.port == 80  # noqa: PLR2004
+        assert definition.port == 80
 
     def test_creation_with_custom_port(self) -> None:
         """Test API definition with custom port."""
@@ -79,7 +81,7 @@ class TestVentaApiDefinition:
             VentaApiEndpointDefinition("POST", "Action"),
             48000,
         )
-        assert definition.port == 48000  # noqa: PLR2004
+        assert definition.port == 48000
 
     def test_id_property(self) -> None:
         """Test ID generation property."""
@@ -108,7 +110,7 @@ class TestApiDefinitions:
 
     def test_definitions_exist(self) -> None:
         """Test that API definitions are defined."""
-        assert len(API_DEFINITIONS) >= 3  # noqa: PLR2004
+        assert len(API_DEFINITIONS) >= 3
 
     def test_v3_definition(self) -> None:
         """Test V3 API definition."""
@@ -117,7 +119,7 @@ class TestApiDefinitions:
         assert len(v3_defs) >= 1
         telemetry_def = [d for d in v3_defs if "telemetry" in d.status.url]
         assert len(telemetry_def) == 1
-        assert telemetry_def[0].port == 80  # noqa: PLR2004
+        assert telemetry_def[0].port == 80
 
     def test_v2_definition(self) -> None:
         """Test V2 API definition."""
@@ -129,7 +131,7 @@ class TestApiDefinitions:
         """Test V0 (TCP) API definition."""
         v0_defs = [d for d in API_DEFINITIONS if d.version == VentaApiVersion.V0]
         assert len(v0_defs) == 1
-        assert v0_defs[0].port == 48000  # noqa: PLR2004
+        assert v0_defs[0].port == 48000
 
     def test_unique_ids(self) -> None:
         """Test that all definitions have unique IDs."""
@@ -143,7 +145,7 @@ class TestVentaDeviceType:
     def test_device_types_exist(self) -> None:
         """Test that device types are defined."""
         assert VentaDeviceType.LP60.value == 1
-        assert VentaDeviceType.LPH60.value == 2  # noqa: PLR2004
+        assert VentaDeviceType.LPH60.value == 2
         assert VentaDeviceType.UNKNOWN.value == -1
 
     def test_all_types_have_values(self) -> None:
@@ -158,8 +160,8 @@ class TestVentaApiVersion:
     def test_versions_exist(self) -> None:
         """Test that API versions are defined."""
         assert VentaApiVersion.V0.value == 0
-        assert VentaApiVersion.V2.value == 2  # noqa: PLR2004
-        assert VentaApiVersion.V3.value == 3  # noqa: PLR2004
+        assert VentaApiVersion.V2.value == 2
+        assert VentaApiVersion.V3.value == 3
 
 
 class TestVentaDevice:
@@ -206,7 +208,7 @@ class TestVentaDevice:
         assert venta_data.header["MacAdress"] == "00:11:22:33:44:55"
         assert venta_data.action["Power"] is True
         assert venta_data.info["Warnings"] == 0
-        assert venta_data.measure["Temperature"] == 22.5  # noqa: PLR2004
+        assert venta_data.measure["Temperature"] == 22.5
 
     async def test_map_data_with_none(self) -> None:
         """Test _map_data with None returns empty VentaData."""
@@ -264,3 +266,136 @@ class TestVentaApi:
         result = await api.async_update()
         assert result.header["MacAdress"] == "00:11:22:33:44:55"
         device.status.assert_called_once()
+
+
+class TestVentaDeviceInit:
+    """Tests for VentaDevice.init method."""
+
+    async def test_init_sets_mac(self) -> None:
+        """Test init sets MAC address."""
+        device = VentaDevice(
+            host="192.168.1.100",
+            update_interval=timedelta(seconds=10),
+            api_definition_id="2/datastructure/datastructure",
+            session=None,
+        )
+
+        mock_strategy = MagicMock()
+        mock_strategy.get_status = AsyncMock(
+            return_value={"Header": {"MacAdress": "00:11:22:33:44:55", "DeviceType": 1}}
+        )
+        device._strategy = mock_strategy
+
+        await device.init()
+
+        assert device.mac == "00:11:22:33:44:55"
+        assert device.device_type == VentaDeviceType.LP60
+
+    async def test_init_with_device_id(self) -> None:
+        """Test init with DeviceId instead of MacAdress."""
+        device = VentaDevice(
+            host="192.168.1.100",
+            update_interval=timedelta(seconds=10),
+            api_definition_id="2/datastructure/datastructure",
+            session=None,
+        )
+
+        mock_strategy = MagicMock()
+        mock_strategy.get_status = AsyncMock(
+            return_value={"Header": {"DeviceId": "device123", "DeviceType": 2}}
+        )
+        device._strategy = mock_strategy
+
+        await device.init()
+
+        assert device.mac == "device123"
+        assert device.device_type == VentaDeviceType.LPH60
+
+    async def test_init_unknown_device_type(self) -> None:
+        """Test init with unknown device type."""
+        device = VentaDevice(
+            host="192.168.1.100",
+            update_interval=timedelta(seconds=10),
+            api_definition_id="2/datastructure/datastructure",
+            session=None,
+        )
+
+        mock_strategy = MagicMock()
+        mock_strategy.get_status = AsyncMock(
+            return_value={
+                "Header": {"MacAdress": "00:11:22:33:44:55", "DeviceType": 999}
+            }
+        )
+        device._strategy = mock_strategy
+
+        await device.init()
+
+        assert device.device_type == VentaDeviceType.UNKNOWN
+
+
+class TestVentaDeviceAction:
+    """Tests for VentaDevice.action method."""
+
+    async def test_action_success(self) -> None:
+        """Test successful action."""
+        device = VentaDevice(
+            host="192.168.1.100",
+            update_interval=timedelta(seconds=10),
+            api_definition_id="2/datastructure/datastructure",
+            session=None,
+        )
+
+        mock_strategy = MagicMock()
+        mock_strategy.send_action = AsyncMock(
+            return_value={"Header": {"MacAdress": "00:11:22:33:44:55"}}
+        )
+        device._strategy = mock_strategy
+
+        mock_coordinator = MagicMock()
+        mock_coordinator.async_request_refresh = AsyncMock()
+
+        result = await device.action({"Power": True}, mock_coordinator)
+
+        assert result.header["MacAdress"] == "00:11:22:33:44:55"
+        mock_coordinator.async_request_refresh.assert_called_once()
+
+    async def test_action_not_supported(self) -> None:
+        """Test action on device without action support."""
+        device = VentaDevice(
+            host="192.168.1.100",
+            update_interval=timedelta(seconds=10),
+            api_definition_id="3/sensordata.json/None",  # V3 without action
+            session=None,
+        )
+
+        mock_coordinator = MagicMock()
+
+        with pytest.raises(ValueError, match="Action is not supported"):
+            await device.action({"Power": True}, mock_coordinator)
+
+
+class TestVentaDeviceStatus:
+    """Tests for VentaDevice.status method."""
+
+    async def test_status_returns_data(self) -> None:
+        """Test status returns VentaData."""
+        device = VentaDevice(
+            host="192.168.1.100",
+            update_interval=timedelta(seconds=10),
+            api_definition_id="2/datastructure/datastructure",
+            session=None,
+        )
+
+        mock_strategy = MagicMock()
+        mock_strategy.get_status = AsyncMock(
+            return_value={
+                "Header": {"MacAdress": "00:11:22:33:44:55"},
+                "Action": {"Power": True},
+            }
+        )
+        device._strategy = mock_strategy
+
+        result = await device.status()
+
+        assert result.header["MacAdress"] == "00:11:22:33:44:55"
+        assert result.action["Power"] is True

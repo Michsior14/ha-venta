@@ -21,12 +21,12 @@ class TestVentaApiHostDefinition:
         """Test host definition creation."""
         host_def = VentaApiHostDefinition("192.168.1.100", 80)
         assert host_def.host == "192.168.1.100"
-        assert host_def.port == 80  # noqa: PLR2004
+        assert host_def.port == 80
 
     def test_custom_port(self) -> None:
         """Test host definition with custom port."""
         host_def = VentaApiHostDefinition("192.168.1.100", 48000)
-        assert host_def.port == 48000  # noqa: PLR2004
+        assert host_def.port == 48000
 
 
 class TestVentaTcpHeader:
@@ -118,7 +118,7 @@ class TestVentaTcpStrategy:
         """Test TCP strategy with custom buffer size."""
         host_def = VentaApiHostDefinition("192.168.1.100", 48000)
         strategy = VentaTcpStrategy(host_def, buffer_size=1024)
-        assert strategy._buffer_size == 1024  # noqa: PLR2004
+        assert strategy._buffer_size == 1024
 
     def test_set_header(self) -> None:
         """Test setting TCP header."""

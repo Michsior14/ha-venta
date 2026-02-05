@@ -2,6 +2,9 @@
 select = ["E4", "E7", "E9", "F", "ANN", "PL"]
 ignore = []
 
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["PLR2004", "S101", "SLF001", "ANN"]
+
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
