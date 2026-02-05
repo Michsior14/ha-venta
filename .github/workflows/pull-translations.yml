@@ -13,7 +13,7 @@ jobs:
   translations:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Setup Lokalise
         uses: frenck/action-setup-lokalise@v1
       - name: Pull from Lokalise
@@ -27,7 +27,7 @@ jobs:
           --bundle-structure=custom_components/venta/translations/%LANG_ISO%.%FORMAT% \
           --original-filenames=false
       - name: Create translation PR
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v8
         with:
           commit-message: "feat: update translations"
           title: "feat: update translations"
