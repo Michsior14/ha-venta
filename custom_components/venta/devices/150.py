@@ -21,9 +21,9 @@ from ..const import (
     ATTR_HUMIDITY,
     ATTR_PARTICLES_0_3,
     ATTR_PARTICLES_0_5,
-    ATTR_PARTICLES_10,
     ATTR_PARTICLES_2_5,
     ATTR_PARTICLES_5_0,
+    ATTR_PARTICLES_10,
     ATTR_PM_1_0,
     ATTR_PM_2_5,
     ATTR_PM_10,
@@ -117,8 +117,10 @@ async def async_setup_sensor(
             device_class=SensorDeviceClass.PM1,
             native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
             state_class=SensorStateClass.MEASUREMENT,
-            value_func=lambda coordinator: coordinator.data.measure.get("PmCalc1u0")
-            or coordinator.data.measure.get("Pm1u0"),
+            value_func=lambda coordinator: (
+                coordinator.data.measure.get("PmCalc1u0")
+                or coordinator.data.measure.get("Pm1u0")
+            ),
         ),
         VentaSensorEntityDescription(
             key=ATTR_PM_2_5,
@@ -126,8 +128,10 @@ async def async_setup_sensor(
             device_class=SensorDeviceClass.PM25,
             native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
             state_class=SensorStateClass.MEASUREMENT,
-            value_func=lambda coordinator: coordinator.data.measure.get("PmCalc2u5")
-            or coordinator.data.measure.get("Pm2u5"),
+            value_func=lambda coordinator: (
+                coordinator.data.measure.get("PmCalc2u5")
+                or coordinator.data.measure.get("Pm2u5")
+            ),
         ),
         VentaSensorEntityDescription(
             key=ATTR_PM_10,
@@ -135,8 +139,10 @@ async def async_setup_sensor(
             device_class=SensorDeviceClass.PM10,
             native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
             state_class=SensorStateClass.MEASUREMENT,
-            value_func=lambda coordinator: coordinator.data.measure.get("PmCalc10u")
-            or coordinator.data.measure.get("Pm10u"),
+            value_func=lambda coordinator: (
+                coordinator.data.measure.get("PmCalc10u")
+                or coordinator.data.measure.get("Pm10u")
+            ),
         ),
         VentaSensorEntityDescription(
             key=ATTR_PARTICLES_0_3,

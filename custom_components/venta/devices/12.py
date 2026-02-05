@@ -58,9 +58,9 @@ from ..const import (
     TIMER_MODES_OFF,
     WATER_LEVEL_NO_VALUE,
     WATER_LEVEL_OK,
+    WATER_LEVEL_OVERFLOW,
     WATER_LEVEL_RED,
     WATER_LEVEL_YELLOW,
-    WATER_LEVEL_OVERFLOW,
 )
 from ..utils import (
     get_from_list,
